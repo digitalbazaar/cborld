@@ -2,21 +2,34 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-
 const cborld = require('.');
+const fs = require('fs').promises;
 
-async function main() {
-  const args = require('yargs')
-    .usage('Usage: $0 [options]')
-    .alias('h', 'help')
-    .help('help', 'Show help for cborld command.')
-    .argv;
+async function encodeCommand(args) {
   try {
-    console.log('NOT IMPLEMENTED');
+    const jsonldDocument = JSON.parse(await fs.readFile(args.file));
+    const cborldBytes = await cborld.encode({jsonldDocument});
+    console.log('CBOR-LD:', cborldBytes);
   } catch(e) {
     console.error(e);
     process.exit(1);
   }
+}
+
+async function main() {
+  require('yargs')
+    .usage('Usage: $0 <command>')
+    .alias('h', 'help')
+    .help('help', 'Show help for cborld command.')
+    .command('encode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
+      yargs => {
+        yargs.positional('file', {
+          describe: 'The JSON-LD file to encode.',
+          type: 'string'
+        });
+      }, encodeCommand)
+    .alias('e', 'encode')
+    .argv;
 }
 
 main();
