@@ -9,7 +9,7 @@ async function main() {
   const args = require('yargs')
     .usage('Usage: $0 [options]')
     .alias('h', 'help')
-    .help('help', 'DSC')
+    .help('help', 'Show help for cborld command.')
     .argv;
   try {
     console.log('NOT IMPLEMENTED');
