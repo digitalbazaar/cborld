@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+/*!
+ * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+ */
+
+const cborld = require('.');
+
+async function main() {
+  const args = require('yargs')
+    .usage('Usage: $0 [options]')
+    .alias('h', 'help')
+    .help('help', 'DSC')
+    .argv;
+  try {
+    console.log('NOT IMPLEMENTED');
+  } catch(e) {
+    console.error(e);
+    process.exit(1);
+  }
+}
+
+main();
