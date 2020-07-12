@@ -5,10 +5,22 @@
 const cborld = require('.');
 const fs = require('fs').promises;
 
+// FIXME: Remove eventually
+async function documentLoader(url) {
+  let result;
+
+  if(url === 'https://www.w3.org/ns/activitystreams') {
+    result = JSON.parse(await fs.readFile('activitystreams.jsonld'));
+  }
+
+  return result;
+}
+
 async function encodeCommand(args) {
   try {
     const jsonldDocument = JSON.parse(await fs.readFile(args.file));
-    const cborldBytes = await cborld.encode({jsonldDocument});
+    const options = {documentLoader};
+    const cborldBytes = await cborld.encode({jsonldDocument, options});
     console.log('CBOR-LD:', cborldBytes);
   } catch(e) {
     console.error(e.toString());
