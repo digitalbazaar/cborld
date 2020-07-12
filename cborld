@@ -3,29 +3,43 @@
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
 const cborld = require('.');
-const fs = require('fs').promises;
+const fs = require('fs');
+const fsp = require('fs').promises;
+const https = require('https');
 
 // FIXME: Remove eventually
 async function documentLoader(url) {
-  let result;
+  const cacheFile = url.substring(url.lastIndexOf('/') + 1) + '.jsonld';
 
-  if(url === 'https://www.w3.org/ns/activitystreams') {
-    result = JSON.parse(await fs.readFile('activitystreams.jsonld'));
-  } else {
-    throw new Error('Could not fetch JSON-LD Context: ' + url);
+  try {
+    await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
+  } catch(e) {
+    const file = fs.createWriteStream(cacheFile);
+    const options = {
+      headers: {
+        accept: 'application/ld+json'
+      }
+    };
+    await new Promise((resolve, reject) =>
+      https.get(url, options, response => {
+        response.pipe(file);
+        response.on('end', resolve);
+        response.on('error', reject);
+      })
+    );
   }
 
-  return result;
+  return JSON.parse(await fsp.readFile(cacheFile));
 }
 
 // Yars command to encode a given JSON-LD document to CBOR-LD
 async function encodeCommand(args) {
   try {
-    const jsonldBytes = await fs.readFile(args.file);
+    const jsonldBytes = await fsp.readFile(args.file);
     const jsonldDocument = JSON.parse(jsonldBytes);
     const options = {documentLoader, diagnose: args.verbose};
     const cborldBytes = await cborld.encode({jsonldDocument, options});
-    await fs.writeFile('out.cborld', cborldBytes);
+    await fsp.writeFile('out.cborld', cborldBytes);
 
     if(args.verbose) {
       const ratio = 100 - (cborldBytes.length / jsonldBytes.length) * 100;
