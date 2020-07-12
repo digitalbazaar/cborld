@@ -18,6 +18,17 @@
 This library provides a CBOR-LD Processor for Web browsers and Node.js
 applications.
 
+## Quickstart
+
+To quickly see cborld in action, run the following commands:
+
+```
+git clone git@github.com:digitalbazaar/cborld.git
+cd cborld
+npm i
+./cborld encode --verbose --diagnose examples/note.jsonld
+```
+
 ## Install
 
 ### NPM
@@ -45,25 +56,24 @@ TBD...
 To encode a JSON-LD document as CBOR-LD:
 
 ```js
-import {encode} from 'cborld';
+import * as cborld from 'cborld';
 
 const jsonldDocument = {
   '@context': 'https://www.w3.org/ns/activitystreams',
   type: 'Note',
-  id: 'http://example.org/note/124',
   summary: 'CBOR-LD',
   content: 'CBOR-LD is awesome!'
 };
 
-const cborldDocument = await encode({jsonldDocument});
+const cborldBytes = await cborld.encode({jsonldDocument});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
 
 ```js
-import {decode} from 'cborld';
+import * as cborld from 'cborld';
 
-const jsonldDocument = await decode({cborldBytes});
+const jsonldDocument = await cborld.decode({cborldBytes});
 ```
 
 ## API
