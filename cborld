@@ -11,6 +11,8 @@ async function documentLoader(url) {
 
   if(url === 'https://www.w3.org/ns/activitystreams') {
     result = JSON.parse(await fs.readFile('activitystreams.jsonld'));
+  } else {
+    throw new Error('Could not fetch JSON-LD Context: ' + url);
   }
 
   return result;
