@@ -18,15 +18,25 @@ async function documentLoader(url) {
   return result;
 }
 
+// Yars command to encode a given JSON-LD document to CBOR-LD
 async function encodeCommand(args) {
   try {
-    const jsonldDocument = JSON.parse(await fs.readFile(args.file));
-    const options = {documentLoader, debug: args.verbose};
+    const jsonldBytes = await fs.readFile(args.file);
+    const jsonldDocument = JSON.parse(jsonldBytes);
+    const options = {documentLoader, diagnose: args.verbose};
     const cborldBytes = await cborld.encode({jsonldDocument, options});
     await fs.writeFile('out.cborld', cborldBytes);
-    console.log(`Wrote CBOR-LD output to '${args.output}'.`)
+
+    if(args.verbose) {
+      const ratio = 100 - (cborldBytes.length / jsonldBytes.length) * 100;
+      console.log(`${jsonldBytes.length} JSON-LD input bytes, ` +
+        `${cborldBytes.length} CBOR-LD output bytes, ` +
+        `${ratio.toFixed(0)}% compression.`);
+    }
+
+    console.log(`Wrote CBOR-LD output to '${args.output}'.`);
   } catch(e) {
-    console.error(e.toString());
+    console.error(e.stack);
     process.exit(1);
   }
 }
@@ -36,6 +46,11 @@ async function main() {
     .usage('Usage: $0 <command>')
     .option('verbose', {
       describe: 'Provide verbose logging',
+      type: 'boolean',
+      default: false
+    })
+    .option('diagnose', {
+      describe: 'Provide diagnostic output',
       type: 'boolean',
       default: false
     })
@@ -49,7 +64,7 @@ async function main() {
             type: 'string'
           })
           .option('output', {
-            describe: 'Output file to write to.',
+            describe: 'Write output to filename.',
             alias: 'o',
             type: 'string',
             default: 'out.cborld'
