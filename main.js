@@ -20,7 +20,8 @@ export async function encode({jsonldDocument, options}) {
   const contextUrls = getContextUrls({jsonldDocument});
   const compressionDictionary =
     await getCompressionDictionary({contextUrls, options});
-  const cborldBytes = await toCborld({jsonldDocument, compressionDictionary});
+  const cborldBytes =
+    await toCborld({jsonldDocument, compressionDictionary, options});
 
   return cborldBytes;
 }
