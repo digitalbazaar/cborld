@@ -1,0 +1,12 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    {
+      "uncompressible": "https://example.com/vocabs#uncompressible"
+    }
+  ],
+  "type": "Note",
+  "summary": "A note",
+  "content": "This is an example note.",
+  "uncompressible": "This is defined inline and is uncompressible."
+}
