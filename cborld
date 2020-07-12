@@ -19,9 +19,10 @@ async function documentLoader(url) {
 async function encodeCommand(args) {
   try {
     const jsonldDocument = JSON.parse(await fs.readFile(args.file));
-    const options = {documentLoader};
+    const options = {documentLoader, debug: args.verbose};
     const cborldBytes = await cborld.encode({jsonldDocument, options});
-    console.log('CBOR-LD:', cborldBytes);
+    await fs.writeFile('out.cborld', cborldBytes);
+    console.log(`Wrote CBOR-LD output to '${args.output}'.`)
   } catch(e) {
     console.error(e.toString());
     process.exit(1);
@@ -31,14 +32,26 @@ async function encodeCommand(args) {
 async function main() {
   require('yargs')
     .usage('Usage: $0 <command>')
+    .option('verbose', {
+      describe: 'Provide verbose logging',
+      type: 'boolean',
+      default: false
+    })
     .alias('h', 'help')
     .help('help', 'Show help for cborld command.')
     .command('encode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
       yargs => {
-        yargs.positional('file', {
-          describe: 'The JSON-LD file to encode.',
-          type: 'string'
-        });
+        yargs
+          .positional('file', {
+            describe: 'The JSON-LD file to encode.',
+            type: 'string'
+          })
+          .option('output', {
+            describe: 'Output file to write to.',
+            alias: 'o',
+            type: 'string',
+            default: 'out.cborld'
+          });
       }, encodeCommand)
     .alias('e', 'encode')
     .argv;
