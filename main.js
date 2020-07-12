@@ -9,14 +9,17 @@ import {getCompressionDictionary, toCborld} from './lib/compression';
   *
   * @param {object} [args] - The arguments to the function.
   * @param {Array} [args.jsonldDocument] - The JSON-LD Document to convert to a
-  *  CBOR-LD byte array.
+  *   CBOR-LD byte array.
   * @param {object} [args.options] - The options to use.
+  * @param {Function} [args.options.documentLoader(url, options)] -
+  *   the document loader to use when resolving JSON-LD Context URLs.
   *
   * @returns {object} - The compression dictionary.
   */
 export async function encode({jsonldDocument, options}) {
-  const contextUrls = await getContextUrls({jsonldDocument});
-  const compressionDictionary = await getCompressionDictionary({contextUrls});
+  const contextUrls = getContextUrls({jsonldDocument});
+  const compressionDictionary =
+    await getCompressionDictionary({contextUrls, options});
   const cborldBytes = await toCborld({jsonldDocument, compressionDictionary});
 
   return cborldBytes;
