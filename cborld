@@ -11,7 +11,7 @@ async function encodeCommand(args) {
     const cborldBytes = await cborld.encode({jsonldDocument});
     console.log('CBOR-LD:', cborldBytes);
   } catch(e) {
-    console.error(e);
+    console.error(e.toString());
     process.exit(1);
   }
 }
