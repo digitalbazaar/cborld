@@ -17,9 +17,19 @@ import {getCompressionDictionary, toCborld} from './lib/compression';
   * @returns {object} - The compression dictionary.
   */
 export async function encode({jsonldDocument, options}) {
-  const contextUrls = getContextUrls({jsonldDocument});
-  const compressionDictionary =
-    await getCompressionDictionary({contextUrls, options});
+  let compressionDictionary = undefined;
+
+  try {
+    const contextUrls = getContextUrls({jsonldDocument});
+    compressionDictionary =
+      await getCompressionDictionary({contextUrls, options});
+  } catch(e) {
+    // quietly ignore embedded context errors, generate uncompressed CBOR-LD
+    if(e.value !== 'ERR_EMBEDDED_JSONLD_CONTEXT_DETECTED') {
+      throw e;
+    }
+  }
+
   const cborldBytes =
     await toCborld({jsonldDocument, compressionDictionary, options});
 
