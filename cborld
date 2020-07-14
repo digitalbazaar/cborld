@@ -6,10 +6,12 @@ const cborld = require('.');
 const fs = require('fs');
 const fsp = require('fs').promises;
 const https = require('https');
+const url = require('url');
 
 // FIXME: Remove eventually
-async function documentLoader(url) {
-  const cacheFile = url.substring(url.lastIndexOf('/') + 1) + '.jsonld';
+async function documentLoader(docUrl) {
+  const cacheFile = 'jsonldcontext' + url.parse(docUrl).pathname
+    .replace(/\//g, '-').replace(/\.jsonld$/, '') + '.jsonld';
 
   try {
     await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
@@ -21,7 +23,7 @@ async function documentLoader(url) {
       }
     };
     await new Promise((resolve, reject) =>
-      https.get(url, options, response => {
+      https.get(docUrl, options, response => {
         response.pipe(file);
         response.on('end', resolve);
         response.on('error', reject);
