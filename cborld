@@ -39,7 +39,7 @@ async function encodeCommand(args) {
   try {
     const jsonldBytes = await fsp.readFile(args.file);
     const jsonldDocument = JSON.parse(jsonldBytes);
-    const options = {documentLoader, diagnose: args.verbose};
+    const options = {documentLoader, diagnose: args.diagnose};
     const cborldBytes = await cborld.encode({jsonldDocument, options});
     await fsp.writeFile('out.cborld', cborldBytes);
 
@@ -62,12 +62,12 @@ async function main() {
     .usage('Usage: $0 <command>')
     .option('verbose', {
       describe: 'Provide verbose logging',
-      type: 'boolean',
+      boolean: true,
       default: false
     })
     .option('diagnose', {
       describe: 'Provide diagnostic output',
-      type: 'boolean',
+      boolean: true,
       default: false
     })
     .alias('h', 'help')
