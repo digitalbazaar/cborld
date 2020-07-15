@@ -2,7 +2,7 @@
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
 import {getContextUrls} from './lib/context';
-import {getCompressionDictionary, toCborld} from './lib/compression';
+import {getCompressionMap, toCborld} from './lib/compression';
 
 /**
   * Encodes a given JSON-LD document into a CBOR-LD byte array.
@@ -14,15 +14,15 @@ import {getCompressionDictionary, toCborld} from './lib/compression';
   * @param {Function} [args.options.documentLoader(url, options)] -
   *   the document loader to use when resolving JSON-LD Context URLs.
   *
-  * @returns {object} - The compression dictionary.
+  * @returns {object} - The compression map.
   */
 export async function encode({jsonldDocument, options}) {
-  let compressionDictionary = undefined;
+  let compressionMap = undefined;
 
   try {
     const contextUrls = getContextUrls({jsonldDocument});
-    compressionDictionary =
-      await getCompressionDictionary({contextUrls, options});
+    compressionMap =
+      await getCompressionMap({contextUrls, options});
   } catch(e) {
     // quietly ignore embedded context errors, generate uncompressed CBOR-LD
     if(e.value !== 'ERR_EMBEDDED_JSONLD_CONTEXT_DETECTED') {
@@ -31,7 +31,7 @@ export async function encode({jsonldDocument, options}) {
   }
 
   const cborldBytes =
-    await toCborld({jsonldDocument, compressionDictionary, options});
+    await toCborld({jsonldDocument, compressionMap, options});
 
   return cborldBytes;
 }
