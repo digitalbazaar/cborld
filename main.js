@@ -2,7 +2,7 @@
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
 import {getContextUrls} from './lib/context';
-import {getCompressionMap, toCborld} from './lib/compression';
+import {getTermEncodingMap, toCborld} from './lib/compression';
 
 /**
   * Encodes a given JSON-LD document into a CBOR-LD byte array.
@@ -10,19 +10,25 @@ import {getCompressionMap, toCborld} from './lib/compression';
   * @param {object} [args] - The arguments to the function.
   * @param {Array} [args.jsonldDocument] - The JSON-LD Document to convert to a
   *   CBOR-LD byte array.
-  * @param {object} [args.options] - The options to use.
-  * @param {Function} [args.options.documentLoader(url, options)] -
-  *   the document loader to use when resolving JSON-LD Context URLs.
+  * @param {object} [args.appContextMap] - A map of JSON-LD Context URLs and
+  *   their associated CBOR-LD compression values (must be values greater than
+  *   32767 (0x7FFF)).
+  * @param {Function} [args.diagnose] - A function that, if provided, is called
+  *   with diagnostic information.
+  * @param {Function} [args.documentLoader] -The document loader to use when
+  *   resolving JSON-LD Context URLs. Takes a single argument, a document URL.
   *
-  * @returns {object} - The compression map.
+  * @returns {Uint8Array} - The encoded CBOR-LD bytes.
   */
-export async function encode({jsonldDocument, options}) {
-  let compressionMap = undefined;
+export async function encode({
+  jsonldDocument, appContextMap, diagnose, documentLoader}) {
+  let termEncodingMap = undefined;
 
+  // get the term encoding map by processing the JSON-LD Contexts
   try {
     const contextUrls = getContextUrls({jsonldDocument});
-    compressionMap =
-      await getCompressionMap({contextUrls, options});
+    termEncodingMap =
+      await getTermEncodingMap({contextUrls, documentLoader});
   } catch(e) {
     // quietly ignore embedded context errors, generate uncompressed CBOR-LD
     if(e.value !== 'ERR_EMBEDDED_JSONLD_CONTEXT_DETECTED') {
@@ -31,7 +37,7 @@ export async function encode({jsonldDocument, options}) {
   }
 
   const cborldBytes =
-    await toCborld({jsonldDocument, compressionMap, options});
+    await toCborld({jsonldDocument, appContextMap, termEncodingMap, diagnose});
 
   return cborldBytes;
 }

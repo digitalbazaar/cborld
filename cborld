@@ -39,8 +39,22 @@ async function encodeCommand(args) {
   try {
     const jsonldBytes = await fsp.readFile(args.file);
     const jsonldDocument = JSON.parse(jsonldBytes);
-    const options = {documentLoader, diagnose: args.diagnose};
-    const cborldBytes = await cborld.encode({jsonldDocument, options});
+    let appContextMap = undefined;
+
+    // build the application context map if arguments were given
+    if(args.context.length > 0) {
+      appContextMap = new Map();
+      args.context.forEach(
+        (element, i) => appContextMap.set(element, 0x8000 + i));
+    }
+
+    // encode to CBOR-LD
+    const cborldBytes = await cborld.encode({
+      jsonldDocument,
+      documentLoader,
+      appContextMap,
+      diagnose: (args.diagnose) ? console.log : undefined
+    });
     await fsp.writeFile('out.cborld', cborldBytes);
 
     if(args.verbose) {
@@ -62,28 +76,34 @@ async function main() {
     .usage('Usage: $0 <command>')
     .option('verbose', {
       describe: 'Provide verbose logging',
-      boolean: true,
-      default: false
+      alias: 'v',
+      boolean: true
     })
     .option('diagnose', {
       describe: 'Provide diagnostic output',
-      boolean: true,
-      default: false
+      alias: 'd',
+      boolean: true
     })
     .alias('h', 'help')
     .help('help', 'Show help for cborld command.')
     .command('encode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
       yargs => {
         yargs
-          .positional('file', {
-            describe: 'The JSON-LD file to encode.',
-            type: 'string'
+          .option('context', {
+            describe: 'List of context URLs to compress.',
+            alias: 'c',
+            type: 'array',
+            default: []
           })
           .option('output', {
             describe: 'Write output to filename.',
             alias: 'o',
             type: 'string',
             default: 'out.cborld'
+          })
+          .positional('file', {
+            describe: 'The JSON-LD file to encode.',
+            type: 'string'
           });
       }, encodeCommand)
     .alias('e', 'encode')
