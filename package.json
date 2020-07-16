@@ -48,8 +48,10 @@
     "util.js"
   ],
   "dependencies": {
+    "base58-universal": "^1.0.0",
     "cbor": "^5.0.2",
     "esm": "^3.2.22",
+    "js-base64": "^3.0.2",
     "yargs": "^15.3.1"
   },
   "devDependencies": {
