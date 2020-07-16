@@ -40,12 +40,26 @@ async function encodeCommand(args) {
     const jsonldBytes = await fsp.readFile(args.file);
     const jsonldDocument = JSON.parse(jsonldBytes);
     let appContextMap = undefined;
+    let appTermMap = undefined;
 
-    // build the application context map if arguments were given
-    if(args.context.length > 0) {
+    // build the application context map
+    if(args.context) {
       appContextMap = new Map();
       args.context.forEach(
         (element, i) => appContextMap.set(element, 0x8000 + i));
+    }
+
+    // build the application term transforms map
+    if(args.transform) {
+      const codecs = cborld.getTermCodecs();
+      appTermMap = {};
+      args.transform.forEach(element => {
+        const [term, transform] = element.split(':');
+        const codec = codecs[transform];
+        if(codec) {
+          appTermMap[term] = codec;
+        }
+      });
     }
 
     // encode to CBOR-LD
@@ -53,6 +67,7 @@ async function encodeCommand(args) {
       jsonldDocument,
       documentLoader,
       appContextMap,
+      appTermMap,
       diagnose: (args.diagnose) ? console.log : undefined
     });
     await fsp.writeFile('out.cborld', cborldBytes);
@@ -95,6 +110,13 @@ async function main() {
             type: 'array',
             default: []
           })
+          .option('transform', {
+            describe: 'List of custom <term>:<transform>s to apply. ' +
+              'Transforms: ' + Object.keys(cborld.getTermCodecs()).join(', '),
+            alias: 't',
+            type: 'array',
+            default: []
+          })
           .option('output', {
             describe: 'Write output to filename.',
             alias: 'o',
@@ -104,9 +126,24 @@ async function main() {
           .positional('file', {
             describe: 'The JSON-LD file to encode.',
             type: 'string'
-          });
+          })
+          .example([
+            ['$0 encode example.jsonld',
+              'Encode example.jsonld to out.cborld'],
+            ['$0 encode example.jsonld -v -d',
+              'Encode example.jsonld showing diagnostic output'],
+            ['$0 encode example.jsonld -v -d -t proofValue:base64Pad ' +
+              '-c https://example.com/example/v1',
+            'Encode with custom term transform and context']
+          ]);
       }, encodeCommand)
     .alias('e', 'encode')
+    .example([
+      ['$0 encode example.jsonld',
+        'Encode example.jsonld to out.cborld'],
+      ['$0 encode example.jsonld -v -d',
+        'Encode example.jsonld showing diagnostic output']
+    ])
     .argv;
 }
 

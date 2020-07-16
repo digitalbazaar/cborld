@@ -3,6 +3,7 @@
  */
 import {getContextUrls} from './lib/context';
 import {getTermEncodingMap, toCborld} from './lib/compression';
+export {getTermCodecs} from './lib/compression';
 
 /**
   * Encodes a given JSON-LD document into a CBOR-LD byte array.
@@ -13,6 +14,8 @@ import {getTermEncodingMap, toCborld} from './lib/compression';
   * @param {object} [args.appContextMap] - A map of JSON-LD Context URLs and
   *   their associated CBOR-LD compression values (must be values greater than
   *   32767 (0x7FFF)).
+  * @param {object} [args.appTermMap] - A map of JSON-LD terms and
+  *   their associated CBOR-LD compression codecs.
   * @param {Function} [args.diagnose] - A function that, if provided, is called
   *   with diagnostic information.
   * @param {Function} [args.documentLoader] -The document loader to use when
@@ -21,14 +24,14 @@ import {getTermEncodingMap, toCborld} from './lib/compression';
   * @returns {Uint8Array} - The encoded CBOR-LD bytes.
   */
 export async function encode({
-  jsonldDocument, appContextMap, diagnose, documentLoader}) {
+  jsonldDocument, appContextMap, appTermMap, diagnose, documentLoader}) {
   let termEncodingMap = undefined;
 
   // get the term encoding map by processing the JSON-LD Contexts
   try {
     const contextUrls = getContextUrls({jsonldDocument});
     termEncodingMap =
-      await getTermEncodingMap({contextUrls, documentLoader});
+      await getTermEncodingMap({contextUrls, appTermMap, documentLoader});
   } catch(e) {
     // quietly ignore embedded context errors, generate uncompressed CBOR-LD
     if(e.value !== 'ERR_EMBEDDED_JSONLD_CONTEXT_DETECTED') {
@@ -37,7 +40,8 @@ export async function encode({
   }
 
   const cborldBytes =
-    await toCborld({jsonldDocument, appContextMap, termEncodingMap, diagnose});
+    await toCborld({
+      jsonldDocument, appContextMap, appTermMap, termEncodingMap, diagnose});
 
   return cborldBytes;
 }
