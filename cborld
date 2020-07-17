@@ -51,14 +51,10 @@ async function encodeCommand(args) {
 
     // build the application term transforms map
     if(args.transform) {
-      const codecs = cborld.getTermCodecs();
       appTermMap = {};
       args.transform.forEach(element => {
         const [term, transform] = element.split(':');
-        const codec = codecs[transform];
-        if(codec) {
-          appTermMap[term] = codec;
-        }
+        appTermMap[term] = transform;
       });
     }
 
