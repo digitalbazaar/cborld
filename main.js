@@ -56,6 +56,8 @@ export async function encode({
  *
  * @returns {Uint8Array} - Decoded array of id bytes.
  */
-export function decode({cborldBytes, options}) {
+export function decode({
+  cborldBytes, appContextMap, appTermMap, diagnose, documentLoader}) {
+
   return {};
 }
