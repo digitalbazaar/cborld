@@ -49,7 +49,7 @@ async function encodeCommand(args) {
       appTermMap,
       diagnose: (args.diagnose) ? console.log : undefined
     });
-    await fsp.writeFile('out.cborld', cborldBytes);
+    await fsp.writeFile(args.output, cborldBytes);
 
     if(args.verbose) {
       const ratio = 100 - (cborldBytes.length / jsonldBytes.length) * 100;
@@ -101,7 +101,7 @@ async function decodeCommand(args) {
       diagnose: (args.diagnose) ? console.log : undefined
     });
     const jsonldBytes = JSON.stringify(jsonldDocument, null, 2);
-    await fsp.writeFile('out.jsonld', jsonldBytes);
+    await fsp.writeFile(args.output, jsonldBytes);
 
     if(args.verbose) {
       const ratio = (jsonldBytes.length / cborldBytes.length) * 100;
@@ -189,7 +189,7 @@ async function main() {
             describe: 'Write output to filename.',
             alias: 'o',
             type: 'string',
-            default: 'out.cborld'
+            default: 'out.jsonld'
           })
           .positional('file', {
             describe: 'The CBOR-LD file to decode.',
