@@ -1,9 +1,8 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-import {getJsonldContextUrls} from './lib/context';
-export {getTermCodecs} from './lib/codec';
-import {getTermEncodingMap, toCborld} from './lib/encode';
+export {getTermCodecs, getTermCodecMap} from './lib/codec';
+import {toCborld} from './lib/encode';
 import {fromCborld} from './lib/decode';
 
 /**
