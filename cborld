@@ -55,7 +55,7 @@ async function encodeCommand(args) {
       const ratio = 100 - (cborldBytes.length / jsonldBytes.length) * 100;
       console.log(`${jsonldBytes.length} JSON-LD input bytes, ` +
         `${cborldBytes.length} CBOR-LD output bytes, ` +
-        `${ratio.toFixed(0)}% compression.`);
+        `${ratio.toFixed(0)}% smaller.`);
     }
 
     console.log(`Wrote CBOR-LD output to '${args.output}'.`);
@@ -104,10 +104,10 @@ async function decodeCommand(args) {
     await fsp.writeFile(args.output, jsonldBytes);
 
     if(args.verbose) {
-      const ratio = (jsonldBytes.length / cborldBytes.length) * 100;
+      const ratio = ((jsonldBytes.length / cborldBytes.length) * 100) - 100;
       console.log(`${cborldBytes.length} CBOR-LD input bytes, ` +
         `${jsonldBytes.length} JSON-LD output bytes, ` +
-        `${ratio.toFixed(0)}% expansion.`);
+        `${ratio.toFixed(0)}% larger.`);
     }
 
     console.log(`Wrote JSON-LD output to '${args.output}'.`);
