@@ -1,9 +1,9 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
+import {fromCborld} from './lib/decode';
 export {getTermCodecs, getTermCodecMap} from './lib/codec';
 import {toCborld} from './lib/encode';
-import {fromCborld} from './lib/decode';
 
 /**
   * Encodes a given JSON-LD document into a CBOR-LD byte array.
