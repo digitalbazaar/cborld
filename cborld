@@ -8,30 +8,105 @@ const fsp = require('fs').promises;
 const https = require('https');
 const url = require('url');
 
-// FIXME: Remove eventually
-async function documentLoader(docUrl) {
-  const cacheFile = 'jsonldcontext' + url.parse(docUrl).pathname
-    .replace(/\//g, '-').replace(/\.jsonld$/, '') + '.jsonld';
+// run the program
+main();
 
-  try {
-    await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
-  } catch(e) {
-    const file = fs.createWriteStream(cacheFile);
-    const options = {
-      headers: {
-        accept: 'application/ld+json'
-      }
-    };
-    await new Promise((resolve, reject) =>
-      https.get(docUrl, options, response => {
-        response.pipe(file);
-        response.on('end', resolve);
-        response.on('error', reject);
-      })
-    );
-  }
-
-  return JSON.parse(await fsp.readFile(cacheFile));
+async function main() {
+  require('yargs')
+    .usage('Usage: $0 <command>')
+    .option('verbose', {
+      describe: 'Provide verbose logging',
+      alias: 'v',
+      boolean: true
+    })
+    .option('diagnose', {
+      describe: 'Provide diagnostic output',
+      alias: 'd',
+      boolean: true
+    })
+    .alias('h', 'help')
+    .help('help', 'Show help for cborld command.')
+    .command('encode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
+      yargs => {
+        yargs
+          .option('context', {
+            describe: 'List of context URLs to compress.',
+            alias: 'c',
+            type: 'array',
+            default: []
+          })
+          .option('transform', {
+            describe: 'List of custom <term>:<transform>s to apply. ' +
+              'Transforms: ' + cborld.getTermCodecs().join(', '),
+            alias: 't',
+            type: 'array',
+            default: []
+          })
+          .option('output', {
+            describe: 'Write output to filename.',
+            alias: 'o',
+            type: 'string',
+            default: 'out.cborld'
+          })
+          .positional('file', {
+            describe: 'The JSON-LD file to encode.',
+            type: 'string'
+          })
+          .example([
+            ['$0 encode example.jsonld',
+              'Encode example.jsonld to out.cborld'],
+            ['$0 encode example.jsonld -v -d',
+              'Encode example.jsonld showing diagnostic output'],
+            ['$0 encode example.jsonld -v -d -t proofValue:base64Pad ' +
+              '-c https://example.com/example/v1',
+            'Encode with custom term transform and context']
+          ]);
+      }, encodeCommand)
+    .alias('e', 'encode')
+    .command('decode [options] <file>', 'Decode a CBOR-LD file to JSON-LD',
+      yargs => {
+        yargs
+          .option('context', {
+            describe: 'List of context URLs to expand.',
+            alias: 'c',
+            type: 'array',
+            default: []
+          })
+          .option('transform', {
+            describe: 'List of custom <term>:<transform>s to apply. ' +
+              'Transforms: ' + cborld.getTermCodecs().join(', '),
+            alias: 't',
+            type: 'array',
+            default: []
+          })
+          .option('output', {
+            describe: 'Write output to filename.',
+            alias: 'o',
+            type: 'string',
+            default: 'out.jsonld'
+          })
+          .positional('file', {
+            describe: 'The CBOR-LD file to decode.',
+            type: 'string'
+          })
+          .example([
+            ['$0 decode example.cborld',
+              'Decode example.cborld to out.jsonld'],
+            ['$0 encode example.cborld -v -d',
+              'Decode example.jsonld showing diagnostic output'],
+            ['$0 encode example.cborld -v -d -t proofValue:base64Pad ' +
+              '-c https://example.com/example/v1',
+            'Decode with custom term transform and context']
+          ]);
+      }, decodeCommand)
+    .alias('d', 'decode')
+    .example([
+      ['$0 encode example.jsonld',
+        'Encode example.jsonld to out.cborld'],
+      ['$0 encode example.jsonld -v -d',
+        'Encode example.jsonld showing diagnostic output']
+    ])
+    .argv;
 }
 
 // Yars command to encode a given JSON-LD document to CBOR-LD
@@ -116,102 +191,35 @@ async function decodeCommand(args) {
   }
 }
 
-async function main() {
-  require('yargs')
-    .usage('Usage: $0 <command>')
-    .option('verbose', {
-      describe: 'Provide verbose logging',
-      alias: 'v',
-      boolean: true
-    })
-    .option('diagnose', {
-      describe: 'Provide diagnostic output',
-      alias: 'd',
-      boolean: true
-    })
-    .alias('h', 'help')
-    .help('help', 'Show help for cborld command.')
-    .command('encode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
-      yargs => {
-        yargs
-          .option('context', {
-            describe: 'List of context URLs to compress.',
-            alias: 'c',
-            type: 'array',
-            default: []
-          })
-          .option('transform', {
-            describe: 'List of custom <term>:<transform>s to apply. ' +
-              'Transforms: ' + cborld.getTermCodecs().join(', '),
-            alias: 't',
-            type: 'array',
-            default: []
-          })
-          .option('output', {
-            describe: 'Write output to filename.',
-            alias: 'o',
-            type: 'string',
-            default: 'out.cborld'
-          })
-          .positional('file', {
-            describe: 'The JSON-LD file to encode.',
-            type: 'string'
-          })
-          .example([
-            ['$0 encode example.jsonld',
-              'Encode example.jsonld to out.cborld'],
-            ['$0 encode example.jsonld -v -d',
-              'Encode example.jsonld showing diagnostic output'],
-            ['$0 encode example.jsonld -v -d -t proofValue:base64Pad ' +
-              '-c https://example.com/example/v1',
-            'Encode with custom term transform and context']
-          ]);
-      }, encodeCommand)
-    .alias('e', 'encode')
-    .command('decode [options] <file>', 'Encode a JSON-LD file to CBOR-LD',
-      yargs => {
-        yargs
-          .option('context', {
-            describe: 'List of context URLs to expand.',
-            alias: 'c',
-            type: 'array',
-            default: []
-          })
-          .option('transform', {
-            describe: 'List of custom <term>:<transform>s to apply. ' +
-              'Transforms: ' + cborld.getTermCodecs().join(', '),
-            alias: 't',
-            type: 'array',
-            default: []
-          })
-          .option('output', {
-            describe: 'Write output to filename.',
-            alias: 'o',
-            type: 'string',
-            default: 'out.jsonld'
-          })
-          .positional('file', {
-            describe: 'The CBOR-LD file to decode.',
-            type: 'string'
-          })
-          .example([
-            ['$0 decode example.cborld',
-              'Decode example.cborld to out.jsonld'],
-            ['$0 encode example.cborld -v -d',
-              'Decode example.jsonld showing diagnostic output'],
-            ['$0 encode example.cborld -v -d -t proofValue:base64Pad ' +
-              '-c https://example.com/example/v1',
-            'Decode with custom term transform and context']
-          ]);
-      }, decodeCommand)
-    .alias('d', 'decode')
-    .example([
-      ['$0 encode example.jsonld',
-        'Encode example.jsonld to out.cborld'],
-      ['$0 encode example.jsonld -v -d',
-        'Encode example.jsonld showing diagnostic output']
-    ])
-    .argv;
+// default caching document loader for JSON-LD Context files
+function _get(url, file, resolve, reject) {
+  const options = {
+    headers: {
+      accept: 'application/ld+json'
+    }
+  };
+  https.get(url, options, res => {
+    if(res.statusCode === 301 || res.statusCode === 302) {
+      return _get(res.headers.location, file, resolve, reject);
+    } else {
+      res.pipe(file);
+      res.on('end', resolve);
+      res.on('error', reject);
+    }
+  });
 }
 
-main();
+// default caching, redirect following document loader
+async function documentLoader(docUrl) {
+  const cacheFile = 'jsonldcontext' + url.parse(docUrl).pathname
+    .replace(/\//g, '-').replace(/\.jsonld$/, '') + '.jsonld';
+
+  try {
+    await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
+  } catch(e) {
+    const file = fs.createWriteStream(cacheFile);
+    await new Promise((resolve, reject) => _get(docUrl, file, resolve, reject));
+  }
+
+  return JSON.parse(await fsp.readFile(cacheFile));
+}
