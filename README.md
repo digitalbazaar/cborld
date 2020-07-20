@@ -23,12 +23,16 @@ applications.
 To quickly see cborld in action, run the following commands:
 
 ```
-git clone git@github.com:digitalbazaar/cborld.git
+git clone https://github.com/digitalbazaar/cborld.git
 cd cborld
 npm i
 ./cborld encode --verbose --diagnose examples/note.jsonld
 ```
 
+Or run directly with `npx`:
+```
+npx cborld encode --verbose --diagnose examples/note.jsonld
+```
 ## Install
 
 ### NPM
