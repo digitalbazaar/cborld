@@ -90,14 +90,13 @@ function _getAppMaps(args) {
 async function decodeCommand(args) {
   try {
     const cborldBytes = await fsp.readFile(args.file);
-    const {appContextMap, appTermMap} = _getAppMaps(args);
+    const {appContextMap} = _getAppMaps(args);
 
     // encode to CBOR-LD
     const jsonldDocument = await cborld.decode({
       cborldBytes,
       documentLoader,
       appContextMap,
-      appTermMap,
       diagnose: (args.diagnose) ? console.log : undefined
     });
     const jsonldBytes = JSON.stringify(jsonldDocument, null, 2);
@@ -143,7 +142,7 @@ async function main() {
           })
           .option('transform', {
             describe: 'List of custom <term>:<transform>s to apply. ' +
-              'Transforms: ' + Object.keys(cborld.getTermCodecs()).join(', '),
+              'Transforms: ' + cborld.getTermCodecs().join(', '),
             alias: 't',
             type: 'array',
             default: []
@@ -180,7 +179,7 @@ async function main() {
           })
           .option('transform', {
             describe: 'List of custom <term>:<transform>s to apply. ' +
-              'Transforms: ' + Object.keys(cborld.getTermCodecs()).join(', '),
+              'Transforms: ' + cborld.getTermCodecs().join(', '),
             alias: 't',
             type: 'array',
             default: []
