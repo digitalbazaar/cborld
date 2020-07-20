@@ -76,10 +76,10 @@ function _getAppMaps(args) {
 
   // build the application term transforms map
   if(args.transform) {
-    appMaps.appTermMap = {};
+    appMaps.appTermMap = new Map();
     args.transform.forEach(element => {
       const [term, transform] = element.split(':');
-      appMaps.appTermMap[term] = transform;
+      appMaps.appTermMap.set(term, transform);
     });
   }
 
