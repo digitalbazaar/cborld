@@ -11,15 +11,13 @@ export {getTermCodecs} from './lib/codec';
  *
  * @param {object} options - The options to use when encoding to CBOR-LD.
  * @param {object} options.jsonldDocument - The JSON-LD Document to convert to
- *   a CBOR-LD byte array.
+ *   CBOR-LD bytes.
  * @param {documentLoaderFunction} options.documentLoader -The document loader
- *   to use when resolving JSON-LD Context URLs. Takes a single argument, a
- *   document URL.
+ *   to use when resolving JSON-LD Context URLs.
  * @param {Map} [options.appContextMap] - A map of JSON-LD Context URLs and
- *   their associated CBOR-LD compression values (must be values greater than
- *   32767 (0x7FFF)).
+ *   their encoded CBOR-LD values (must be values greater than 32767 (0x7FFF)).
  * @param {Map} [options.appTermMap] - A map of JSON-LD terms and
- *   their associated CBOR-LD compression codecs.
+ *   their associated CBOR-LD term codecs.
  * @param {diagnosticFunction} [options.diagnose] - A function that, if
  * provided, is called with diagnostic information.
  *
@@ -39,15 +37,15 @@ export async function encode({
  * Decodes a CBOR-LD byte array into a JSON-LD document.
  *
  * @param {object} options - The options to use when decoding CBOR-LD.
- * @param {Uint8Array} options.cborldBytes - The encoded CBOR-LD byte array to
+ * @param {Uint8Array} options.cborldBytes - The encoded CBOR-LD bytes to
  *   decode.
  * @param {Function} options.documentLoader -The document loader to use when
- *   resolving JSON-LD Context URLs. Takes a single argument, a document URL.
+ *   resolving JSON-LD Context URLs.
  * @param {Map} [options.appContextMap] - A map of JSON-LD Context URLs and
- *   their associated CBOR-LD compression values (must be values greater than
+ *   their associated CBOR-LD values. The values must be greater than
  *   32767 (0x7FFF)).
  * @param {Map} [options.appTermMap] - A map of JSON-LD terms and
- *   their associated CBOR-LD compression codecs.
+ *   their associated CBOR-LD term codecs.
  * @param {diagnosticFunction} [options.diagnose] - A function that, if
  *   provided, is called with diagnostic information.
  *
