@@ -27,6 +27,7 @@ git clone https://github.com/digitalbazaar/cborld.git
 cd cborld
 npm i
 ./cborld encode --verbose --diagnose examples/note.jsonld
+./cborld decode --verbose --diagnost out.cborld
 ```
 
 Or run directly with `npx`:
@@ -53,14 +54,15 @@ npm install
 
 ## Usage
 
-TBD...
+This library provides two primary functions for encoding and decoding
+CBOR-LD data.
 
 ### Encode to CBOR-LD
 
 To encode a JSON-LD document as CBOR-LD:
 
 ```js
-import * as cborld from 'cborld';
+import {encode, documentLoader} from 'cborld';
 
 const jsonldDocument = {
   '@context': 'https://www.w3.org/ns/activitystreams',
@@ -69,15 +71,20 @@ const jsonldDocument = {
   content: 'CBOR-LD is awesome!'
 };
 
-const cborldBytes = await cborld.encode({jsonldDocument});
+// encode a JSON-LD Javascript object into CBOR-LD bytes
+const cborldBytes = await encode({jsonldDocument, documentLoader});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
 
 ```js
-import * as cborld from 'cborld';
+import {decode, documentLoader} from 'cborld';
 
-const jsonldDocument = await cborld.decode({cborldBytes});
+// get the CBOR-LD bytes
+const cborldBytes = await fs.promises.readFile('out.cborld');
+
+// decode the CBOR-LD bytes into a Javascript object
+const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 ```
 
 ## API

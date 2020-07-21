@@ -5,10 +5,8 @@
 'use strict';
 
 const cborld = require('.');
-const fs = require('fs');
+const documentLoader = cborld.documentLoader;
 const fsp = require('fs').promises;
-const https = require('https');
-const url = require('url');
 
 // run the program
 main();
@@ -191,37 +189,4 @@ async function decodeCommand(args) {
     console.error(e.stack);
     process.exit(1);
   }
-}
-
-// default caching document loader for JSON-LD Context files
-function _get(url, file, resolve, reject) {
-  const options = {
-    headers: {
-      accept: 'application/ld+json'
-    }
-  };
-  https.get(url, options, res => {
-    if(res.statusCode === 301 || res.statusCode === 302) {
-      return _get(res.headers.location, file, resolve, reject);
-    } else {
-      res.pipe(file);
-      res.on('end', resolve);
-      res.on('error', reject);
-    }
-  });
-}
-
-// default caching, redirect following document loader
-async function documentLoader(docUrl) {
-  const cacheFile = 'jsonldcontext' + url.parse(docUrl).pathname
-    .replace(/\//g, '-').replace(/\.jsonld$/, '') + '.jsonld';
-
-  try {
-    await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
-  } catch(e) {
-    const file = fs.createWriteStream(cacheFile);
-    await new Promise((resolve, reject) => _get(docUrl, file, resolve, reject));
-  }
-
-  return await fsp.readFile(cacheFile);
 }
