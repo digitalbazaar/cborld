@@ -22,7 +22,7 @@ export {getTermCodecs} from './lib/codec';
  * @param {diagnosticFunction} [options.diagnose] - A function that, if
  * provided, is called with diagnostic information.
  *
- * @returns {Uint8Array} - The encoded CBOR-LD bytes.
+ * @returns {Promise<Uint8Array>} - The encoded CBOR-LD bytes.
  */
 export async function encode({
   jsonldDocument, documentLoader, appContextMap, appTermMap, diagnose}) {
@@ -50,7 +50,7 @@ export async function encode({
  * @param {diagnosticFunction} [options.diagnose] - A function that, if
  *   provided, is called with diagnostic information.
  *
- * @returns {object} - The decoded JSON-LD Document.
+ * @returns {Promise<object>} - The decoded JSON-LD Document.
  */
 export async function decode({
   cborldBytes, documentLoader, appContextMap, appTermMap, diagnose}) {

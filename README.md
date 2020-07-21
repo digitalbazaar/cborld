@@ -120,7 +120,7 @@ const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 
 <a name="encode"></a>
 
-### encode(options) ⇒ <code>Uint8Array</code>
+### encode(options) ⇒ <code>Promise<Uint8Array></code>
 Encodes a given JSON-LD document into a CBOR-LD byte array.
 
 **Kind**: global function
@@ -185,7 +185,7 @@ Encodes a given JSON-LD document into a CBOR-LD byte array.
 </table>
 <a name="decode"></a>
 
-### decode(options) ⇒ <code>object</code>
+### decode(options) ⇒ <code>Promise<object></code>
 Decodes a CBOR-LD byte array into a JSON-LD document.
 
 **Kind**: global function
