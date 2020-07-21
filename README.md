@@ -27,7 +27,7 @@ git clone https://github.com/digitalbazaar/cborld.git
 cd cborld
 npm i
 ./cborld encode --verbose --diagnose examples/note.jsonld
-./cborld decode --verbose --diagnost out.cborld
+./cborld decode --verbose --diagnose out.cborld
 ```
 
 Or run directly with `npx`:
