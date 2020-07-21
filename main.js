@@ -2,33 +2,35 @@
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
 import {fromCborld} from './lib/decode';
-export {getTermCodecs, getTermCodecMap} from './lib/codec';
 import {toCborld} from './lib/encode';
 
+export {getTermCodecs} from './lib/codec';
+
 /**
-  * Encodes a given JSON-LD document into a CBOR-LD byte array.
-  *
-  * @param {object} [args] - The arguments to the function.
-  * @param {Array} [args.jsonldDocument] - The JSON-LD Document to convert to a
-  *   CBOR-LD byte array.
-  * @param {object} [args.appContextMap] - A map of JSON-LD Context URLs and
-  *   their associated CBOR-LD compression values (must be values greater than
-  *   32767 (0x7FFF)).
-  * @param {object} [args.appTermMap] - A map of JSON-LD terms and
-  *   their associated CBOR-LD compression codecs.
-  * @param {Function} [args.diagnose] - A function that, if provided, is called
-  *   with diagnostic information.
-  * @param {Function} [args.documentLoader] -The document loader to use when
-  *   resolving JSON-LD Context URLs. Takes a single argument, a document URL.
-  *
-  * @returns {Uint8Array} - The encoded CBOR-LD bytes.
-  */
+ * Encodes a given JSON-LD document into a CBOR-LD byte array.
+ *
+ * @param {object} options - The options to use when encoding to CBOR-LD.
+ * @param {object} options.jsonldDocument - The JSON-LD Document to convert to
+ *   a CBOR-LD byte array.
+ * @param {documentLoaderFunction} options.documentLoader -The document loader
+ *   to use when resolving JSON-LD Context URLs. Takes a single argument, a
+ *   document URL.
+ * @param {Map} [options.appContextMap] - A map of JSON-LD Context URLs and
+ *   their associated CBOR-LD compression values (must be values greater than
+ *   32767 (0x7FFF)).
+ * @param {Map} [options.appTermMap] - A map of JSON-LD terms and
+ *   their associated CBOR-LD compression codecs.
+ * @param {diagnosticFunction} [options.diagnose] - A function that, if
+ * provided, is called with diagnostic information.
+ *
+ * @returns {Uint8Array} - The encoded CBOR-LD bytes.
+ */
 export async function encode({
-  jsonldDocument, appContextMap, appTermMap, diagnose, documentLoader}) {
+  jsonldDocument, documentLoader, appContextMap, appTermMap, diagnose}) {
 
   const cborldBytes =
     await toCborld({
-      jsonldDocument, appContextMap, appTermMap, documentLoader, diagnose});
+      jsonldDocument, documentLoader, appContextMap, appTermMap, diagnose});
 
   return cborldBytes;
 }
@@ -36,29 +38,44 @@ export async function encode({
 /**
  * Decodes a CBOR-LD byte array into a JSON-LD document.
  *
- * @param {object} [args] - The arguments to the function.
- * @param {Uint8Array} [args.cborldBytes] - The encoded CBOR-LD byte array to
+ * @param {object} options - The options to use when decoding CBOR-LD.
+ * @param {Uint8Array} options.cborldBytes - The encoded CBOR-LD byte array to
  *   decode.
- * @param {object} [args.appContextMap] - A map of JSON-LD Context URLs and
+ * @param {Function} options.documentLoader -The document loader to use when
+ *   resolving JSON-LD Context URLs. Takes a single argument, a document URL.
+ * @param {Map} [options.appContextMap] - A map of JSON-LD Context URLs and
  *   their associated CBOR-LD compression values (must be values greater than
  *   32767 (0x7FFF)).
- * @param {object} [args.appTermMap] - A map of JSON-LD terms and
+ * @param {Map} [options.appTermMap] - A map of JSON-LD terms and
  *   their associated CBOR-LD compression codecs.
- * @param {Function} [args.diagnose] - A function that, if provided, is called
- *   with diagnostic information.
- * @param {Function} [args.documentLoader] -The document loader to use when
- *   resolving JSON-LD Context URLs. Takes a single argument, a document URL.
+ * @param {diagnosticFunction} [options.diagnose] - A function that, if
+ *   provided, is called with diagnostic information.
  *
- * @returns {Uint8Array} - Decoded array of id bytes.
+ * @returns {object} - The decoded JSON-LD Document.
  */
 export async function decode({
-  cborldBytes, appContextMap, appTermMap, diagnose, documentLoader}) {
-  let codecMap = undefined;
+  cborldBytes, documentLoader, appContextMap, appTermMap, diagnose}) {
 
   const jsonldDocument =
     await fromCborld({
-      cborldBytes, appContextMap, appTermMap, codecMap, documentLoader,
-      diagnose});
+      cborldBytes, documentLoader, appContextMap, appTermMap, diagnose});
 
   return jsonldDocument;
 }
+
+/**
+ * A diagnostic function that is called with diagnostic information. Typically
+ * set to `console.log` when debugging.
+ *
+ * @callback diagnosticFunction
+ * @param {string} message - The diagnostic message.
+ */
+
+/**
+ * Fetches a resource given a URL and returns it as a string.
+ *
+ * @callback documentLoaderFunction
+ * @param {string} url - The URL to retrieve.
+ *
+ * @returns {string} The resource associated with the URL as a string.
+ */

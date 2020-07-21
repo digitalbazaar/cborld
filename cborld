@@ -223,5 +223,5 @@ async function documentLoader(docUrl) {
     await new Promise((resolve, reject) => _get(docUrl, file, resolve, reject));
   }
 
-  return JSON.parse(await fsp.readFile(cacheFile));
+  return await fsp.readFile(cacheFile);
 }
