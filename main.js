@@ -4,6 +4,7 @@
 import {fromCborld} from './lib/decode';
 import {toCborld} from './lib/encode';
 
+export {documentLoader} from './lib/loader';
 export {getTermCodecs} from './lib/codec';
 
 /**
