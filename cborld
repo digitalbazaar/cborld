@@ -5,7 +5,7 @@
 'use strict';
 
 const cborld = require('.');
-const documentLoader = cborld.documentLoader;
+const {documentLoader} = cborld;
 const fsp = require('fs').promises;
 
 // run the program
@@ -109,7 +109,7 @@ async function main() {
     .argv;
 }
 
-// Yars command to encode a given JSON-LD document to CBOR-LD
+// Yargs command to encode a given JSON-LD document to CBOR-LD
 async function encodeCommand(args) {
   try {
     const jsonldBytes = await fsp.readFile(args.file);
