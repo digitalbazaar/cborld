@@ -145,6 +145,9 @@ function _getAppMaps(args) {
   // build the application context map
   if(args.context) {
     appMaps.appContextMap = new Map();
+    // set the application-specific CBOR-LD encoded context URL values
+    // starting at 0x8000, which defines the start of application-specific
+    // context URL value space
     args.context.forEach(
       (element, i) => appMaps.appContextMap.set(element, 0x8000 + i));
   }
