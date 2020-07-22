@@ -1,0 +1,28 @@
+{
+  "@context": "https://www.w3.org/2018/credentials/v1",
+  "type": "VerifiablePresentation",
+  "verifiableCredential": {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://w3id.org/cit/v1"
+    ],
+    "type": ["VerifiableCredential", "ConcealedIdTokenCredential"],
+    "issuer": "did:key:z6MkhNZxXHvf4YMbtZkEkgA9QAz6gN8f9ZtP47EdCEJMF5Hh",
+    "issuanceDate": "2020-07-14T19:23:24Z",
+    "expirationDate": "2020-08-14T19:23:24Z",
+    "credentialSubject": {
+      "concealedIdToken": {
+        "type": "ConcealedIdToken",
+        "payload": "z3Bzvqkdi9SJ5VGjenZCSbeDfDf5QUH3gmghBHYm4ywFS3zM9hfPCPY7f8Kdt5Qy1DCwQasG6QuHLzTkq",
+        "meta": "zLaCKWZDABD8"
+      }
+    },
+    "proof": {
+      "type": "Ed25519Signature2020",
+      "created": "2020-02-03T17:23:49Z",
+      "proofValue": "z4peo48uwK2EF4Fta8PbpFnqsq5ehpVhx2P9bXixhHGWjZccPRWHYpyZF4vzZGD9r8zeSovgkhgKHzQMDYJ34r9gL",
+      "proofPurpose": "assertionMethod",
+      "verificationMethod": "did:key:z6MkhNZxXHvf4YMbtZkEkgA9QAz6gN8f9ZtP47EdCEJMF5Hh#z6MkexTPNH9NFaSogyN17dQhm1X5e9ZTgmChE2enWG8r1Tep"
+    }
+  }
+}
