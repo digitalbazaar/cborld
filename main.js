@@ -1,11 +1,11 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-import {fromCborld} from './lib/decode';
-import {toCborld} from './lib/encode';
+import {fromCborld} from './lib/decode.js';
+import {toCborld} from './lib/encode.js';
 
-export {documentLoader} from './lib/loader';
-export {getTermCodecs} from './lib/codec';
+export {documentLoader} from './lib/loader.js';
+export {getTermCodecs} from './lib/codec.js';
 
 /**
  * Encodes a given JSON-LD document into a CBOR-LD byte array.
