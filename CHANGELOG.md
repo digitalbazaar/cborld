@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 0.1.0 - 2020-07-05
+## 1.0.0 - 2020-07-23
 
 ### Note
 - Browser support unfinished in this release.
