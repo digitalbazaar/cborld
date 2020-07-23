@@ -43,6 +43,7 @@
   },
   "files": [
     "index.js",
+    "lib",
     "main.js",
     "util-browser.js",
     "util.js"
