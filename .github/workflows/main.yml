@@ -17,20 +17,20 @@ jobs:
     - run: npm install
     - name: Run test with Node.js ${{ matrix.node-version }}
       run: npm run test-node
-  test-karma:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - name: Run karma tests
-      run: npm run test-karma
+#  test-karma:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node-version: [14.x]
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#    - run: npm install
+#    - name: Run karma tests
+#      run: npm run test-karma
   lint:
     runs-on: ubuntu-latest
     strategy:
@@ -46,7 +46,8 @@ jobs:
     - name: Run eslint
       run: npm run lint
   coverage:
-    needs: [test-node, test-karma]
+#    needs: [test-node, test-karma]
+    needs: [test-node]
     runs-on: ubuntu-latest
     strategy:
       matrix:
