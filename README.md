@@ -32,7 +32,7 @@ npm i
 
 Or run directly with `npx`:
 ```
-npx cborld encode --verbose --diagnose examples/note.jsonld
+npx @digitalbazaar/cborld encode --verbose --diagnose examples/note.jsonld
 ```
 ## Install
 
@@ -310,13 +310,13 @@ cborld [OPTIONS]
 ./cborld [OPTIONS]
 ```
 ```
-npx cborld [OPTIONS]
+npx @digitalbazaar/cborld [OPTIONS]
 ```
 
 The options follow the API. See help for more information:
 
 ```
-npx cborld --help
+npx @digitalbazaar/cborld --help
 ```
 
 Examples:
