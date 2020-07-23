@@ -17,11 +17,21 @@ import {
 
 describe('cborld', () => {
   describe('encode', () => {
-    it('should encode a simple JSON-LD Document', async () => {
+    it('should encode an empty JSON-LD Document', async () => {
+      const jsonldDocument = {};
+      const cborldBytes = await encode({jsonldDocument});
+      expect(cborldBytes).to.equalBytes('d90501a0');
+    });
+    it.skip('should encode a simple JSON-LD Document', async () => {
     });
   });
   describe('decode', () => {
-    it('should decode simple CBOR-LD bytes', async () => {
+    it.skip('should decode empty document CBOR-LD bytes', async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x05, 0x01, 0xa0]);
+      const jsonldDocument = await decode({cborldBytes});
+      expect(jsonldDocument).to.deepEqual({});
+    });
+    it.skip('should decode simple CBOR-LD bytes', async () => {
     });
   });
 });
