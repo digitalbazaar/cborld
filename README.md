@@ -39,7 +39,7 @@ npx @digitalbazaar/cborld encode --verbose --diagnose examples/note.jsonld
 ### NPM
 
 ```
-npm install cborld
+npm install @digitalbazaar/cborld
 ```
 
 ### Git
