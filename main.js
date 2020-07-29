@@ -13,14 +13,14 @@ export {getTermCodecs} from './lib/codec.js';
  * @param {object} options - The options to use when encoding to CBOR-LD.
  * @param {object} options.jsonldDocument - The JSON-LD Document to convert to
  *   CBOR-LD bytes.
- * @param {documentLoaderFunction} options.documentLoader -The document loader
+ * @param {documentLoaderFunction} options.documentLoader - The document loader
  *   to use when resolving JSON-LD Context URLs.
  * @param {Map} [options.appContextMap] - A map of JSON-LD Context URLs and
  *   their encoded CBOR-LD values (must be values greater than 32767 (0x7FFF)).
  * @param {Map} [options.appTermMap] - A map of JSON-LD terms and
  *   their associated CBOR-LD term codecs.
  * @param {diagnosticFunction} [options.diagnose] - A function that, if
- * provided, is called with diagnostic information.
+ *   provided, is called with diagnostic information.
  *
  * @returns {Promise<Uint8Array>} - The encoded CBOR-LD bytes.
  */
