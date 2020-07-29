@@ -71,10 +71,30 @@ export async function decode({
  */
 
 /**
- * Fetches a resource given a URL and returns it as a string.
+ * Fetches a resource given a URL.
+ *
+ * @see {@link https://www.w3.org/TR/json-ld-api/#loaddocumentcallback}
  *
  * @callback documentLoaderFunction
  * @param {string} url - The URL to retrieve.
+ * @param {object} [options] - Options for the loader.
  *
- * @returns {string} The resource associated with the URL as a string.
+ * @returns {Promise<RemoteDocument>} The RemoteDocument for the URL resource.
+ */
+
+/**
+ * Information about a remote document or context.
+ *
+ * @see {@link https://www.w3.org/TR/json-ld-api/#remotedocument}
+ *
+ * @typedef {object} RemoteDocument
+ * @property {string} contentType - The Content-Type of the remote document.
+ * @property {string} contextUrl - If available, the value of the HTTP Link
+ *   Header [RFC8288] using the http://www.w3.org/ns/json-ld#context link
+ *   relation in the response.
+ * @property {string|JSON} document - The retrieved document, either raw or
+ *   parsed.
+ * @property {string} documentUrl - The final URL of loaded document.
+ * @property {string} profile - The value of any profile parameter retrieved
+ *   as part of the original contentType.
  */
