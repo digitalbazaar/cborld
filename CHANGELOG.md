@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 2.0.0 - 2020-xx-xx
+## 2.0.0 - 2020-08-18
 
 ### Fixed
 - Handle decoding of encoded empty object.
