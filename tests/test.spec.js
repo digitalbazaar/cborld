@@ -138,15 +138,15 @@ describe('cborld', () => {
           '@protected': 'true',
           id: '@id',
           type: '@type',
-          ageOver: {
-            '@id': 'https://w3id.org/age#ageOver',
+          overAge: {
+            '@id': 'https://w3id.org/age#overAge',
             '@type': 'http://www.w3.org/2001/XMLSchema#positiveInteger'
           }
         }
       };
       const jsonldDocument = {
         '@context': 'https://w3id.org/age/v1',
-        ageOver: 21
+        overAge: 21
       };
       const appContextMap = new Map();
       appContextMap.set('https://w3id.org/age/v1', 0x8743);
@@ -175,7 +175,7 @@ describe('cborld', () => {
       });
 
       expect(decodedDocument).to.eql({
-        '@context': 'https://w3id.org/age/v1', ageOver: 21
+        '@context': 'https://w3id.org/age/v1', overAge: 21
       });
     });
   });
