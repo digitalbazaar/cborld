@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 2.0.1 - 2020-10-21
+
+### Fixed
+- Get entries based on cborMap type.
+
 ## 2.0.0 - 2020-08-18
 
 ### Fixed
