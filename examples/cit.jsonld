@@ -6,6 +6,7 @@
       "https://www.w3.org/2018/credentials/v1",
       "https://w3id.org/cit/v1"
     ],
+    "id": "urn:uuid:188e8450-269e-11eb-b545-d3692cf35398",
     "type": ["VerifiableCredential", "ConcealedIdTokenCredential"],
     "issuer": "did:key:z6MkhNZxXHvf4YMbtZkEkgA9QAz6gN8f9ZtP47EdCEJMF5Hh",
     "issuanceDate": "2020-07-14T19:23:24Z",
