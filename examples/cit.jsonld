@@ -11,11 +11,7 @@
     "issuanceDate": "2020-07-14T19:23:24Z",
     "expirationDate": "2020-08-14T19:23:24Z",
     "credentialSubject": {
-      "concealedIdToken": {
-        "type": "ConcealedIdToken",
-        "payload": "z3Bzvqkdi9SJ5VGjenZCSbeDfDf5QUH3gmghBHYm4ywFS3zM9hfPCPY7f8Kdt5Qy1DCwQasG6QuHLzTkq",
-        "meta": "zLaCKWZDABD8"
-      }
+      "concealedIdToken": "z2BJYfNtmWRiouWhDrbDQmC2zicUkN66gCMqtFaW5ioLB4CrdZM1dwFfb8tJaZTYnE2XWez3PQbW3PgdP6y8JueQUk6vSqV71wfyMAGmGqFvwC1VxoN4Bt"
     },
     "proof": {
       "type": "Ed25519Signature2020",
