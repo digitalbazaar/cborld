@@ -178,5 +178,50 @@ describe('cborld', () => {
         '@context': 'https://w3id.org/age/v1', overAge: 21
       });
     });
+
+    it('should round trip sample DID document', async () => {
+      const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
+      const SAMPLE_CONTEXT = {
+        '@context': {
+          '@protected': 'true',
+          id: '@id',
+          type: '@type'
+        }
+      };
+      const jsonldDocument = {
+        '@context': 'https://w3id.org/did/v0.11',
+        id: "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+      };
+      const appContextMap = new Map();
+      appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
+
+      const documentLoader = url => {
+        if(url === SAMPLE_CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: SAMPLE_CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error('Invalid context url, cannot load!');
+      };
+
+      const encodedBytes = await encode({
+        jsonldDocument,
+        appContextMap,
+        documentLoader
+      });
+
+      const decodedDocument = await decode({
+        appContextMap,
+        cborldBytes: encodedBytes,
+        documentLoader
+      });
+
+      expect(decodedDocument).to.eql({
+        '@context': 'https://w3id.org/did/v0.11',
+        id: "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+      });
+    });
   });
 });
