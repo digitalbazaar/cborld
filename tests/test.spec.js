@@ -190,7 +190,7 @@ describe('cborld', () => {
       };
       const jsonldDocument = {
         '@context': 'https://w3id.org/did/v0.11',
-        id: "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+        id: 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH',
       };
       const appContextMap = new Map();
       appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
@@ -220,7 +220,7 @@ describe('cborld', () => {
 
       expect(decodedDocument).to.eql({
         '@context': 'https://w3id.org/did/v0.11',
-        id: "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+        id: 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
       });
     });
   });
