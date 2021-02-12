@@ -1,5 +1,8 @@
 # @digitalbazaar/cborld ChangeLog
 
+### Changed
+- Use `match-all` for compatibility with Node.js <12.
+
 ## 2.0.1 - 2020-10-21
 
 ### Fixed
