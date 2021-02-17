@@ -2,6 +2,9 @@
 
 ### Changed
 - Use `match-all` for compatibility with Node.js <12.
+- **NOTE**: The required Node.js version may be increased to v12 sometime after
+  v10 hits end-of-life. The above `match-all` support may be removed at that
+  time.
 
 ## 2.0.1 - 2020-10-21
 
