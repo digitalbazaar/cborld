@@ -128,7 +128,13 @@ describe('cborld', () => {
         documentLoader
       });
 
-      console.log(decodedDocument);
+      //console.log(decodedDocument);
+      expect(decodedDocument).to.eql({
+        '@context': 'https://w3id.org/cit/v1',
+        type: 'ConcealedIdToken',
+        meta: 'zDCAkMBcw775ppL',
+        payload: 'z116vygiRSkybL9nN6Sq2yYZzsBkRkySbzf4qKG7LfrvViCRC7qQTECxMGxnLLZ16DEr2zytkK7c2mnr'
+      });
     });
 
     it('should round trip sample Age context', async () => {
