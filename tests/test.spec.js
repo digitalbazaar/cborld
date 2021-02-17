@@ -191,12 +191,22 @@ describe('cborld', () => {
         '@context': {
           '@protected': 'true',
           id: '@id',
-          type: '@type'
+          type: '@type',
+          authentication: {
+            '@id': 'https://w3id.org/security#authenticationMethod',
+            '@type': '@id',
+            '@container': '@set'
+          }
         }
       };
+      // NOTE: not a real DID example, just a test for did:key encode/decode
       const jsonldDocument = {
         '@context': 'https://w3id.org/did/v0.11',
         id: 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH',
+        authentication: [
+          'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH' +
+            '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
+        ]
       };
       const appContextMap = new Map();
       appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
@@ -218,16 +228,16 @@ describe('cborld', () => {
         documentLoader
       });
 
+      // FIXME: check bytes to ensure proper codec use for all URLs
+      // can use to verify fix for id to @id alias not yet being supported
+
       const decodedDocument = await decode({
         appContextMap,
         cborldBytes: encodedBytes,
         documentLoader
       });
 
-      expect(decodedDocument).to.eql({
-        '@context': 'https://w3id.org/did/v0.11',
-        id: 'did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
-      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
   });
 });

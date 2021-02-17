@@ -6,6 +6,9 @@
   v10 hits end-of-life. The above `match-all` support may be removed at that
   time.
 
+## Fixed
+- UrlCodec decode dropped base58 multibase prefix.
+
 ## 2.0.1 - 2020-10-21
 
 ### Fixed
