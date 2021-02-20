@@ -1,5 +1,7 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 2.1.0 - 2021-02-20
+
 ### Changed
 - Use `match-all` for compatibility with Node.js <12.
 - **NOTE**: The required Node.js version may be increased to v12 sometime after
