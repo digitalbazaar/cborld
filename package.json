@@ -50,7 +50,7 @@
   ],
   "dependencies": {
     "base58-universal": "^1.0.0",
-    "cbor": "^5.2.0",
+    "@digitalbazaar/cbor": "github:digitalbazaar/cbor#initial",
     "esm": "^3.2.22",
     "js-base64": "^3.6.0",
     "match-all": "^1.2.6",
