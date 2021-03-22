@@ -9,6 +9,12 @@
 - **BREAKING**: Temporarily disable `diagnose` mode. This will be re-enabled
   in some way once the transition to the `cborg` library is complete.
 
+### Removed
+- **BREAKING**: Removed support for node 10.x. Node 10.x reaches EOL at
+  the end of April 2021 (a little over 30 days from the time this entry was
+  written) and it is lacking in features required to run `@digitalbazaar/cbor`. Support
+  is therefore being removed.
+
 ## 2.2.0 - 2021-03-22
 
 ### Added
