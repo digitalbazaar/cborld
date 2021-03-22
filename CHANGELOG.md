@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 2.2.0 - 2021-03-xx
+
+### Added
+- Add support for compressing `xsd:date` types.
+
 ## 2.1.0 - 2021-02-20
 
 ### Changed
