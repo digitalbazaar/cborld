@@ -31,7 +31,7 @@
   },
   "bin": "./cborld",
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "test": "npm run test-node",
