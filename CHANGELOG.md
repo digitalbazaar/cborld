@@ -1,5 +1,14 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 3.0.0 - 2021-03-xx
+
+### Changed
+- **BREAKING**: Use `@digitalbazaar/cbor` as a temporary measure to get better
+  Web/browser compatiblity for cbor-ld. The plan is to switch to `cborg`
+  library in another subsequent major release.
+- **BREAKING**: Temporarily disable `diagnose` mode. This will be re-enabled
+  in some way once the transition to the `cborg` library is complete.
+
 ## 2.2.0 - 2021-03-22
 
 ### Added
