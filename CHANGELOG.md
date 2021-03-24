@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 3.0.0 - 2021-03-xx
+## 3.0.0 - 2021-03-24
 
 ### Changed
 - **BREAKING**: Use `@digitalbazaar/cbor` as a temporary measure to get better
@@ -8,6 +8,11 @@
   library in another subsequent major release.
 - **BREAKING**: Temporarily disable `diagnose` mode. This will be re-enabled
   in some way once the transition to the `cborg` library is complete.
+- **BREAKING**: Disabled errors that throw when using an app context map with
+  tag numbers from the registry. This is currently allowed to enable people
+  to use the library even when a new version hasn't been released that supports
+  newly registered tags. We'll explore if this is right path forward or if
+  we need to do something else in the future.
 
 ### Removed
 - **BREAKING**: Removed support for node 10.x. Node 10.x reaches EOL at
