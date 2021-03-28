@@ -49,8 +49,9 @@
     "main.js"
   ],
   "dependencies": {
-    "base58-universal": "^1.0.0",
     "@digitalbazaar/cbor": "^1.1.0",
+    "base58-universal": "^1.0.0",
+    "cborg": "^1.2.0",
     "esm": "^3.2.22",
     "js-base64": "^3.6.0",
     "match-all": "^1.2.6",
