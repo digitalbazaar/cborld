@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 3.1.1 - 2021-03-30
+
+### Fixed
+- Update to latest `@digitalbazaar/cbor` version that has the `ignoreBOM` fix.
+
 ## 3.1.0 - 2021-03-29
 ### Added
 - Add entry for X25519 2020 crypto suite context codec.
