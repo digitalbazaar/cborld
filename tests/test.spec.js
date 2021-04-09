@@ -36,7 +36,69 @@ describe('cborld', () => {
     it.skip('should decode simple CBOR-LD bytes', async () => {
     });
 
-    it('should decode a CIT type token', async () => {
+    it.only('should round trip with embedded context', async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const encodedBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes: encodedBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it.skip('should round trip with remote context', async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        if(url === AGE_CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: AGE_CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const encodedBytes = await encode({
+        jsonldDocument,
+        appContextMap,
+        documentLoader
+      });
+
+      const decodedDocument = await decode({
+        appContextMap,
+        cborldBytes: encodedBytes,
+        documentLoader
+      });
+
+      expect(decodedDocument).to.eql({
+        '@context': 'https://w3id.org/age/v1', overAge: 21
+      });
+    });
+
+    it.skip('should decode a CIT type token', async () => {
       const cborldBytes = [
         217, 5, 1, 164, 1, 25, 128, 0, 21, 4, 15, 75,
         122, 217, 5, 1, 162, 1, 25, 135, 67, 4, 21, 17,
@@ -137,7 +199,7 @@ describe('cborld', () => {
       });
     });
 
-    it('should round trip sample Age context', async () => {
+    it.skip('should round trip sample Age context', async () => {
       const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
       const AGE_CONTEXT = {
         '@context': {
@@ -185,7 +247,7 @@ describe('cborld', () => {
       });
     });
 
-    it('should round trip sample DID document', async () => {
+    it.skip('should round trip sample DID document', async () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
@@ -234,6 +296,7 @@ describe('cborld', () => {
         '831904015822ed0194966b7c08e405775f8de6cc1c4508f6eb2' +
         '27403e1025b2c8ad2d7477398c5b25822ed0194966b7c08e405' +
         '775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5b2');
+      console.log(Buffer.from(encodedBytes).toString('hex'));
 
       // FIXME: check bytes to ensure proper codec use for all URLs
       // can use to verify fix for id to @id alias not yet being supported
