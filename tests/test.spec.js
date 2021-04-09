@@ -1,5 +1,5 @@
 /*!
-* Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2020-2021 Digital Bazaar, Inc. All rights reserved.
 */
 import {
   default as chai,
@@ -58,7 +58,7 @@ describe('cborld', () => {
         documentLoader,
         appContextMap
       });
-      expect(cborldBytes).equalBytes('d90501a20019800018381a6070bb5f');
+      expect(cborldBytes).equalBytes('d90501a20019800018661a6070bb5f');
     });
   });
 
