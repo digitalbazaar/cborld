@@ -23,6 +23,43 @@ describe('cborld', () => {
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90501a0');
     });
+
+    it('should encode xsd dateTime when using a prefix', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes('d90501a20019800018381a6070bb5f');
+    });
   });
 
   describe('decode', () => {
@@ -46,10 +83,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const encodedBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -78,13 +115,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -114,14 +151,14 @@ describe('cborld', () => {
       };
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         appContextMap
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader,
         appContextMap
       });
@@ -148,10 +185,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const encodedBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -187,14 +224,14 @@ describe('cborld', () => {
       };
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         appContextMap
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader,
         appContextMap
       });
@@ -229,10 +266,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const encodedBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -277,14 +314,14 @@ describe('cborld', () => {
         };
 
         const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-        const encodedBytes = await encode({
+        const cborldBytes = await encode({
           jsonldDocument,
           documentLoader,
           appContextMap
         });
 
         const decodedDocument = await decode({
-          cborldBytes: encodedBytes,
+          cborldBytes,
           documentLoader,
           appContextMap
         });
@@ -318,10 +355,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const encodedBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -343,7 +380,7 @@ describe('cborld', () => {
         }
       };
       const jsonldDocument = {
-        '@context': CONTEXT['@context'],
+        '@context': CONTEXT_URL,
         '@type': 'Foo',
         foo: {
           foo: {
@@ -364,14 +401,14 @@ describe('cborld', () => {
       };
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         appContextMap
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader,
         appContextMap
       });
@@ -389,8 +426,6 @@ describe('cborld', () => {
                 '@context': {
                   bar: {
                     '@id': 'ex:bar',
-                    // FIXME: add `xsd` prefix and other random prefix
-                    // tests both of which should also work
                     '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
                   }
                 }
@@ -413,10 +448,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const encodedBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -434,8 +469,6 @@ describe('cborld', () => {
                 '@context': {
                   bar: {
                     '@id': 'ex:bar',
-                    // FIXME: add `xsd` prefix and other random prefix
-                    // tests both of which should also work
                     '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
                   }
                 }
@@ -448,7 +481,7 @@ describe('cborld', () => {
       };
       const date = '2021-04-09T20:38:55Z';
       const jsonldDocument = {
-        '@context': CONTEXT['@context'],
+        '@context': CONTEXT_URL,
         '@type': 'Foo',
         foo: {
           bar: date
@@ -467,14 +500,14 @@ describe('cborld', () => {
       };
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         appContextMap
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader,
         appContextMap
       });
@@ -488,8 +521,6 @@ describe('cborld', () => {
         '@context': {
           bar: {
             '@id': 'ex:bar',
-            // FIXME: add `xsd` prefix and other random prefix
-            // tests both of which should also work
             '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
           }
         }
@@ -511,7 +542,7 @@ describe('cborld', () => {
       };
       const date = '2021-04-09T20:38:55Z';
       const jsonldDocument = {
-        '@context': CONTEXT['@context'],
+        '@context': CONTEXT_URL,
         '@type': 'Foo',
         foo: {
           bar: date
@@ -537,14 +568,14 @@ describe('cborld', () => {
       };
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         appContextMap
       });
 
       const decodedDocument = await decode({
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader,
         appContextMap
       });
@@ -683,7 +714,7 @@ describe('cborld', () => {
         throw new Error('Invalid context url, cannot load!');
       };
 
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         appContextMap,
         documentLoader
@@ -691,7 +722,7 @@ describe('cborld', () => {
 
       const decodedDocument = await decode({
         appContextMap,
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
 
@@ -737,26 +768,22 @@ describe('cborld', () => {
         throw new Error('Invalid context url, cannot load!');
       };
 
-      const encodedBytes = await encode({
+      const cborldBytes = await encode({
         jsonldDocument,
         appContextMap,
         documentLoader
       });
 
-      expect(encodedBytes).equalBytes(
+      expect(cborldBytes).equalBytes(
         'd90501a30119874405821904015822ed0194966b7c08e405775' +
         'f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5b20481' +
         '831904015822ed0194966b7c08e405775f8de6cc1c4508f6eb2' +
         '27403e1025b2c8ad2d7477398c5b25822ed0194966b7c08e405' +
         '775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5b2');
-      console.log(Buffer.from(encodedBytes).toString('hex'));
-
-      // FIXME: check bytes to ensure proper codec use for all URLs
-      // can use to verify fix for id to @id alias not yet being supported
 
       const decodedDocument = await decode({
         appContextMap,
-        cborldBytes: encodedBytes,
+        cborldBytes,
         documentLoader
       });
 
