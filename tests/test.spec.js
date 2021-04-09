@@ -23,8 +23,6 @@ describe('cborld', () => {
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90501a0');
     });
-    it.skip('should encode a simple JSON-LD Document', async () => {
-    });
   });
 
   describe('decode', () => {
@@ -33,10 +31,8 @@ describe('cborld', () => {
       const jsonldDocument = await decode({cborldBytes, documentLoader});
       expect(jsonldDocument).deep.equal({});
     });
-    it.skip('should decode simple CBOR-LD bytes', async () => {
-    });
 
-    it.skip('should round trip with embedded context', async () => {
+    it('should round trip with embedded context', async () => {
       const CONTEXT = {
         '@context': {
           foo: 'ex:foo'
@@ -59,7 +55,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip with remote context', async () => {
+    it('should round trip with remote context', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -94,7 +90,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip with compressed remote context', async () => {
+    it('should round trip with compressed remote context', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -132,7 +128,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip with embedded scoped context', async () => {
+    it('should round trip with embedded scoped context', async () => {
       const CONTEXT = {
         '@context': {
           Foo: {
@@ -161,7 +157,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip with compressed scoped context', async () => {
+    it('should round trip with compressed scoped context', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -205,7 +201,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip w/ embedded nested scoped context', async () => {
+    it('should round trip w/ embedded nested scoped context', async () => {
       const CONTEXT = {
         '@context': {
           Foo: {
@@ -242,7 +238,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip w/ nested compressed scoped context',
+    it('should round trip w/ nested compressed scoped context',
       async () => {
         const CONTEXT_URL = 'urn:foo';
         const CONTEXT = {
@@ -295,7 +291,7 @@ describe('cborld', () => {
         expect(decodedDocument).to.eql(jsonldDocument);
       });
 
-    it.skip('should round trip w/ revert embedded type-scope', async () => {
+    it('should round trip w/ revert embedded type-scope', async () => {
       const CONTEXT = {
         '@context': {
           Foo: {
@@ -331,7 +327,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip w/ revert remote type-scope', async () => {
+    it('should round trip w/ revert remote type-scope', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -382,7 +378,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.only('should round trip w/ embedded scoped override', async () => {
+    it('should round trip w/ embedded scoped override', async () => {
       const CONTEXT = {
         '@context': {
           Foo: {
@@ -426,7 +422,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.only('should round trip w/ remote scoped override', async () => {
+    it('should round trip w/ remote scoped override', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -485,7 +481,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.only('should round trip w/ 2x remote scoped context', async () => {
+    it('should round trip w/ 2x remote scoped context', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT_2_URL = 'urn:foo-scope';
       const CONTEXT_2 = {
