@@ -36,7 +36,7 @@ describe('cborld', () => {
     it.skip('should decode simple CBOR-LD bytes', async () => {
     });
 
-    it.only('should round trip with embedded context', async () => {
+    it.skip('should round trip with embedded context', async () => {
       const CONTEXT = {
         '@context': {
           foo: 'ex:foo'
@@ -60,21 +60,22 @@ describe('cborld', () => {
     });
 
     it.skip('should round trip with remote context', async () => {
+      const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
           foo: 'ex:foo'
         }
       };
       const jsonldDocument = {
-        '@context': CONTEXT['@context'],
+        '@context': CONTEXT_URL,
         foo: 1
       };
 
       const documentLoader = url => {
-        if(url === AGE_CONTEXT_URL) {
+        if(url === CONTEXT_URL) {
           return {
             contextUrl: null,
-            document: AGE_CONTEXT,
+            document: CONTEXT,
             documentUrl: url
           };
         }
@@ -83,19 +84,81 @@ describe('cborld', () => {
 
       const encodedBytes = await encode({
         jsonldDocument,
-        appContextMap,
         documentLoader
       });
 
       const decodedDocument = await decode({
-        appContextMap,
         cborldBytes: encodedBytes,
         documentLoader
       });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
 
-      expect(decodedDocument).to.eql({
-        '@context': 'https://w3id.org/age/v1', overAge: 21
+    it.skip('should round trip with compressed remote context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const encodedBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
       });
+
+      const decodedDocument = await decode({
+        cborldBytes: encodedBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it.only('should round trip with scoped context', async () => {
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const encodedBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes: encodedBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
 
     it.skip('should decode a CIT type token', async () => {
