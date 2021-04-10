@@ -62,11 +62,84 @@ describe('cborld', () => {
     });
   });
 
+  it('should compress multibase-typed values', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: ['MAQID', 'zLdp']
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      appContextMap
+    });
+    expect(cborldBytes).equalBytes(
+      'd90501a200198000186582444d010203447a010203');
+  });
+
   describe('decode', () => {
     it('should decode empty document CBOR-LD bytes', async () => {
       const cborldBytes = new Uint8Array([0xd9, 0x05, 0x01, 0xa0]);
       const jsonldDocument = await decode({cborldBytes, documentLoader});
       expect(jsonldDocument).deep.equal({});
+    });
+
+    it('should decompress multibase-typed values', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#multibase'
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: ['MAQID', 'zLdp']
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = _hexToUint8Array(
+        'd90501a200198000186582444d010203447a010203');
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
 
     it('should round trip with embedded context', async () => {
@@ -791,3 +864,7 @@ describe('cborld', () => {
     });
   });
 });
+
+function _hexToUint8Array(hex) {
+  return new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+}
