@@ -5,8 +5,12 @@
 'use strict';
 
 const cborld = require('.');
-const {documentLoader} = cborld;
-const fsp = require('fs').promises;
+const fs = require('fs');
+const fsp = fs.promises;
+const https = require('https');
+const os = require('os');
+const path = require('path');
+const url = require('url');
 
 // run the program
 main();
@@ -152,6 +156,7 @@ function _getAppMaps(args) {
       (element, i) => appMaps.appContextMap.set(element, 0x8000 + i));
   }
 
+  // FIXME: no longer supported
   // build the application term transforms map
   if(args.transform) {
     appMaps.appTermMap = new Map();
@@ -192,4 +197,43 @@ async function decodeCommand(args) {
     console.error(e.stack);
     process.exit(1);
   }
+}
+
+// default caching document loader for JSON-LD Context files
+async function _get({docUrl, file}) {
+  const options = {
+    headers: {
+      accept: 'application/ld+json, application/json'
+    }
+  };
+
+  await new Promise((resolve, reject) => {
+    https.get(docUrl, options, res => {
+      if(res.statusCode === 301 || res.statusCode === 302) {
+        return _get({docUrl: res.headers.location, file});
+      }
+      res.pipe(file);
+      res.on('end', resolve);
+      res.on('error', reject);
+    });
+  });
+}
+
+// default caching, redirect following document loader
+async function documentLoader(docUrl) {
+  const cacheFile = path.join(
+    os.tmpdir(), 'jsonld-context' + url.parse(docUrl)
+      .pathname.replace(/\//g, '-').replace(/\.jsonld$/, '') + '.jsonld');
+  try {
+    await fsp.access(cacheFile, fs.constants.F_OK | fs.constants.R_OK);
+  } catch(e) {
+    const file = fs.createWriteStream(cacheFile);
+    await _get({docUrl, file});
+  }
+
+  return {
+    contextUrl: null,
+    documentUrl: docUrl,
+    document: await fsp.readFile(cacheFile, 'utf8')
+  };
 }
