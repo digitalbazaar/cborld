@@ -800,7 +800,7 @@ describe('cborld', () => {
       });
     });
 
-    it.skip('should round trip sample DID document', async () => {
+    it('should round trip sample DID document', async () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
@@ -844,11 +844,12 @@ describe('cborld', () => {
       });
 
       expect(cborldBytes).equalBytes(
-        'd90501a30119874405821904015822ed0194966b7c08e405775' +
-        'f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5b20481' +
-        '831904015822ed0194966b7c08e405775f8de6cc1c4508f6eb2' +
-        '27403e1025b2c8ad2d7477398c5b25822ed0194966b7c08e405' +
-        '775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5b2');
+        'd90501a300198744186581831904015822ed0194966b7c08e4' +
+        '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
+        'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
+        'e1025b2c8ad2d7477398c5b21866821904015822ed0194966b' +
+        '7c08e405775f8de6cc1c4508f6eb227403e1025b2c8ad2d747' +
+        '7398c5b2');
 
       const decodedDocument = await decode({
         appContextMap,
