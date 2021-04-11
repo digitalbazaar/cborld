@@ -651,17 +651,11 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should decode a CIT type token', async () => {
-      const cborldBytes = [
-        217, 5, 1, 164, 1, 25, 128, 0, 21, 4, 15, 75,
-        122, 217, 5, 1, 162, 1, 25, 135, 67, 4, 21, 17,
-        88, 59, 122, 0, 0, 218, 254, 86, 110, 99, 95, 229,
-        103, 219, 131, 235, 12, 30, 200, 156, 4, 245, 17, 239,
-        118, 94, 144, 171, 32, 2, 125, 159, 180, 66, 225, 77,
-        98, 179, 185, 245, 142, 170, 210, 219, 16, 27, 49, 87,
-        164, 22, 249, 197, 111, 77, 40, 23, 250, 147, 45, 164,
-        171
-      ];
+    it('should decode a CIT type token', async () => {
+      const cborldBytes = _hexToUint8Array(
+        'd90501a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
+        '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
+        'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
       const CONTEXT_URL = 'https://w3id.org/cit/v1';
       /* eslint-disable max-len */
@@ -723,9 +717,6 @@ describe('cborld', () => {
         }
       };
 
-      const appContextMap = new Map();
-      appContextMap.set('https://w3id.org/cit/v1', 0x8000);
-
       const documentLoader = url => {
         if(url === CONTEXT_URL) {
           return {
@@ -734,25 +725,26 @@ describe('cborld', () => {
             documentUrl: url
           };
         }
-        throw new Error('Invalid context url, cannot load!');
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const jsonldDocument = {
+        '@context': 'https://w3id.org/cit/v1',
+        type: 'ConcealedIdToken',
+        meta: 'zvpJ2L5sbowrJPdA',
+        payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
 
       const decodedDocument = await decode({
-        appContextMap,
         cborldBytes,
         documentLoader
       });
 
       //console.log(decodedDocument);
-      expect(decodedDocument).to.eql({
-        '@context': 'https://w3id.org/cit/v1',
-        type: 'ConcealedIdToken',
-        meta: 'zDCAkMBcw775ppL',
-        payload: 'z116vygiRSkybL9nN6Sq2yYZzsBkRkySbzf4qKG7LfrvViCRC7qQTECxMGxnLLZ16DEr2zytkK7c2mnr'
-      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it.skip('should round trip sample Age context', async () => {
+    it('should round trip sample Age context', async () => {
       const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
       const AGE_CONTEXT = {
         '@context': {
@@ -769,8 +761,6 @@ describe('cborld', () => {
         '@context': 'https://w3id.org/age/v1',
         overAge: 21
       };
-      const appContextMap = new Map();
-      appContextMap.set('https://w3id.org/age/v1', 0x8743);
 
       const documentLoader = url => {
         if(url === AGE_CONTEXT_URL) {
@@ -780,17 +770,15 @@ describe('cborld', () => {
             documentUrl: url
           };
         }
-        throw new Error('Invalid context url, cannot load!');
+        throw new Error(`Refused to load URL "${url}".`);
       };
 
       const cborldBytes = await encode({
         jsonldDocument,
-        appContextMap,
         documentLoader
       });
 
       const decodedDocument = await decode({
-        appContextMap,
         cborldBytes,
         documentLoader
       });
@@ -834,7 +822,7 @@ describe('cborld', () => {
             documentUrl: url
           };
         }
-        throw new Error('Invalid context url, cannot load!');
+        throw new Error(`Refused to load URL "${url}".`);
       };
 
       const cborldBytes = await encode({
