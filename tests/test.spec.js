@@ -58,6 +58,43 @@ describe('cborld', () => {
     });
   });
 
+  it('should encode xsd date when using a prefix', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'arbitraryPrefix:date'
+        }
+      }
+    };
+    const date = '2021-04-09';
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: date
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      appContextMap
+    });
+    expect(cborldBytes).equalBytes('d90501a20019800018661a606f9900');
+  });
+
   it('should compress multibase-typed values', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
@@ -130,6 +167,84 @@ describe('cborld', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
         'd90501a200198000186582444d010203447a010203');
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decompress xsd date', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:date'
+          }
+        }
+      };
+      const date = '2021-04-09';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = _hexToUint8Array(
+        'd90501a20019800018661a606f9900');
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decompress xsd dateTime', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = _hexToUint8Array(
+        'd90501a20019800018661a6070bb5f');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
