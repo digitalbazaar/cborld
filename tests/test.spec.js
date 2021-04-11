@@ -1231,7 +1231,7 @@ describe('cborld', () => {
       });
     });
 
-    it('should round trip sample DID document', async () => {
+    it('should round trip sample did:key DID document', async () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
@@ -1279,6 +1279,66 @@ describe('cborld', () => {
         '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
         'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
         'e1025b2c8ad2d7477398c5b21866821904015822ed0194966b' +
+        '7c08e405775f8de6cc1c4508f6eb227403e1025b2c8ad2d747' +
+        '7398c5b2');
+
+      const decodedDocument = await decode({
+        appContextMap,
+        cborldBytes,
+        documentLoader
+      });
+
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should round trip sample did:v1:nym DID document', async () => {
+      const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
+      const SAMPLE_CONTEXT = {
+        '@context': {
+          '@protected': 'true',
+          id: '@id',
+          type: '@type',
+          authentication: {
+            '@id': 'https://w3id.org/security#authenticationMethod',
+            '@type': '@id',
+            '@container': '@set'
+          }
+        }
+      };
+      // NOTE: not a real DID example, just a test for did:key encode/decode
+      const jsonldDocument = {
+        '@context': 'https://w3id.org/did/v0.11',
+        id: 'did:v1:nym:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH',
+        authentication: [
+          'did:v1:nym:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH' +
+            '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
+        ]
+      };
+      const appContextMap = new Map();
+      appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
+
+      const documentLoader = url => {
+        if(url === SAMPLE_CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: SAMPLE_CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        appContextMap,
+        documentLoader
+      });
+
+      expect(cborldBytes).equalBytes(
+        'd90501a300198744186581831904005822ed0194966b7c08e4' +
+        '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
+        'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
+        'e1025b2c8ad2d7477398c5b21866821904005822ed0194966b' +
         '7c08e405775f8de6cc1c4508f6eb227403e1025b2c8ad2d747' +
         '7398c5b2');
 
