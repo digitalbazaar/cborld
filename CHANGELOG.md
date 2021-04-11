@@ -1,5 +1,33 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 4.0.0 - 2021-04-xx
+
+### Changed
+- **BREAKING**: Use `cborg` as the underlying CBOR library.
+- **BREAKING**: Assign term IDs for defined terms in pairs using even numbers
+  for terms with single values and odd numbers for multiple values. This
+  approach avoids adding additional tags for multiple values and is based
+  on the fact that JSON-LD keywords themselves will be assigned term IDs that
+  exceed the CBOR single byte value limit of 24. Custom term IDs therefore
+  start at 100 and will use two bytes per term up to `65536-100` custom
+  terms.
+- **BREAKING**: Support embedded and scoped contexts in JSON-LD and, more
+  generally, any JSON-LD document that has all of its terms defined. The
+  only exceptions are contexts that use change the `@propagate` setting
+  from its default; these are not presently supported but may be in a future
+  version.
+- **BREAKING**: Treat the last 8-bits of the CBOR-LD tag as a compression
+  mode with support for mode=0 (no compression) or mode=1 (compression as
+  implemented with the above term ID rules, sorting, etc. -- to be updated
+  in the spec). Future compression modes can be added to support other
+  algorithms.
+- **BREAKING**: Type encoding depends on `@type` in term definitions and does
+  not require a CBOR Map to be used when encoding values. If a value cannot
+  be encoded to match the `@type`, it is the encoders job to provide a
+  default uncompressed value that is distinguishable from a compressed one. For
+  example, a compressed `@type` value for `foo` may use a `Uint8Array` but an
+  uncompressed value may use any other major CBOR type.
+
 ## 3.1.1 - 2021-03-30
 
 ### Fixed
