@@ -1104,7 +1104,7 @@ describe('cborld', () => {
       /* eslint-disable max-len */
       const CONTEXT = {
         '@context': {
-          '@protected': 'true',
+          '@protected': true,
           type: '@type',
           ConcealedIdTokenCredential: 'https://w3id.org/cit#ConcealedIdTokenCredential',
           concealedIdToken: {
@@ -1191,7 +1191,7 @@ describe('cborld', () => {
       const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
       const AGE_CONTEXT = {
         '@context': {
-          '@protected': 'true',
+          '@protected': true,
           id: '@id',
           type: '@type',
           overAge: {
@@ -1235,7 +1235,7 @@ describe('cborld', () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
-          '@protected': 'true',
+          '@protected': true,
           id: '@id',
           type: '@type',
           authentication: {
@@ -1295,7 +1295,7 @@ describe('cborld', () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
-          '@protected': 'true',
+          '@protected': true,
           id: '@id',
           type: '@type',
           authentication: {
