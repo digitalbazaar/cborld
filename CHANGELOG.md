@@ -2,6 +2,9 @@
 
 ## 4.0.0 - 2021-04-xx
 
+### Removed
+- **BREAKING**: Removed CLI, see: https://github.com/digitalbazaar/cborld-cli
+
 ### Changed
 - **BREAKING**: Use `cborg` as the underlying CBOR library.
 - **BREAKING**: Assign term IDs for defined terms in pairs using even numbers
