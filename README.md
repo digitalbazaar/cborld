@@ -8,7 +8,6 @@
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-- [CLI](#cli)
 - [Contribute](#contribute)
 - [Commercial Support](#commercial-support)
 - [License](#license)
@@ -18,22 +17,6 @@
 This library provides a CBOR-LD Processor for Web browsers and Node.js
 applications.
 
-## Quickstart
-
-To quickly see cborld in action, run the following commands:
-
-```
-git clone https://github.com/digitalbazaar/cborld.git
-cd cborld
-npm i
-./cborld encode --verbose --diagnose examples/note.jsonld
-./cborld decode --verbose --diagnose out.cborld
-```
-
-Or run directly with `npx`:
-```
-npx @digitalbazaar/cborld encode --verbose --diagnose examples/note.jsonld
-```
 ## Install
 
 ### NPM
@@ -294,30 +277,6 @@ Fetches a resource given a URL and returns it as a string.
     </tr>
   </tbody>
 </table>
-
-## CLI
-
-A command line interface tool called `cborld` is provided to encode and decode
-CBOR-LD.
-
-`cborld` can be run installed, run directly, or run via `npx`:
-
-```
-npm install -g cborld
-cborld [OPTIONS]
-```
-```
-./cborld [OPTIONS]
-```
-```
-npx @digitalbazaar/cborld [OPTIONS]
-```
-
-The options follow the API. See help for more information:
-
-```
-npx @digitalbazaar/cborld --help
-```
 
 Examples:
 
