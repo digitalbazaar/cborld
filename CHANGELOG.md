@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 4.0.0 - 2021-04-xx
+## 4.0.0 - 2021-04-16
 
 ### Removed
 - **BREAKING**: Removed CLI, see: https://github.com/digitalbazaar/cborld-cli
