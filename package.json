@@ -28,7 +28,6 @@
     "index.js": "main.js",
     "./lib/util.js": "./lib/util-browser.js"
   },
-  "bin": "./cborld",
   "engines": {
     "node": ">=12"
   },
