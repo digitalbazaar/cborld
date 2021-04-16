@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 4.0.1 - 2021-04-xx
+## 4.0.1 - 2021-04-16
 
 ### Fixed
 - **BREAKING**: Fixed broken security ed25519 suite context URLs.
