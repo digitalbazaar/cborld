@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 4.1.0 - 2021-04-22
+
+### Added
+- Add latest contexts from the cborld term codec registry.
+
 ## 4.0.1 - 2021-04-16
 
 ### Fixed
