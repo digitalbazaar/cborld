@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 4.2.0 -
+
+### Added
+- Add `https://w3id.org/vc-revocation-list-2020/v1` registered context.
+
 ## 4.1.0 - 2021-04-22
 
 ### Added
