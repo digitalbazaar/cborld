@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 4.3.0 - 2021-09-17
+
+### Added
+- Add `https://w3id.org/dcc/v1c` registered context.
+
 ## 4.2.0 - 2021-04-22
 
 ### Added
