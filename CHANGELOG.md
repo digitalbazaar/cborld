@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 4.4.0 - 2022-TBD
+## 4.4.0 - 2022-01-27
 
 ### Added
 - Add `https://w3id.org/vc/status-list/v1` registered context.
