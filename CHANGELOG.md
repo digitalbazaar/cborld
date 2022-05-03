@@ -1,5 +1,13 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 5.0.0 - 2022-xx-xx
+
+### Changed
+- **BREAKING**: Convert to module (ESM).
+- **BREAKING**: Require Node.js >=14.
+- Update dependencies.
+- Lint module.
+
 ## 4.4.0 - 2022-01-27
 
 ### Added
