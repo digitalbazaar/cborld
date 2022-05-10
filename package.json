@@ -27,6 +27,9 @@
   "browser": {
     "./lib/util.js": "./lib/util-browser.js"
   },
+  "files": [
+    "lib"
+  ],
   "engines": {
     "node": ">=14"
   },
@@ -40,9 +43,6 @@
     "coverage-report": "c8 report",
     "lint": "eslint ."
   },
-  "files": [
-    "lib"
-  ],
   "dependencies": {
     "base58-universal": "^2.0.0",
     "cborg": "^1.9.1",
