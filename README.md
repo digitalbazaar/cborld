@@ -19,6 +19,8 @@ applications.
 
 ## Install
 
+- Browsers and Node.js 14+ are supported.
+
 ### NPM
 
 ```
