@@ -50,7 +50,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "benchmark": "^2.1.4",
     "c8": "^7.11.3",
     "chai": "^4.3.6",
     "chai-bytes": "^0.1.2",
