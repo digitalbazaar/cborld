@@ -28,7 +28,7 @@
     "./lib/util.js": "./lib/util-browser.js"
   },
   "files": [
-    "lib"
+    "lib/**/*.js"
   ],
   "engines": {
     "node": ">=14"
