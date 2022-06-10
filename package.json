@@ -38,8 +38,8 @@
     "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} tests/*.spec.js",
     "test-karma": "karma start karma.conf.cjs",
     "test-watch": "cross-env NODE_ENV=test mocha --watch --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} tests/*.spec.js",
-    "coverage": "cross-env NODE_ENV=test c8 --reporter=lcov --reporter=text-summary npm run test-node",
-    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text npm run test-node",
+    "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
+    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
     "coverage-report": "c8 report",
     "lint": "eslint ."
   },
@@ -71,8 +71,10 @@
     "webpack": "^5.72.0"
   },
   "c8": {
-    "exclude": [
-      "tests"
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
     ]
   }
 }
