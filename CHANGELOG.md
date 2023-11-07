@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 5.1.0 - 2023-11-TBD
+
+### Added
+- Add `https://w3id.org/security/data-integrity/v2` registered context.
+
 ## 5.0.0 - 2022-06-09
 
 ### Changed
