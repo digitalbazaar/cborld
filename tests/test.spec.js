@@ -1,5 +1,5 @@
 /*!
-* Copyright (c) 2020-2022 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2020-2023 Digital Bazaar, Inc. All rights reserved.
 */
 import {
   default as chai,
@@ -8,7 +8,7 @@ import {
 import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
 
-import {encode, decode} from '../lib/index.js';
+import {decode, encode} from '../lib/index.js';
 
 describe('cborld', () => {
   describe('encode', () => {
