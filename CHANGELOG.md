@@ -1,5 +1,12 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 5.2.0 - 2023-11-dd
+
+### Changed
+- Update dependencies:
+  - Use `cborg@4`.
+  - Use `uuid@9`.
+
 ## 5.1.0 - 2023-11-15
 
 ### Added
