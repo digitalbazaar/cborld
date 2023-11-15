@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 5.2.0 - 2023-11-dd
+## 5.2.0 - 2023-11-15
 
 ### Changed
 - Update dependencies:
