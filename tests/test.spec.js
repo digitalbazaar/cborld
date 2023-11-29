@@ -106,7 +106,7 @@ describe('cborld', () => {
     };
     const jsonldDocument = {
       '@context': CONTEXT_URL,
-      foo: ['MAQID', 'zLdp']
+      foo: ['MAQID', 'zLdp', 'uAQID']
     };
 
     const documentLoader = url => {
@@ -127,7 +127,7 @@ describe('cborld', () => {
       appContextMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a200198000186582444d010203447a010203');
+      'd90501a200198000186583444d010203447a0102034475010203');
   });
 
   it('should encode lowercase urn:uuid using a number', async () => {
@@ -311,7 +311,7 @@ describe('cborld', () => {
       };
       const jsonldDocument = {
         '@context': CONTEXT_URL,
-        foo: ['MAQID', 'zLdp']
+        foo: ['MAQID', 'zLdp', 'uAQID']
       };
 
       const documentLoader = url => {
@@ -327,7 +327,7 @@ describe('cborld', () => {
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a200198000186582444d010203447a010203');
+        'd90501a200198000186583444d010203447a0102034475010203');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
