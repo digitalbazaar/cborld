@@ -1,5 +1,10 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 6.0.0 - 2023-11-dd
+
+### Added
+- **BREAKING**: Add support for compressing base64url-encoded multibase values.
+
 ## 5.2.0 - 2023-11-15
 
 ### Changed
