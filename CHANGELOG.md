@@ -1,5 +1,11 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 6.0.2 - 2023-11-dd
+
+### Fixed
+- Ensure custom `appContextMap` is used first before registered table of
+  term codecs.
+
 ## 6.0.1 - 2023-11-29
 
 ### Changed
