@@ -4,6 +4,7 @@
 
 ### Added
 - **BREAKING**: Add support for compressing base64url-encoded multibase values.
+- **BREAKING**: Add support for compressing Data Integrity cryptosuite strings.
 
 ## 5.2.0 - 2023-11-15
 
