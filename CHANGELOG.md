@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 6.0.2 - 2023-11-dd
+## 6.0.2 - 2023-11-29
 
 ### Fixed
 - Ensure custom `appContextMap` is used first before registered table of
