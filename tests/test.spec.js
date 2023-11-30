@@ -130,6 +130,45 @@ describe('cborld', () => {
       'd90501a200198000186583444d010203447a0102034475010203');
   });
 
+  it('should compress cryptosuite strings', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#cryptosuiteString'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: [
+        'ecdsa-rdfc-2019',
+        'ecdsa-sd-2023',
+        'eddsa-rdfc-2022'
+      ]
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      appContextMap
+    });
+    expect(cborldBytes).equalBytes('d90501a200198000186583183418351836');
+  });
+
   it('should encode lowercase urn:uuid using a number', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
@@ -328,6 +367,47 @@ describe('cborld', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
         'd90501a200198000186583444d010203447a0102034475010203');
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decompress cryptosuite strings', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#cryptosuiteString'
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: [
+          'ecdsa-rdfc-2019',
+          'ecdsa-sd-2023',
+          'eddsa-rdfc-2022'
+        ]
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = _hexToUint8Array(
+        'd90501a200198000186583183418351836');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
