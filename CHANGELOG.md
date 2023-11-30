@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 6.0.1 - 2023-11-dd
+## 6.0.1 - 2023-11-29
 
 ### Changed
 - **BREAKING**: Require node 18+ (current non-EOL node versions).
