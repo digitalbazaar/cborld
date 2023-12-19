@@ -4,6 +4,8 @@
 
 ### Fixed
 - Use `appContextMap` in `CryptosuiteEncoder`.
+- Ensure custom `appContextMap` is used first before registered table of term
+  codecs in cryptosuite codecs.
 
 ## 6.0.2 - 2023-11-29
 
