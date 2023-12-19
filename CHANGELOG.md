@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 6.0.3 - 2023-xx-xx
+## 6.0.3 - 2023-12-19
 
 ### Fixed
 - Use `appContextMap` in `CryptosuiteEncoder`.
