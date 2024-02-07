@@ -166,7 +166,7 @@ describe('cborld', () => {
       documentLoader,
       appContextMap
     });
-    expect(cborldBytes).equalBytes('d90501a200198000186583183418351836');
+    expect(cborldBytes).equalBytes('d90501a200198000186583010203');
   });
 
   it('should encode lowercase urn:uuid using a number', async () => {
@@ -407,7 +407,7 @@ describe('cborld', () => {
 
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a200198000186583183418351836');
+        'd90501a200198000186583010203');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
