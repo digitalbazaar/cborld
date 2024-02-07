@@ -1,5 +1,13 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 7.0.0 - 2024-mm-dd
+
+### Changed
+- **BREAKING**: Encode cryptosuite strings using a separate registry (specific
+  to cryptosuites) to further reduce their encoded size (instead of using
+  the global table). This approach is incompatible with previous encodings
+  that used the global table.
+
 ## 6.0.3 - 2023-12-19
 
 ### Fixed
