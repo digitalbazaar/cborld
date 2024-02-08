@@ -1,5 +1,12 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 6.1.0 - 2023-xx-xx
+
+### Added
+- Add support for compressing arbitrary URLs. Any id which is in the
+  `appContextMap` will be compressed as a single number before using other URL
+  codecs.
+
 ## 6.0.3 - 2023-12-19
 
 ### Fixed
