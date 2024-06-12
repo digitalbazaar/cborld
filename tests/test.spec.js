@@ -1238,6 +1238,7 @@ describe('cborld', () => {
           }
         }
       };
+      /* eslint-enable max-len */
 
       const documentLoader = url => {
         if(url === CONTEXT_URL) {
@@ -1254,6 +1255,7 @@ describe('cborld', () => {
         '@context': 'https://w3id.org/cit/v1',
         type: 'ConcealedIdToken',
         meta: 'zvpJ2L5sbowrJPdA',
+        // eslint-disable-next-line max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
 
@@ -1430,8 +1432,164 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
   });
+
+  describe('data codec', () => {
+    // example context and loader
+    const DATA_CONTEXT_URL = 'https://example.org/context/v1';
+    const DATA_CONTEXT = {
+      '@context': {
+        data: {
+          '@type': '@id'
+        }
+      }
+    };
+    const appContextMap = new Map();
+    appContextMap.set(DATA_CONTEXT_URL, 0x8000);
+    const documentLoader = url => {
+      if(url === DATA_CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: DATA_CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    /* eslint-disable max-len */
+    const vectors = [
+      {
+        name: 'empty plain data: (1)',
+        data: 'data:',
+        cborldHex: 'd90501a2001980001864820460'
+      },
+      {
+        name: 'empty plain data: (2)',
+        data: 'data:,',
+        cborldHex: 'd90501a20019800018648204612c'
+      },
+      {
+        name: 'empty base64 data:',
+        data: 'data:;base64,',
+        cborldHex: 'd90501a200198000186483046040'
+      },
+      {
+        name: 'empty typed base64 data:',
+        data: 'data:image/gif;base64,',
+        cborldHex: 'd90501a2001980001864830469696d6167652f67696640'
+      },
+      {
+        name: 'base64 data:',
+        data:
+          'data:image/gif;base64,' +
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
+        cborldHex:
+          'd90501a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+      },
+      {
+        name: 'non-base64 data:',
+        data:
+          'data:text/plain,' +
+          'test',
+        cborldHex:
+          'd90501a200198000186482046f746578742f706c61696e2c74657374'
+      },
+      {
+        name: 'bad base64 data:',
+        data:
+          // missing trailing padding, should encode as non-base64
+          'data:image/gif;base64,' +
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs',
+        cborldHex:
+          'd90501a200198000186482047840696d6167652f6769663b6261736536342c52306c474f4464684151414241494142414141414141414141437741414141414151414241414143416b7742414473'
+      },
+      {
+        // RFC2397 example
+        name: 'plain text',
+        data: 'data:,A%20brief%20note',
+        cborldHex:
+          'd90501a20019800018648204712c4125323062726965662532306e6f7465'
+      },
+      {
+        // RFC2397 example
+        name: 'plain text with charset:',
+        data: 'data:text/plain;charset=iso-8859-7,%be%fg%be',
+        cborldHex:
+          'd90501a200198000186482047827746578742f706c61696e3b636861727365743d69736f2d383835392d372c256265256667256265'
+      },
+      {
+        // RFC2397 example
+        name: 'vnd example',
+        data:
+          'data:application/vnd-xxx-query,' +
+          'select_vcount,fcol_from_fieldtable/local',
+        cborldHex:
+          'd90501a2001980001864820478426170706c69636174696f6e2f766e642d7878782d71756572792c73656c6563745f76636f756e742c66636f6c5f66726f6d5f6669656c647461626c652f6c6f63616c'
+      },
+      {
+        // MDN example
+        name: 'plain text',
+        data: 'data:,Hello%2C%20World%21',
+        cborldHex:
+         'd90501a20019800018648204742c48656c6c6f253243253230576f726c64253231'
+      },
+      {
+        // MDN example
+        name: 'base64 plain text',
+        data: 'data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==',
+        cborldHex:
+          'd90501a200198000186483046a746578742f706c61696e4d48656c6c6f2c20576f726c6421'
+      },
+      {
+        // MDN example
+        name: 'plain text html',
+        data:
+          'data:text/html,%3Cscript%3Ealert%28%27hi%27%29%3B%3C%2Fscript%3E',
+        cborldHex:
+          'd90501a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
+      }
+    ];
+    /* eslint-enable max-len */
+
+    const hasOnly = vectors.some(d => d.only);
+    vectors.forEach(d => {
+      if(hasOnly && !d.only) {
+        return;
+      }
+      it(`should round trip ${d.name}`, async () => {
+        const jsonldDocument = {
+          '@context': 'https://example.org/context/v1',
+          data: d.data
+        };
+
+        const cborldBytes = await encode({
+          jsonldDocument,
+          appContextMap,
+          documentLoader,
+          //diagnose: console.log
+        });
+
+        //console.log(d.name, _uint8ArrayToHex(cborldBytes));
+
+        expect(cborldBytes).equalBytes(d.cborldHex);
+
+        const decodedDocument = await decode({
+          appContextMap,
+          cborldBytes,
+          documentLoader
+        });
+
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+    });
+  });
 });
 
 function _hexToUint8Array(hex) {
   return new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+}
+
+// eslint-disable-next-line no-unused-vars
+function _uint8ArrayToHex(bytes) {
+  return [...bytes].map(d => d.toString(16).padStart(2, '0')).join('');
 }

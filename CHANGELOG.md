@@ -2,6 +2,10 @@
 
 ## 7.0.0 - 2024-mm-dd
 
+### Added
+- **BREAKING**: Add support for compressing RFC 2397 data URLs. Base64 encoded
+  data is compressed as binary.
+
 ### Changed
 - **BREAKING**: Encode cryptosuite strings using a separate registry (specific
   to cryptosuites) to further reduce their encoded size (instead of using
