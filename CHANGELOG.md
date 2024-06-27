@@ -8,14 +8,18 @@
 
 ### Changed
 - **BREAKING**: Encode cryptosuite strings using a separate registry (specific
-  to cryptosuites) to further reduce their encoded size (instead of using
-  the global table). This approach is incompatible with previous encodings
-  that used the global table.
+  to cryptosuites) to further reduce their encoded size (instead of using the
+  global table). This approach is incompatible with previous encodings that
+  used the global table.
 - **BREAKING**: Encode all URIs using the vocab term codec. This allows
   arbitrary URIs to be encoded with the same small integers as other terms.
   The mapping in a context needs to use a redundant form: `{"URI":"URI"}`. This
   technique assume a use case where the CBOR-LD size has high priority over
   context size.
+
+### Removed
+- **BREAKING**: Remove and reserve cryptosuite values from term registry in
+  favor of the new cryptosuite codec.
 
 ## 6.0.3 - 2023-12-19
 
