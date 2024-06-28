@@ -5,6 +5,7 @@
 ### Added
 - **BREAKING**: Add support for compressing RFC 2397 data URLs. Base64 encoded
   data is compressed as binary.
+- Add VCDM v2 context value.
 
 ### Changed
 - **BREAKING**: Encode cryptosuite strings using a separate registry (specific
