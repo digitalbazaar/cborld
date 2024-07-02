@@ -48,7 +48,8 @@
     "base64url-universal": "^2.0.0",
     "cborg": "^4.0.5",
     "js-base64": "^3.7.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "varint": "^6.0.0"
   },
   "devDependencies": {
     "c8": "^8.0.1",
