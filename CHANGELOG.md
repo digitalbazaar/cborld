@@ -17,6 +17,7 @@
   The mapping in a context needs to use a redundant form: `{"URI":"URI"}`. This
   technique assume a use case where the CBOR-LD size has high priority over
   context size.
+- Improve and test examples.
 
 ### Removed
 - **BREAKING**: Remove and reserve cryptosuite values from term registry in
