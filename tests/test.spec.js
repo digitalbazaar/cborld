@@ -1470,6 +1470,11 @@ describe('cborld', () => {
         cborldHex: 'd90501a20019800018648204612c'
       },
       {
+        name: 'empty plain data: set (1)',
+        data: ['data:', 'data:'],
+        cborldHex: 'd90501a200198000186582820460820460'
+      },
+      {
         name: 'empty base64 data:',
         data: 'data:;base64,',
         cborldHex: 'd90501a200198000186483046040'
@@ -1486,6 +1491,17 @@ describe('cborld', () => {
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
         cborldHex:
           'd90501a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+      },
+      {
+        name: 'base64 data: set',
+        data: [
+          'data:image/gif;base64,' +
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
+          'data:image/gif;base64,' +
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
+        ],
+        cborldHex:
+          'd90501a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
       },
       {
         name: 'non-base64 data:',
