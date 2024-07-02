@@ -51,10 +51,18 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@digitalbazaar/did-method-key": "^5.2.0",
+    "@digitalbazaar/ed25519-multikey": "^1.1.0",
+    "@digitalbazaar/multikey-context": "^2.0.1",
     "c8": "^8.0.1",
     "chai": "^4.3.6",
     "chai-bytes": "^0.1.2",
+    "cit-context": "^2.0.1",
+    "citizenship-context": "^3.0.0",
+    "credentials-context": "^2.0.0",
     "cross-env": "^7.0.3",
+    "did-context": "^3.1.1",
+    "ed25519-signature-2020-context": "^1.1.0",
     "eslint": "^8.17.0",
     "eslint-config-digitalbazaar": "^5.0.1",
     "eslint-plugin-jsdoc": "^46.9.0",
