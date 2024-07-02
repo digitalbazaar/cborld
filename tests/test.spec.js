@@ -1439,6 +1439,7 @@ describe('cborld', () => {
     const DATA_CONTEXT = {
       '@context': {
         data: {
+          '@id': 'ex:data',
           '@type': '@id'
         }
       }
