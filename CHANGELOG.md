@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.0.0 - 2024-mm-dd
+## 7.0.0 - 2024-07-01
 
 ### Added
 - **BREAKING**: Add support for compressing RFC 2397 data URLs. Base64 encoded
