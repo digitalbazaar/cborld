@@ -17,6 +17,7 @@
   technique assume a use case where the CBOR-LD size has high priority over
   context size.
 - Improve and test examples.
+- Update dependencies.
 
 ### Removed
 - **BREAKING**: Remove and reserve cryptosuite values from term registry in
