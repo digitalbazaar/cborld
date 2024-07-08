@@ -365,6 +365,20 @@ describe('cborld', () => {
       expect(jsonldDocument).deep.equal({});
     });
 
+    it('should decode empty JSON-LD document bytes with varint', async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const jsonldDocument = await decode({cborldBytes, compressionMap});
+      expect(jsonldDocument).deep.equal({});
+    });
+
+    it('should decode empty JSON-LD document bytes with varint >1 byte', async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x80, 0x81, 0x01, 0xa0]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const jsonldDocument = await decode({cborldBytes, compressionMap});
+      expect(jsonldDocument).deep.equal({});
+    });
+
     it('should decompress multibase-typed values', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
