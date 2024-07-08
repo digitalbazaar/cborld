@@ -9,6 +9,7 @@ import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
 
 import {decode, encode} from '../lib/index.js';
+import { STANDARDS_TABLE } from '../lib/keywords.js';
 
 describe('cborld', () => {
   describe('encode', () => {
@@ -47,7 +48,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -85,7 +87,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -120,7 +123,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -160,7 +164,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -199,7 +204,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -240,7 +246,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -281,7 +288,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -321,7 +329,8 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map(STANDARDS_TABLE);
+    compressionMap.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
@@ -364,7 +373,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583444d010203447a0102034475010203');
       const decodedDocument = await decode({
@@ -405,7 +415,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map();
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583010203');
       const decodedDocument = await decode({
@@ -444,7 +455,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a20019800018661a606f9900');
       const decodedDocument = await decode({
@@ -483,7 +495,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a20019800018661a6070bb5f');
       const decodedDocument = await decode({
@@ -524,7 +537,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
         '10bf48838a41');
@@ -566,7 +580,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
         '2d394145332d313145422d384533452d313042463438383338413431');
@@ -608,7 +623,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
       const decodedDocument = await decode({
@@ -649,7 +665,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
       const decodedDocument = await decode({
@@ -741,7 +758,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -776,11 +794,13 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const cborldBytes = await encode({jsonldDocument, documentLoader, compressionMap});
 
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -814,7 +834,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -853,15 +874,16 @@ describe('cborld', () => {
           bar: 1
         }
       };
-
+      const compressionMap = new Map(STANDARDS_TABLE);
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
+      const cborldBytes = await encode({jsonldDocument, documentLoader, compressionMap});
 
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -904,7 +926,8 @@ describe('cborld', () => {
           throw new Error(`Refused to load URL "${url}".`);
         };
 
-        const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+        const compressionMap = new Map(STANDARDS_TABLE);
+        compressionMap.set(CONTEXT_URL, 0x8000);
         const cborldBytes = await encode({
           jsonldDocument,
           documentLoader,
@@ -946,11 +969,13 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const cborldBytes = await encode({jsonldDocument, documentLoader, compressionMap});
 
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -991,7 +1016,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -1039,11 +1065,13 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const cborldBytes = await encode({jsonldDocument, documentLoader, compressionMap});
 
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1090,7 +1118,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -1158,7 +1187,8 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map(STANDARDS_TABLE);
+      compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
@@ -1258,10 +1288,11 @@ describe('cborld', () => {
         // eslint-disable-next-line max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
-
+      const compressionMap = new Map(STANDARDS_TABLE);
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        compressionMap
       });
 
       //console.log(decodedDocument);
@@ -1335,7 +1366,7 @@ describe('cborld', () => {
             '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
         ]
       };
-      const compressionMap = new Map();
+      const compressionMap = new Map(STANDARDS_TABLE);
       compressionMap.set('https://w3id.org/did/v0.11', 0x8744);
 
       const documentLoader = url => {
@@ -1395,7 +1426,7 @@ describe('cborld', () => {
             '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
         ]
       };
-      const compressionMap = new Map();
+      const compressionMap = new Map(STANDARDS_TABLE);
       compressionMap.set('https://w3id.org/did/v0.11', 0x8744);
 
       const documentLoader = url => {
@@ -1443,7 +1474,7 @@ describe('cborld', () => {
         }
       }
     };
-    const compressionMap = new Map();
+    const compressionMap = new Map(STANDARDS_TABLE);
     compressionMap.set(DATA_CONTEXT_URL, 0x8000);
     const documentLoader = url => {
       if(url === DATA_CONTEXT_URL) {
