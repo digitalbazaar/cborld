@@ -19,6 +19,24 @@ describe('cborld', () => {
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90601a0');
     });
+    
+    it('should encode an empty JSON-LD document with passed varint', async () => {
+      const jsonldDocument = {};
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const varintValue = 16;
+      const cborldBytes = await encode({jsonldDocument, compressionMap, varintValue});
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d90610a0');
+    });
+
+    it('should encode an empty JSON-LD document with passed varint >1 byte', async () => {
+      const jsonldDocument = {};
+      const compressionMap = new Map(STANDARDS_TABLE);
+      const varintValue = 128;
+      const cborldBytes = await encode({jsonldDocument, compressionMap, varintValue});
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d906808101a0');
+    });
 
     it('should encode xsd dateTime when using a prefix', async () => {
       const CONTEXT_URL = 'urn:foo';
@@ -415,7 +433,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map();
+      const compressionMap = new Map(STANDARDS_TABLE);
       compressionMap.set(CONTEXT_URL, 0x8000);
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583010203');
