@@ -9,7 +9,7 @@ import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
 
 import {decode, encode} from '../lib/index.js';
-import { STANDARDS_TABLE } from '../lib/keywords.js';
+import { STANDARDS_TABLE } from '../lib/tables.js';
 
 describe('cborld', () => {
   describe('encode', () => {
