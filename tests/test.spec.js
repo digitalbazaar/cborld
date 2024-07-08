@@ -16,7 +16,7 @@ describe('cborld', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({jsonldDocument});
       expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d90501a0');
+      expect(cborldBytes).equalBytes('d90601a0');
     });
 
     it('should encode xsd dateTime when using a prefix', async () => {
@@ -47,13 +47,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
-      expect(cborldBytes).equalBytes('d90501a20019800018661a6070bb5f');
+      expect(cborldBytes).equalBytes('d90601a20019800018661a6070bb5f');
     });
   });
 
@@ -85,13 +85,13 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
-    expect(cborldBytes).equalBytes('d90501a20019800018661a606f9900');
+    expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
   });
 
   it('should compress multibase-typed values', async () => {
@@ -120,14 +120,14 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a200198000186583444d010203447a0102034475010203');
+      'd90601a200198000186583444d010203447a0102034475010203');
   });
 
   it('should compress cryptosuite strings', async () => {
@@ -160,13 +160,13 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
-    expect(cborldBytes).equalBytes('d90501a200198000186583010203');
+    expect(cborldBytes).equalBytes('d90601a200198000186583010203');
   });
 
   it('should encode lowercase urn:uuid using a number', async () => {
@@ -199,14 +199,14 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+      'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
       '10bf48838a41');
   });
 
@@ -240,14 +240,14 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f1868820378243735454633464343' +
+      'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
       '2d394145332d313145422d384533452d313042463438383338413431');
   });
 
@@ -281,14 +281,14 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+      'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
   });
 
   it('should encode http URL', async () => {
@@ -321,19 +321,19 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+    const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap
+      compressionMap
     });
     expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+      'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
   });
 
   describe('decode', () => {
     it('should decode empty document CBOR-LD bytes', async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x05, 0x01, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
       const jsonldDocument = await decode({cborldBytes});
       expect(jsonldDocument).deep.equal({});
     });
@@ -364,13 +364,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a200198000186583444d010203447a0102034475010203');
+        'd90601a200198000186583444d010203447a0102034475010203');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -405,13 +405,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a200198000186583010203');
+        'd90601a200198000186583010203');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -444,13 +444,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a20019800018661a606f9900');
+        'd90601a20019800018661a606f9900');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -483,13 +483,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a20019800018661a6070bb5f');
+        'd90601a20019800018661a6070bb5f');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -524,14 +524,14 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+        'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
         '10bf48838a41');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -566,14 +566,14 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a30019800018661a6070bb5f1868820378243735454633464343' +
+        'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
         '2d394145332d313145422d384533452d313042463438383338413431');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -608,13 +608,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+        'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -649,13 +649,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = _hexToUint8Array(
-        'd90501a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+        'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -741,17 +741,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -814,17 +814,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -904,17 +904,17 @@ describe('cborld', () => {
           throw new Error(`Refused to load URL "${url}".`);
         };
 
-        const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+        const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
         const cborldBytes = await encode({
           jsonldDocument,
           documentLoader,
-          appContextMap
+          compressionMap
         });
 
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          appContextMap
+          compressionMap
         });
         expect(decodedDocument).to.eql(jsonldDocument);
       });
@@ -991,17 +991,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1090,17 +1090,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1158,24 +1158,24 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const compressionMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap
+        compressionMap
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        appContextMap
+        compressionMap
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
     it('should decode a CIT type token', async () => {
       const cborldBytes = _hexToUint8Array(
-        'd90501a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
+        'd90601a40015186c1864186e4c7ad90601a2011987430518411870583b7a' +
         '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
         'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
@@ -1335,8 +1335,8 @@ describe('cborld', () => {
             '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
         ]
       };
-      const appContextMap = new Map();
-      appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
+      const compressionMap = new Map();
+      compressionMap.set('https://w3id.org/did/v0.11', 0x8744);
 
       const documentLoader = url => {
         if(url === SAMPLE_CONTEXT_URL) {
@@ -1351,12 +1351,12 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        appContextMap,
+        compressionMap,
         documentLoader
       });
 
       expect(cborldBytes).equalBytes(
-        'd90501a300198744186581831904015822ed0194966b7c08e4' +
+        'd90601a300198744186581831904015822ed0194966b7c08e4' +
         '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
         'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
         'e1025b2c8ad2d7477398c5b21866821904015822ed0194966b' +
@@ -1364,7 +1364,7 @@ describe('cborld', () => {
         '7398c5b2');
 
       const decodedDocument = await decode({
-        appContextMap,
+        compressionMap,
         cborldBytes,
         documentLoader
       });
@@ -1395,8 +1395,8 @@ describe('cborld', () => {
             '#z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH'
         ]
       };
-      const appContextMap = new Map();
-      appContextMap.set('https://w3id.org/did/v0.11', 0x8744);
+      const compressionMap = new Map();
+      compressionMap.set('https://w3id.org/did/v0.11', 0x8744);
 
       const documentLoader = url => {
         if(url === SAMPLE_CONTEXT_URL) {
@@ -1411,12 +1411,12 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        appContextMap,
+        compressionMap,
         documentLoader
       });
 
       expect(cborldBytes).equalBytes(
-        'd90501a300198744186581831904005822ed0194966b7c08e4' +
+        'd90601a300198744186581831904005822ed0194966b7c08e4' +
         '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
         'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
         'e1025b2c8ad2d7477398c5b21866821904005822ed0194966b' +
@@ -1424,7 +1424,7 @@ describe('cborld', () => {
         '7398c5b2');
 
       const decodedDocument = await decode({
-        appContextMap,
+        compressionMap,
         cborldBytes,
         documentLoader
       });
@@ -1444,8 +1444,8 @@ describe('cborld', () => {
         }
       }
     };
-    const appContextMap = new Map();
-    appContextMap.set(DATA_CONTEXT_URL, 0x8000);
+    const compressionMap = new Map();
+    compressionMap.set(DATA_CONTEXT_URL, 0x8000);
     const documentLoader = url => {
       if(url === DATA_CONTEXT_URL) {
         return {
@@ -1462,12 +1462,12 @@ describe('cborld', () => {
       {
         name: 'empty plain data: (1)',
         data: 'data:',
-        cborldHex: 'd90501a2001980001864820460'
+        cborldHex: 'd90601a2001980001864820460'
       },
       {
         name: 'empty plain data: (2)',
         data: 'data:,',
-        cborldHex: 'd90501a20019800018648204612c'
+        cborldHex: 'd90601a20019800018648204612c'
       },
       {
         name: 'empty plain data: set (1)',
@@ -1483,12 +1483,12 @@ describe('cborld', () => {
       {
         name: 'empty base64 data:',
         data: 'data:;base64,',
-        cborldHex: 'd90501a200198000186483046040'
+        cborldHex: 'd90601a200198000186483046040'
       },
       {
         name: 'empty typed base64 data:',
         data: 'data:image/gif;base64,',
-        cborldHex: 'd90501a2001980001864830469696d6167652f67696640'
+        cborldHex: 'd90601a2001980001864830469696d6167652f67696640'
       },
       {
         name: 'base64 data:',
@@ -1496,7 +1496,7 @@ describe('cborld', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
         cborldHex:
-          'd90501a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+          'd90601a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
       },
       {
         name: 'base64 data: set',
@@ -1515,7 +1515,7 @@ describe('cborld', () => {
           'data:text/plain,' +
           'test',
         cborldHex:
-          'd90501a200198000186482046f746578742f706c61696e2c74657374'
+          'd90601a200198000186482046f746578742f706c61696e2c74657374'
       },
       {
         name: 'bad base64 data:',
@@ -1524,21 +1524,21 @@ describe('cborld', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs',
         cborldHex:
-          'd90501a200198000186482047840696d6167652f6769663b6261736536342c52306c474f4464684151414241494142414141414141414141437741414141414151414241414143416b7742414473'
+          'd90601a200198000186482047840696d6167652f6769663b6261736536342c52306c474f4464684151414241494142414141414141414141437741414141414151414241414143416b7742414473'
       },
       {
         // RFC2397 example
         name: 'plain text',
         data: 'data:,A%20brief%20note',
         cborldHex:
-          'd90501a20019800018648204712c4125323062726965662532306e6f7465'
+          'd90601a20019800018648204712c4125323062726965662532306e6f7465'
       },
       {
         // RFC2397 example
         name: 'plain text with charset:',
         data: 'data:text/plain;charset=iso-8859-7,%be%fg%be',
         cborldHex:
-          'd90501a200198000186482047827746578742f706c61696e3b636861727365743d69736f2d383835392d372c256265256667256265'
+          'd90601a200198000186482047827746578742f706c61696e3b636861727365743d69736f2d383835392d372c256265256667256265'
       },
       {
         // RFC2397 example
@@ -1547,21 +1547,21 @@ describe('cborld', () => {
           'data:application/vnd-xxx-query,' +
           'select_vcount,fcol_from_fieldtable/local',
         cborldHex:
-          'd90501a2001980001864820478426170706c69636174696f6e2f766e642d7878782d71756572792c73656c6563745f76636f756e742c66636f6c5f66726f6d5f6669656c647461626c652f6c6f63616c'
+          'd90601a2001980001864820478426170706c69636174696f6e2f766e642d7878782d71756572792c73656c6563745f76636f756e742c66636f6c5f66726f6d5f6669656c647461626c652f6c6f63616c'
       },
       {
         // MDN example
         name: 'plain text',
         data: 'data:,Hello%2C%20World%21',
         cborldHex:
-         'd90501a20019800018648204742c48656c6c6f253243253230576f726c64253231'
+         'd90601a20019800018648204742c48656c6c6f253243253230576f726c64253231'
       },
       {
         // MDN example
         name: 'base64 plain text',
         data: 'data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==',
         cborldHex:
-          'd90501a200198000186483046a746578742f706c61696e4d48656c6c6f2c20576f726c6421'
+          'd90601a200198000186483046a746578742f706c61696e4d48656c6c6f2c20576f726c6421'
       },
       {
         // MDN example
@@ -1569,7 +1569,7 @@ describe('cborld', () => {
         data:
           'data:text/html,%3Cscript%3Ealert%28%27hi%27%29%3B%3C%2Fscript%3E',
         cborldHex:
-          'd90501a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
+          'd90601a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
       }
     ];
     /* eslint-enable max-len */
@@ -1587,7 +1587,7 @@ describe('cborld', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
-          appContextMap,
+          compressionMap,
           documentLoader,
           //diagnose: console.log
         });
@@ -1597,7 +1597,7 @@ describe('cborld', () => {
         expect(cborldBytes).equalBytes(d.cborldHex);
 
         const decodedDocument = await decode({
-          appContextMap,
+          compressionMap,
           cborldBytes,
           documentLoader
         });
