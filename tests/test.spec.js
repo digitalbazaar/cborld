@@ -9,7 +9,7 @@ import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
 
 import {decode, encode} from '../lib/index.js';
-import { KEYWORDS_TABLE } from '../lib/tables.js';
+import { KEYWORDS_TABLE, STRING_TABLE, URL_TABLE, TYPED_LITERAL_TABLE } from '../lib/tables.js';
 
 describe('cborld', () => {
   describe('encode', () => {
@@ -66,12 +66,18 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const compressionMap = new Map(KEYWORDS_TABLE);
-      compressionMap.set(CONTEXT_URL, 0x8000);
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlTable = new Map(URL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      stringTable.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        compressionMap
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
       });
       expect(cborldBytes).equalBytes('d90601a20019800018661a6070bb5f');
     });
@@ -105,12 +111,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
   });
@@ -141,12 +153,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a200198000186583444d010203447a0102034475010203');
@@ -182,12 +200,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes('d90601a200198000186583010203');
   });
@@ -222,12 +246,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
@@ -264,12 +294,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
@@ -305,13 +341,18 @@ describe('cborld', () => {
       }
       throw new Error(`Refused to load URL "${url}".`);
     };
-
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
@@ -347,12 +388,18 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(CONTEXT_URL, 0x8000);
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      compressionMap
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
@@ -1657,6 +1704,7 @@ describe('cborld', () => {
 
         //console.log(d.name, _uint8ArrayToHex(cborldBytes));
 
+
         expect(cborldBytes).equalBytes(d.cborldHex);
 
         const decodedDocument = await decode({
@@ -1664,6 +1712,7 @@ describe('cborld', () => {
           cborldBytes,
           documentLoader
         });
+
 
         expect(decodedDocument).to.eql(jsonldDocument);
       });
