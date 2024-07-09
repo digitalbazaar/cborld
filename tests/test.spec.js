@@ -1471,7 +1471,7 @@ describe('cborld', () => {
 
     it('should decode a CIT type token', async () => {
       const cborldBytes = _hexToUint8Array(
-        'd90601a40015186c1864186e4c7ad90601a2011987430518411870583b7a' +
+        'd90601a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
         '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
         'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
