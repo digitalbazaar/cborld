@@ -1052,16 +1052,30 @@ describe('cborld', () => {
           bar: 1
         }
       };
-      const compressionMap = new Map(KEYWORDS_TABLE);
+
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, compressionMap});
-
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlTable = new Map(URL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+  
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
+      });
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        compressionMap
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
