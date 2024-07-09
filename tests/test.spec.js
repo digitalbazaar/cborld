@@ -1554,8 +1554,6 @@ describe('cborld', () => {
         }
       }
     };
-    const compressionMap = new Map(KEYWORDS_TABLE);
-    compressionMap.set(DATA_CONTEXT_URL, 0x8000);
     const documentLoader = url => {
       if(url === DATA_CONTEXT_URL) {
         return {
@@ -1695,11 +1693,18 @@ describe('cborld', () => {
           data: d.data
         };
 
+        const keywordsTable = new Map(KEYWORDS_TABLE);
+        const urlTable = new Map(URL_TABLE);
+        const stringTable = new Map(STRING_TABLE);
+        const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+        stringTable.set(DATA_CONTEXT_URL, 0x8000);
         const cborldBytes = await encode({
           jsonldDocument,
-          compressionMap,
           documentLoader,
-          //diagnose: console.log
+          keywordsTable,
+          urlTable,
+          typedLiteralTable,
+          stringTable
         });
 
         //console.log(d.name, _uint8ArrayToHex(cborldBytes));
