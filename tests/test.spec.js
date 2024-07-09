@@ -1554,11 +1554,17 @@ describe('cborld', () => {
         // eslint-disable-next-line max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
-      const compressionMap = new Map(KEYWORDS_TABLE);
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlTable = new Map(URL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        compressionMap
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
       });
 
       //console.log(decodedDocument);
@@ -1598,7 +1604,7 @@ describe('cborld', () => {
       const urlTable = new Map(URL_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      stringTable.set(AGE_CONTEXT_URL, 0x8000);
   
       const cborldBytes = await encode({
         jsonldDocument,
