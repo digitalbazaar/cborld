@@ -908,7 +908,10 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        compressionMap
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
       });
 
 
