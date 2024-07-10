@@ -83,6 +83,51 @@ describe('cborld', () => {
     });
   });
 
+  it('should encode xsd dateTime with string table when possible', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'arbitraryPrefix:dateTime'
+        }
+      }
+    };
+    const date = '2021-04-09T20:38:55Z';
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: date
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
+    stringTable.set('2021-04-09T20:38:55Z', 0x8001);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
+    });
+    expect(cborldBytes).equalBytes('d90601a2001980001866198001');
+  });
+
   it('should encode xsd date when using a prefix', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
@@ -168,6 +213,53 @@ describe('cborld', () => {
     });
     expect(cborldBytes).equalBytes(
       'd90601a200198000186583444d010203447a0102034475010203');
+  });
+
+  it('should compress multibase values using string table if possible', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: ['MAQID', 'zLdp', 'uAQID']
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
+    stringTable.set('MAQID', 0x8001);
+    stringTable.set('zLdp', 0x8002);
+    stringTable.set('uAQID', 0x8003);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a200198000186583198001198002198003');
   });
 
   it('should compress cryptosuite strings', async () => {
@@ -468,6 +560,53 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
+    it('should decompress multibase-typed values using string table if possible', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#multibase'
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90601a200198000186583198001198002198003');
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlTable = new Map(URL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      stringTable.set(CONTEXT_URL, 0x8000);
+      stringTable.set('MAQID', 0x8001);
+      stringTable.set('zLdp', 0x8002);
+      stringTable.set('uAQID', 0x8003);
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
     it('should decompress cryptosuite strings', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
@@ -597,6 +736,53 @@ describe('cborld', () => {
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        keywordsTable,
+        urlTable,
+        typedLiteralTable,
+        stringTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decompress xsd dateTime with string table when possible', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90601a2001980001866198001');
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlTable = new Map(URL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      stringTable.set(CONTEXT_URL, 0x8000);
+      stringTable.set('2021-04-09T20:38:55Z', 0x8001)
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
