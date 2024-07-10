@@ -450,6 +450,62 @@ describe('cborld', () => {
       'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
   });
 
+  it('should prioritize url table for URLs', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        id: '@id',
+        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'arbitraryPrefix:dateTime'
+        }
+      }
+    };
+    const date = '2021-04-09T20:38:55Z';
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      id: 'https://test.example',
+      foo: date
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlTable = new Map(URL_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set(CONTEXT_URL, 0x8000);
+    stringTable.set('https://test.example', 0x8001);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      documentLoader,
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a30019800018661a6070bb5f1868198001');
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      keywordsTable,
+      urlTable,
+      typedLiteralTable,
+      stringTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
   it('should encode http URL', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
