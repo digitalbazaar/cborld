@@ -12,3 +12,5 @@ coverage
 dist
 node_modules
 reports
+tests/testTagValues.js
+package-lock.json
