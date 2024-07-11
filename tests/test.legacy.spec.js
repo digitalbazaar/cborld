@@ -682,7 +682,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, varintValue: -1});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        varintValue: -1});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -786,7 +789,11 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, varintValue: -1});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        varintValue: -1
+      });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -868,7 +875,11 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, varintValue: -1});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        varintValue: -1
+      });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -958,7 +969,11 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, varintValue: -1});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        varintValue: -1
+      });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -1052,7 +1067,10 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({jsonldDocument, documentLoader, varintValue: -1});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        varintValue: -1});
 
       const decodedDocument = await decode({
         cborldBytes,
