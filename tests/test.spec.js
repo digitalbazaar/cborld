@@ -11,6 +11,12 @@ chai.use(chaiBytes);
 import {decode, encode} from '../lib/index.js';
 import { KEYWORDS_TABLE, STRING_TABLE, URL_SCHEME_TABLE, TYPED_LITERAL_TABLE } from '../lib/tables.js';
 
+function toHexString(byteArray) {
+  return Array.prototype.map.call(byteArray, function(byte) {
+    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
+
 describe('cborld', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document', async () => {
@@ -170,6 +176,38 @@ describe('cborld', () => {
       stringTable
     });
     expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
+  });
+
+  it('should round trip untyped strings in the string table', async () => {
+
+    const jsonldDocument = {
+      '@context': {
+        foo: "example.com/bar#foo"
+      },
+      foo: "abcde"
+    };
+
+    const keywordsTable = new Map(KEYWORDS_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
+    const stringTable = new Map(STRING_TABLE);
+    const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+    stringTable.set("abcde", 0x8000);
+    const cborldBytes = await encode({
+      jsonldDocument,
+      keywordsTable,
+      urlSchemeTable,
+      typedLiteralTable,
+      stringTable
+    });
+    console.log(toHexString(cborldBytes));
+    const decodedDocument = await decode({
+      cborldBytes,
+      keywordsTable,
+      urlSchemeTable,
+      typedLiteralTable,
+      stringTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
   });
 
   it('should compress multibase-typed values', async () => {
@@ -1829,64 +1867,6 @@ describe('cborld', () => {
           overAge: {
             '@id': 'https://w3id.org/age#overAge',
             '@type': 'http://www.w3.org/2001/XMLSchema#positiveInteger'
-          }
-        }
-      };
-      const jsonldDocument = {
-        '@context': 'https://w3id.org/age/v1',
-        overAge: 21
-      };
-
-      const documentLoader = url => {
-        if(url === AGE_CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: AGE_CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
-      const stringTable = new Map(STRING_TABLE);
-      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
-      stringTable.set(AGE_CONTEXT_URL, 0x8000);
-  
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        keywordsTable,
-        urlSchemeTable,
-        typedLiteralTable,
-        stringTable
-      });
-  
-      
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        keywordsTable,
-        urlSchemeTable,
-        typedLiteralTable,
-        stringTable
-      });
-
-      expect(decodedDocument).to.eql({
-        '@context': 'https://w3id.org/age/v1', overAge: 21
-      });
-    });
-
-    it('should use string table for non-typed literal', async () => {
-      const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
-      const AGE_CONTEXT = {
-        '@context': {
-          '@protected': true,
-          id: '@id',
-          type: '@type',
-          overAge: {
-            '@id': 'https://w3id.org/age#overAge'
           }
         }
       };
