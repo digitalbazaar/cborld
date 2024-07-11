@@ -674,10 +674,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-        });
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -779,10 +776,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-      });
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -863,10 +857,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-      });
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -955,10 +946,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-      });
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -1051,10 +1039,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-        });
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -1603,7 +1588,7 @@ describe('cborld', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           appContextMap,
-          documentLoader
+          documentLoader,
           //diagnose: console.log
         });
 
