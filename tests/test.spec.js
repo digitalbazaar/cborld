@@ -619,7 +619,7 @@ describe('cborld', () => {
     });
 
     it('should decode empty JSON-LD document bytes with varint', async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x10, 0xa0]);
       const jsonldDocument = await decode({cborldBytes});
       expect(jsonldDocument).deep.equal({});
     });
