@@ -16,12 +16,6 @@ import {
   URL_SCHEME_TABLE
 } from '../lib/tables.js';
 
-function toHexString(byteArray) {
-  return Array.prototype.map.call(byteArray, function(byte) {
-    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-  }).join('');
-}
-
 describe('cborld', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document', async () => {
@@ -37,12 +31,9 @@ describe('cborld', () => {
     it('should encode an empty JSON-LD document with passed varint',
       async () => {
         const jsonldDocument = {};
-        const compressionMap = new Map(KEYWORDS_TABLE);
         const varintValue = 16;
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue: 1,
-          compressionMap,
           varintValue
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -52,12 +43,9 @@ describe('cborld', () => {
     it('should encode an empty JSON-LD document with passed varint >1 byte',
       async () => {
         const jsonldDocument = {};
-        const compressionMap = new Map(KEYWORDS_TABLE);
         const varintValue = 128;
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue: 1,
-          compressionMap,
           varintValue
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -2200,7 +2188,7 @@ describe('cborld', () => {
       {
         name: 'empty plain data: set (1)',
         data: ['data:', 'data:'],
-        cborldHex: 'd90501a200198000186582820460820460'
+        cborldHex: 'd90601a200198000186582820460820460'
       },
       // FIXME: test and fix this use case elsewhere
       //{
@@ -2235,7 +2223,7 @@ describe('cborld', () => {
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
         ],
         cborldHex:
-          'd90501a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+          'd90601a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
       },
       {
         name: 'non-base64 data:',
