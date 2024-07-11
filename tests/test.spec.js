@@ -9,7 +9,7 @@ import {default as chaiBytes} from 'chai-bytes';
 chai.use(chaiBytes);
 
 import {decode, encode} from '../lib/index.js';
-import { KEYWORDS_TABLE, STRING_TABLE, URL_TABLE, TYPED_LITERAL_TABLE } from '../lib/tables.js';
+import { KEYWORDS_TABLE, STRING_TABLE, URL_SCHEME_TABLE, TYPED_LITERAL_TABLE } from '../lib/tables.js';
 
 describe('cborld', () => {
   describe('encode', () => {
@@ -67,7 +67,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -75,7 +75,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -112,7 +112,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -121,7 +121,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -157,7 +157,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -165,7 +165,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -199,7 +199,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -207,7 +207,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -242,7 +242,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -254,7 +254,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -293,7 +293,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -301,7 +301,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -339,7 +339,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -347,7 +347,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -387,7 +387,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -395,7 +395,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -434,7 +434,7 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -442,7 +442,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -480,7 +480,7 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -489,7 +489,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -499,7 +499,7 @@ describe('cborld', () => {
       cborldBytes,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -537,7 +537,7 @@ describe('cborld', () => {
     };
 
     const keywordsTable = new Map(KEYWORDS_TABLE);
-    const urlTable = new Map(URL_TABLE);
+    const urlSchemeTable = new Map(URL_SCHEME_TABLE);
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
@@ -545,7 +545,7 @@ describe('cborld', () => {
       jsonldDocument,
       documentLoader,
       keywordsTable,
-      urlTable,
+      urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
@@ -601,7 +601,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583444d010203447a0102034475010203');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -609,7 +609,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -645,18 +645,24 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583198001198002198003');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      let multibaseTable = new Map();
+
       stringTable.set(CONTEXT_URL, 0x8000);
-      stringTable.set('MAQID', 0x8001);
-      stringTable.set('zLdp', 0x8002);
-      stringTable.set('uAQID', 0x8003);
+      multibaseTable.set('MAQID', 0x8001);
+      multibaseTable.set('zLdp', 0x8002);
+      multibaseTable.set('uAQID', 0x8003);
+      typedLiteralTable.set(
+        'https://w3id.org/security#multibase',
+        multibaseTable
+      );
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -696,7 +702,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583010203');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -704,7 +710,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -742,7 +748,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a20019800018661a606f9900');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -750,7 +756,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -788,7 +794,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a20019800018661a6070bb5f');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -796,7 +802,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -834,7 +840,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a2001980001866198001');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -843,7 +849,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -884,7 +890,7 @@ describe('cborld', () => {
         'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
         '10bf48838a41');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -892,7 +898,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -933,7 +939,7 @@ describe('cborld', () => {
         'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
         '2d394145332d313145422d384533452d313042463438383338413431');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -941,7 +947,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -981,7 +987,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -989,7 +995,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1029,7 +1035,7 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1037,7 +1043,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1059,7 +1065,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
   
@@ -1067,7 +1073,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1076,7 +1082,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1142,7 +1148,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1151,7 +1157,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1161,7 +1167,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1189,7 +1195,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
   
@@ -1197,7 +1203,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1207,7 +1213,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1244,7 +1250,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1253,7 +1259,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1263,7 +1269,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1299,7 +1305,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
   
@@ -1307,7 +1313,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1315,7 +1321,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1361,7 +1367,7 @@ describe('cborld', () => {
         };
 
         const keywordsTable = new Map(KEYWORDS_TABLE);
-        const urlTable = new Map(URL_TABLE);
+        const urlSchemeTable = new Map(URL_SCHEME_TABLE);
         const stringTable = new Map(STRING_TABLE);
         const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
@@ -1370,7 +1376,7 @@ describe('cborld', () => {
           jsonldDocument,
           documentLoader,
           keywordsTable,
-          urlTable,
+          urlSchemeTable,
           typedLiteralTable,
           stringTable
         });
@@ -1380,7 +1386,7 @@ describe('cborld', () => {
           cborldBytes,
           documentLoader,
           keywordsTable,
-          urlTable,
+          urlSchemeTable,
           typedLiteralTable,
           stringTable
         });
@@ -1415,7 +1421,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
   
@@ -1423,7 +1429,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1433,7 +1439,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1477,7 +1483,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1486,7 +1492,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1496,7 +1502,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1537,7 +1543,7 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
   
@@ -1545,7 +1551,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1555,7 +1561,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1605,7 +1611,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1614,7 +1620,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1624,7 +1630,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1685,7 +1691,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
@@ -1694,7 +1700,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1704,7 +1710,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1797,14 +1803,14 @@ describe('cborld', () => {
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1843,7 +1849,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set(AGE_CONTEXT_URL, 0x8000);
@@ -1852,7 +1858,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1862,7 +1868,65 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+
+      expect(decodedDocument).to.eql({
+        '@context': 'https://w3id.org/age/v1', overAge: 21
+      });
+    });
+
+    it('should use string table for non-typed literal', async () => {
+      const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
+      const AGE_CONTEXT = {
+        '@context': {
+          '@protected': true,
+          id: '@id',
+          type: '@type',
+          overAge: {
+            '@id': 'https://w3id.org/age#overAge'
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': 'https://w3id.org/age/v1',
+        overAge: 21
+      };
+
+      const documentLoader = url => {
+        if(url === AGE_CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: AGE_CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      stringTable.set(AGE_CONTEXT_URL, 0x8000);
+  
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+  
+      
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        keywordsTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1908,7 +1972,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set('https://w3id.org/did/v0.11', 0x8744);
@@ -1917,7 +1981,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1934,7 +1998,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -1978,7 +2042,7 @@ describe('cborld', () => {
       };
 
       const keywordsTable = new Map(KEYWORDS_TABLE);
-      const urlTable = new Map(URL_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
       const stringTable = new Map(STRING_TABLE);
       const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
       stringTable.set('https://w3id.org/did/v0.11', 0x8744);
@@ -1987,7 +2051,7 @@ describe('cborld', () => {
         jsonldDocument,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -2004,7 +2068,7 @@ describe('cborld', () => {
         cborldBytes,
         documentLoader,
         keywordsTable,
-        urlTable,
+        urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
@@ -2141,7 +2205,7 @@ describe('cborld', () => {
         };
 
         const keywordsTable = new Map(KEYWORDS_TABLE);
-        const urlTable = new Map(URL_TABLE);
+        const urlSchemeTable = new Map(URL_SCHEME_TABLE);
         const stringTable = new Map(STRING_TABLE);
         const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
         stringTable.set(DATA_CONTEXT_URL, 0x8000);
@@ -2149,7 +2213,7 @@ describe('cborld', () => {
           jsonldDocument,
           documentLoader,
           keywordsTable,
-          urlTable,
+          urlSchemeTable,
           typedLiteralTable,
           stringTable
         });
@@ -2163,7 +2227,7 @@ describe('cborld', () => {
           cborldBytes,
           documentLoader,
           keywordsTable,
-          urlTable,
+          urlSchemeTable,
           typedLiteralTable,
           stringTable
         });
