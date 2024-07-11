@@ -1,5 +1,29 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 8.0.0 - 2024-mm-dd
+
+### Added
+- Add TypedLiteral, UntypedLiteral encoders and decoders to more generally
+  handle type-specific behavior such as cryptosuite string encoding as well
+  as pass through uncompressible untyped values.
+
+### CHANGED
+- Restructure term registry system to be more general with four tables which
+  can all be passed by the user during encoding and decoding:
+    - keywordsTable: for JSON-LD keywords (e.g. '@context', '@type')
+    - stringTable: for JSON-LD string values. This subsumes 'appContextMap',
+      as context strings can be included here, but includes arbitrary string
+      values as well.
+    - urlSchemeTable: for URL schemes (i.e. 'http://')
+    - typedLiteralTable: for values associated with JSON-LD types. This
+      subsumes type-specific codecs like the cryptosuite codec.
+- Restructure CBOR-LD tag system to use a range of tags where
+  the tag value informs what values for the tables above should be used
+  via a registry. Legacy tags (0x0501) are still supported, and new tags are
+  in the range 0x0600-0x06FF. In addition, the tag value is part of a varint
+  that begins the CBORLD paylaod if necessary that allows for more registry
+  entries than the number of tags in that range.
+
 ## 7.0.0 - 2024-07-01
 
 ### Added

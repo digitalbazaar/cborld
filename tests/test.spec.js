@@ -26,7 +26,10 @@ describe('cborld', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document', async () => {
       const jsonldDocument = {};
-      const cborldBytes = await encode({jsonldDocument});
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1
+      });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90601a0');
     });
@@ -38,6 +41,7 @@ describe('cborld', () => {
         const varintValue = 16;
         const cborldBytes = await encode({
           jsonldDocument,
+          varintValue: 1,
           compressionMap,
           varintValue
         });
@@ -52,6 +56,7 @@ describe('cborld', () => {
         const varintValue = 128;
         const cborldBytes = await encode({
           jsonldDocument,
+          varintValue: 1,
           compressionMap,
           varintValue
         });
@@ -94,6 +99,7 @@ describe('cborld', () => {
       stringTable.set(CONTEXT_URL, 0x8000);
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -140,6 +146,7 @@ describe('cborld', () => {
     stringTable.set('2021-04-09T20:38:55Z', 0x8001);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -184,6 +191,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -209,12 +217,12 @@ describe('cborld', () => {
     stringTable.set('abcde', 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       keywordsTable,
       urlSchemeTable,
       typedLiteralTable,
       stringTable
     });
-    console.log(toHexString(cborldBytes));
     const decodedDocument = await decode({
       cborldBytes,
       keywordsTable,
@@ -258,6 +266,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -306,6 +315,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -353,6 +363,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -399,6 +410,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -447,6 +459,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -494,6 +507,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -541,6 +555,7 @@ describe('cborld', () => {
     stringTable.set('https://test.example', 0x8001);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -597,6 +612,7 @@ describe('cborld', () => {
     stringTable.set(CONTEXT_URL, 0x8000);
     const cborldBytes = await encode({
       jsonldDocument,
+      varintValue: 1,
       documentLoader,
       keywordsTable,
       urlSchemeTable,
@@ -1125,6 +1141,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         keywordsTable,
         urlSchemeTable,
         typedLiteralTable,
@@ -1157,12 +1174,12 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         keywordsTable,
         urlSchemeTable,
         typedLiteralTable,
         stringTable
       });
-      console.log(toHexString(cborldBytes));
       const decodedDocument = await decode({
         cborldBytes,
         keywordsTable,
@@ -1194,6 +1211,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1237,6 +1255,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader
       });
 
@@ -1278,6 +1297,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1323,6 +1343,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1378,6 +1399,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1431,6 +1453,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1494,6 +1517,7 @@ describe('cborld', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
+          varintValue: 1,
           documentLoader,
           keywordsTable,
           urlSchemeTable,
@@ -1546,6 +1570,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1608,6 +1633,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1666,6 +1692,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1734,6 +1761,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1813,6 +1841,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -1929,7 +1958,6 @@ describe('cborld', () => {
         stringTable
       });
 
-      //console.log(decodedDocument);
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
@@ -1971,6 +1999,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
+        varintValue: 1,
         keywordsTable,
         urlSchemeTable,
         typedLiteralTable,
@@ -2034,6 +2063,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -2104,6 +2134,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        varintValue: 1,
         documentLoader,
         keywordsTable,
         urlSchemeTable,
@@ -2289,14 +2320,13 @@ describe('cborld', () => {
         stringTable.set(DATA_CONTEXT_URL, 0x8000);
         const cborldBytes = await encode({
           jsonldDocument,
+          varintValue: 1,
           documentLoader,
           keywordsTable,
           urlSchemeTable,
           typedLiteralTable,
           stringTable
         });
-
-        //console.log(d.name, _uint8ArrayToHex(cborldBytes));
 
         expect(cborldBytes).equalBytes(d.cborldHex);
 
