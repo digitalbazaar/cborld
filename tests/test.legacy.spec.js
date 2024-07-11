@@ -14,7 +14,7 @@ describe('cborld', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document', async () => {
       const jsonldDocument = {};
-      const cborldBytes = await encode({jsonldDocument, varintValue: -1});
+      const cborldBytes = await encode({jsonldDocument});
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90501a0');
     });
@@ -51,8 +51,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
       expect(cborldBytes).equalBytes('d90501a20019800018661a6070bb5f');
     });
@@ -90,8 +89,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes('d90501a20019800018661a606f9900');
   });
@@ -126,8 +124,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes(
       'd90501a200198000186583444d010203447a0102034475010203');
@@ -167,8 +164,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes('d90501a200198000186583010203');
   });
@@ -207,8 +203,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes(
       'd90501a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
@@ -249,8 +244,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes(
       'd90501a30019800018661a6070bb5f1868820378243735454633464343' +
@@ -291,8 +285,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes(
       'd90501a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
@@ -332,8 +325,7 @@ describe('cborld', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       documentLoader,
-      appContextMap,
-      varintValue: -1
+      appContextMap
     });
     expect(cborldBytes).equalBytes(
       'd90501a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
@@ -684,8 +676,8 @@ describe('cborld', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1});
+        documentLoader
+        });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -719,8 +711,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       const decodedDocument = await decode({
@@ -757,8 +748,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
 
       const decodedDocument = await decode({
@@ -791,8 +781,7 @@ describe('cborld', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       const decodedDocument = await decode({
@@ -835,8 +824,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
 
       const decodedDocument = await decode({
@@ -877,8 +865,7 @@ describe('cborld', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       const decodedDocument = await decode({
@@ -930,8 +917,7 @@ describe('cborld', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           documentLoader,
-          appContextMap,
-          varintValue: -1
+          appContextMap
         });
 
         const decodedDocument = await decode({
@@ -971,8 +957,7 @@ describe('cborld', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       const decodedDocument = await decode({
@@ -1022,8 +1007,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
 
       const decodedDocument = await decode({
@@ -1069,8 +1053,8 @@ describe('cborld', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1});
+        documentLoader
+        });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -1125,8 +1109,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
 
       const decodedDocument = await decode({
@@ -1194,8 +1177,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        appContextMap,
-        varintValue: -1
+        appContextMap
       });
 
       const decodedDocument = await decode({
@@ -1332,8 +1314,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       const decodedDocument = await decode({
@@ -1386,8 +1367,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         appContextMap,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       expect(cborldBytes).equalBytes(
@@ -1447,8 +1427,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         appContextMap,
-        documentLoader,
-        varintValue: -1
+        documentLoader
       });
 
       expect(cborldBytes).equalBytes(
@@ -1624,8 +1603,7 @@ describe('cborld', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           appContextMap,
-          documentLoader,
-          varintValue: -1
+          documentLoader
           //diagnose: console.log
         });
 
