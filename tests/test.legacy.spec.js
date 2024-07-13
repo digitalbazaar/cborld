@@ -1,5 +1,5 @@
 /*!
-* Copyright (c) 2020-2023 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2020-2024 Digital Bazaar, Inc. All rights reserved.
 */
 import {
   default as chai,
