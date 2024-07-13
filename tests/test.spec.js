@@ -677,7 +677,7 @@ describe('cborld', () => {
     });
 
     it(
-      'should decompress multibase-typed values using string table if possible',
+      'should decompress multibase-typed values using typedLiteralTable',
       async () => {
         const CONTEXT_URL = 'urn:foo';
         const CONTEXT = {
@@ -725,6 +725,55 @@ describe('cborld', () => {
           documentLoader,
           keywordsTable,
           urlSchemeTable,
+          typedLiteralTable,
+          stringTable
+        });
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+    it(
+      'should round trip multibase-typed values using string table if possible',
+      async () => {
+        const CONTEXT_URL = 'urn:foo';
+        const CONTEXT = {
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        };
+        const jsonldDocument = {
+          '@context': CONTEXT_URL,
+          foo: 'MAQID'
+        };
+
+        const documentLoader = url => {
+          if(url === CONTEXT_URL) {
+            return {
+              contextUrl: null,
+              document: CONTEXT,
+              documentUrl: url
+            };
+          }
+          throw new Error(`Refused to load URL "${url}".`);
+        };
+
+        const stringTable = new Map(STRING_TABLE);
+        const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+        stringTable.set(CONTEXT_URL, 0x8000);
+        stringTable.set('MAQID', 0x8001);
+
+        const cborldBytes = await encode({
+          jsonldDocument,
+          varintValue: 1,
+          documentLoader,
+          typedLiteralTable,
+          stringTable
+        });
+
+        const decodedDocument = await decode({
+          cborldBytes,
+          documentLoader,
           typedLiteralTable,
           stringTable
         });
@@ -1240,16 +1289,21 @@ describe('cborld', () => {
         }
         throw new Error(`Refused to load URL "${url}".`);
       };
-
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+      const stringTable = new Map(STRING_TABLE);
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
+        typedLiteralTable,
+        stringTable,
         documentLoader
       });
 
       const decodedDocument = await decode({
         cborldBytes,
-        documentLoader
+        documentLoader,
+        typedLiteralTable,
+        stringTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
