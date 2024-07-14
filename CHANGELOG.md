@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.0.0 - 2024-mm-dd
+## 7.1.0 - 2024-mm-dd
 
 ### Added
 - Added support for passing through (without semantic compression) terms not
