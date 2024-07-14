@@ -23,7 +23,7 @@
   the tag value informs what values for the tables above should be used
   via a registry. Legacy tags (0x0501) are still supported, and new tags are
   in the range 0x0600-0x06FF. In addition, the tag value is part of a varint
-  that begins the CBORLD paylaod if necessary that allows for more registry
+  that begins the CBOR-LD paylaod if necessary that allows for more registry
   entries than the number of tags in that range.
 
 ## 7.0.0 - 2024-07-01
