@@ -243,7 +243,7 @@ describe('cborld', () => {
       'd90601a200198000186583444d010203447a0102034475010203');
   });
 
-  it('should compress multibase values using string table if possible',
+  it('should compress multibase values using type table if possible',
     async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
@@ -271,11 +271,15 @@ describe('cborld', () => {
       };
 
       const stringTable = new Map(STRING_TABLE);
-      const typeTable = new Map(TYPE_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
-      stringTable.set('MAQID', 0x8001);
-      stringTable.set('zLdp', 0x8002);
-      stringTable.set('uAQID', 0x8003);
+      const typeTable = new Map(TYPE_TABLE);
+      const multibaseTable = new Map();
+      multibaseTable.set('MAQID', 0x8001);
+      multibaseTable.set('zLdp', 0x8002);
+      multibaseTable.set('uAQID', 0x8003);
+      typeTable.set(
+        'https://w3id.org/security#multibase',
+        multibaseTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
@@ -284,6 +288,8 @@ describe('cborld', () => {
         typeTable,
         stringTable
       });
+      console.log('result', Buffer.from(cborldBytes).toString('hex'));
+        'd90601a2006775726e3a666f6f186583198001198002198003';
       expect(cborldBytes).equalBytes(
         'd90601a200198000186583198001198002198003');
     });
@@ -620,8 +626,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it(
-      'should decompress multibase-typed values using typeTable',
+    it('should decompress multibase-typed values using type table',
       async () => {
         const CONTEXT_URL = 'urn:foo';
         const CONTEXT = {
@@ -660,8 +665,7 @@ describe('cborld', () => {
         multibaseTable.set('uAQID', 0x8003);
         typeTable.set(
           'https://w3id.org/security#multibase',
-          multibaseTable
-        );
+          multibaseTable);
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
@@ -671,7 +675,7 @@ describe('cborld', () => {
         expect(decodedDocument).to.eql(jsonldDocument);
       });
     it(
-      'should round trip multibase-typed values using string table if possible',
+      'should round trip multibase-typed values using type table if possible',
       async () => {
         const CONTEXT_URL = 'urn:foo';
         const CONTEXT = {
@@ -699,9 +703,13 @@ describe('cborld', () => {
         };
 
         const stringTable = new Map(STRING_TABLE);
-        const typeTable = new Map(TYPE_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
-        stringTable.set('MAQID', 0x8001);
+        const typeTable = new Map(TYPE_TABLE);
+        const multibaseTable = new Map();
+        multibaseTable.set('MAQID', 0x8001);
+        typeTable.set(
+          'https://w3id.org/security#multibase',
+          multibaseTable);
 
         const cborldBytes = await encode({
           jsonldDocument,
