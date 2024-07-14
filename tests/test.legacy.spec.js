@@ -1474,12 +1474,11 @@ describe('cborld', () => {
         data: ['data:', 'data:'],
         cborldHex: 'd90501a200198000186582820460820460'
       },
-      // FIXME: test and fix this use case elsewhere
-      //{
-      //  name: 'empty plain data: set (2)',
-      //  data: [0, 'data:'],
-      //  cborldHex: 'd90501a20019800018658200820460'
-      //},
+      {
+        name: 'empty plain data: set (2)',
+        data: ['other:url', 'data:'],
+        cborldHex: 'd90501a200198000186582696f746865723a75726c820460'
+      },
       {
         name: 'empty base64 data:',
         data: 'data:;base64,',
