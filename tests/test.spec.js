@@ -20,7 +20,7 @@ describe('cborld', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1
+        registryEntryId: 1
       });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90601a0');
@@ -29,10 +29,10 @@ describe('cborld', () => {
     it('should encode an empty JSON-LD document with passed varint',
       async () => {
         const jsonldDocument = {};
-        const varintValue = 16;
+        const registryEntryId = 16;
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue
+          registryEntryId
         });
         expect(cborldBytes).instanceof(Uint8Array);
         expect(cborldBytes).equalBytes('d90610a0');
@@ -41,10 +41,10 @@ describe('cborld', () => {
     it('should encode an empty JSON-LD document with passed varint >1 byte',
       async () => {
         const jsonldDocument = {};
-        const varintValue = 128;
+        const registryEntryId = 128;
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue
+          registryEntryId
         });
         expect(cborldBytes).instanceof(Uint8Array);
         expect(cborldBytes).equalBytes('d906808101a0');
@@ -86,7 +86,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -134,7 +134,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -177,7 +177,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -200,7 +200,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
     const decodedDocument = await decode({
@@ -226,7 +226,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
     const decodedDocument = await decode({
@@ -251,7 +251,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -285,7 +285,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -319,7 +319,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -352,7 +352,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
     const decodedDocument = await decode({
@@ -380,7 +380,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -413,7 +413,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -449,7 +449,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -486,7 +486,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -525,7 +525,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       typeTable
     });
 
@@ -576,7 +576,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -627,7 +627,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -673,7 +673,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -718,7 +718,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -765,7 +765,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -812,7 +812,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -862,7 +862,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -914,7 +914,7 @@ describe('cborld', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      varintValue: 1,
+      registryEntryId: 1,
       documentLoader,
       typeTable
     });
@@ -1079,7 +1079,7 @@ describe('cborld', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue: 1,
+          registryEntryId: 1,
           documentLoader,
           typeTable
         });
@@ -1478,7 +1478,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -1503,7 +1503,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -1550,7 +1550,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -1581,7 +1581,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -1605,7 +1605,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
       const decodedDocument = await decode({
@@ -1634,7 +1634,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -1674,7 +1674,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable,
         documentLoader
       });
@@ -1718,7 +1718,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -1756,7 +1756,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -1806,7 +1806,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -1852,7 +1852,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -1910,7 +1910,7 @@ describe('cborld', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue: 1,
+          registryEntryId: 1,
           documentLoader,
           typeTable
         });
@@ -1955,7 +1955,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2012,7 +2012,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2063,7 +2063,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2126,7 +2126,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2200,7 +2200,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2348,7 +2348,7 @@ describe('cborld', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
-        varintValue: 1,
+        registryEntryId: 1,
         typeTable
       });
 
@@ -2406,7 +2406,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2471,7 +2471,7 @@ describe('cborld', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        varintValue: 1,
+        registryEntryId: 1,
         documentLoader,
         typeTable
       });
@@ -2651,7 +2651,7 @@ describe('cborld', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
-          varintValue: 1,
+          registryEntryId: 1,
           documentLoader,
           typeTable
         });
