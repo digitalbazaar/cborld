@@ -288,8 +288,6 @@ describe('cborld', () => {
         typeTable,
         stringTable
       });
-      console.log('result', Buffer.from(cborldBytes).toString('hex'));
-        'd90601a2006775726e3a666f6f186583198001198002198003';
       expect(cborldBytes).equalBytes(
         'd90601a200198000186583198001198002198003');
     });
