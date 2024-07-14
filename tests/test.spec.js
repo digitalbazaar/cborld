@@ -92,7 +92,7 @@ describe('cborld', () => {
     });
   });
 
-  it('should encode xsd dateTime with string table when possible', async () => {
+  it('should encode xsd dateTime with type table when possible', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
       '@context': {
@@ -123,7 +123,9 @@ describe('cborld', () => {
     const stringTable = new Map(STRING_TABLE);
     const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
-    stringTable.set('2021-04-09T20:38:55Z', 0x8001);
+    typedLiteralTable.set(
+      'http://www.w3.org/2001/XMLSchema#dateTime',
+      new Map([['2021-04-09T20:38:55Z', 0x8001]]));
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
@@ -131,7 +133,7 @@ describe('cborld', () => {
       typedLiteralTable,
       stringTable
     });
-    expect(cborldBytes).equalBytes('d90601a2001980001866198001');
+    expect(cborldBytes).equalBytes('d90601a2001980001866428001');
   });
 
   it('should encode xsd date when using a prefix', async () => {
@@ -846,7 +848,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it('should decompress xsd dateTime with string table when possible',
+    it('should decompress xsd dateTime with type table when possible',
       async () => {
         const CONTEXT_URL = 'urn:foo';
         const CONTEXT = {
@@ -876,11 +878,13 @@ describe('cborld', () => {
         };
 
         const cborldBytes = _hexToUint8Array(
-          'd90601a2001980001866198001');
+          'd90601a2001980001866428001');
         const stringTable = new Map(STRING_TABLE);
         const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
-        stringTable.set('2021-04-09T20:38:55Z', 0x8001);
+        typedLiteralTable.set(
+          'http://www.w3.org/2001/XMLSchema#dateTime',
+          new Map([['2021-04-09T20:38:55Z', 0x8001]]));
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
