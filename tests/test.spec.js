@@ -192,19 +192,20 @@ describe('cborld', () => {
       foo: 'abcde'
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set('abcde', 0x8000);
+
+    const noneTable = new Map();
+    noneTable.set('abcde', 0x8000);
+    typeTable.set('none', noneTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
-      typeTable,
-      stringTable
+      typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -518,24 +519,26 @@ describe('cborld', () => {
     };
     const typeTable = new Map(TYPE_TABLE);
 
-    const stringTable = new Map(STRING_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
-    stringTable.set('https://test.example', 0x8001);
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const urlTable = new Map(STRING_TABLE);
+    urlTable.set('https://test.example', 0x8001);
+    typeTable.set('url', urlTable);
 
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f1868198001');
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -638,14 +641,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -682,8 +685,9 @@ describe('cborld', () => {
 
         const typeTable = new Map(TYPE_TABLE);
 
-        const stringTable = new Map(STRING_TABLE);
-        stringTable.set(CONTEXT_URL, 0x8000);
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
         const multibaseTable = new Map();
         multibaseTable.set('MAQID', 0x8001);
@@ -696,8 +700,7 @@ describe('cborld', () => {
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
         expect(decodedDocument).to.eql(jsonldDocument);
       });
@@ -731,8 +734,9 @@ describe('cborld', () => {
 
         const typeTable = new Map(TYPE_TABLE);
 
-        const stringTable = new Map(STRING_TABLE);
-        stringTable.set(CONTEXT_URL, 0x8000);
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
         const multibaseTable = new Map();
         multibaseTable.set('MAQID', 0x8001);
@@ -744,15 +748,13 @@ describe('cborld', () => {
           jsonldDocument,
           varintValue: 1,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
 
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
         expect(decodedDocument).to.eql(jsonldDocument);
       });
@@ -791,14 +793,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -835,14 +837,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -879,14 +881,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -924,8 +926,9 @@ describe('cborld', () => {
 
         const typeTable = new Map(TYPE_TABLE);
 
-        const stringTable = new Map(STRING_TABLE);
-        stringTable.set(CONTEXT_URL, 0x8000);
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
         typeTable.set(
           'http://www.w3.org/2001/XMLSchema#dateTime',
@@ -934,8 +937,7 @@ describe('cborld', () => {
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
         expect(decodedDocument).to.eql(jsonldDocument);
       });
@@ -976,14 +978,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1024,14 +1026,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1071,14 +1073,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1118,14 +1120,14 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1139,20 +1141,18 @@ describe('cborld', () => {
         '@type': 'bar'
       };
 
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1167,20 +1167,18 @@ describe('cborld', () => {
         type: ['Type1', 'Type2'],
       };
 
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1217,20 +1215,18 @@ describe('cborld', () => {
         }]
       };
 
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1251,20 +1247,18 @@ describe('cborld', () => {
         ]
       };
 
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1278,19 +1272,17 @@ describe('cborld', () => {
         'ex:foo': 'bar'
       };
 
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
       const decodedDocument = await decode({
         cborldBytes,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1309,22 +1301,20 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1352,20 +1342,18 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
       const typeTable = new Map(TYPE_TABLE);
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         typeTable,
-        stringTable,
         documentLoader
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1395,22 +1383,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1435,22 +1422,20 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1486,22 +1471,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1534,21 +1518,19 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1593,22 +1575,21 @@ describe('cborld', () => {
 
         const typeTable = new Map(TYPE_TABLE);
 
-        const stringTable = new Map(STRING_TABLE);
-        stringTable.set(CONTEXT_URL, 0x8000);
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
         const cborldBytes = await encode({
           jsonldDocument,
           varintValue: 1,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
 
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
         expect(decodedDocument).to.eql(jsonldDocument);
       });
@@ -1640,22 +1621,20 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1698,22 +1677,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1751,22 +1729,20 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1815,22 +1791,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1890,22 +1865,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1995,13 +1969,12 @@ describe('cborld', () => {
         // eslint-disable-next-line max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
-      const stringTable = new Map(STRING_TABLE);
+      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -2038,22 +2011,21 @@ describe('cborld', () => {
 
       const typeTable = new Map(TYPE_TABLE);
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(AGE_CONTEXT_URL, 0x8000);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(AGE_CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         documentLoader,
         varintValue: 1,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(decodedDocument).to.eql({
@@ -2096,16 +2068,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
-      stringTable.set('https://w3id.org/did/v0.11', 0x8744);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set('https://w3id.org/did/v0.11', 0x8744);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(cborldBytes).equalBytes(
@@ -2119,8 +2092,7 @@ describe('cborld', () => {
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -2161,16 +2133,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
-      stringTable.set('https://w3id.org/did/v0.11', 0x8744);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set('https://w3id.org/did/v0.11', 0x8744);
+      typeTable.set('context', contextTable);
 
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(cborldBytes).equalBytes(
@@ -2184,8 +2157,7 @@ describe('cborld', () => {
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
 
       expect(decodedDocument).to.eql(jsonldDocument);
@@ -2344,15 +2316,15 @@ describe('cborld', () => {
 
         const typeTable = new Map(TYPE_TABLE);
 
-        const stringTable = new Map(STRING_TABLE);
-        stringTable.set(DATA_CONTEXT_URL, 0x8000);
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(DATA_CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
         const cborldBytes = await encode({
           jsonldDocument,
           varintValue: 1,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
 
         expect(cborldBytes).equalBytes(d.cborldHex);
@@ -2360,8 +2332,7 @@ describe('cborld', () => {
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable,
-          stringTable
+          typeTable
         });
 
         expect(decodedDocument).to.eql(jsonldDocument);
