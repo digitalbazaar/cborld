@@ -3,20 +3,22 @@
 ## 8.0.0 - 2024-mm-dd
 
 ### Added
-- Add TypedLiteral, UntypedLiteral encoders and decoders to more generally
-  handle type-specific behavior such as cryptosuite string encoding as well
-  as pass through uncompressible untyped values.
+- Added support for passing through (without semantic compression) terms not
+  defined in contexts and other plain values.
 
-### CHANGED
-- Restructure term registry system to be more general with four tables which
-  can all be passed by the user during encoding and decoding:
-    - keywordsTable: for JSON-LD keywords (e.g. '@context', '@type')
-    - stringTable: for JSON-LD string values. This subsumes 'appContextMap',
-      as context strings can be included here, but includes arbitrary string
-      values as well.
-    - urlSchemeTable: for URL schemes (i.e. 'http://')
-    - typedLiteralTable: for values associated with JSON-LD types. This
-      subsumes type-specific codecs like the cryptosuite codec.
+### Changed
+- Restructure term registry system to be more general with a type table. The
+  type table expresses type-namespaced tables of values that can be used when encoding and decoding. This type table (of tables) can be passed by the user
+  when encoding and decoding and will be given preference over any processing-
+  mode-specific codecs (such as multibase codecs).
+  The supported types include:
+    - context: for JSON-LD context URLs, this subsumes the old 'appContextMap'
+      and any contexts expressed in the old arbitrary string table as well.
+    - url: for any JSON-LD URL value, such as values associated with `@id`
+      or `@type` (or their aliases) JSON keys.
+    - none: for any untyped or plain literal values.
+    - <any JSON-LD type expressed as URL>: for any values associated with
+      any custom JSON-LD types.
 - Restructure CBOR-LD tag system to use a range of tags where
   the tag value informs what values for the tables above should be used
   via a registry. Legacy tags (0x0501) are still supported, and new tags are
