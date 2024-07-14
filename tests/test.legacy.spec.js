@@ -660,6 +660,29 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
+    it('should round trip native JSON types', async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
     it('should round trip with embedded context', async () => {
       const CONTEXT = {
         '@context': {

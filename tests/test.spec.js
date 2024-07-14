@@ -184,7 +184,7 @@ describe('cborld', () => {
     expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
   });
 
-  it('should round trip untyped strings in the string table', async () => {
+  it('should round trip untyped strings in the type table', async () => {
     const jsonldDocument = {
       '@context': {
         foo: 'example.com/bar#foo'
@@ -203,6 +203,272 @@ describe('cborld', () => {
       varintValue: 1,
       typeTable
     });
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip plain int and string with no conflicts', async () => {
+    const jsonldDocument = {
+      '@context': {
+        foo: 'example.com/bar#foo'
+      },
+      foo: [100, 'abcde']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const noneTable = new Map();
+    noneTable.set('abcde', 100);
+    typeTable.set('none', noneTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip plain native JSON types', async () => {
+    const CONTEXT = {
+      '@context': {
+        foo: 'ex:foo'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    expect(cborldBytes).equalBytes(
+      'd90601a200a163666f6f6665783a666f6f186588200001' +
+      'f5f4fb3ff199999999999afbbff199999999999a6474657874');
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip plain native JSON types w/ empty none table',
+    async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const noneTable = new Map();
+      typeTable.set('none', noneTable);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        typeTable
+      });
+
+      expect(cborldBytes).equalBytes(
+        'd90601a200a163666f6f6665783a666f6f186588200001' +
+        'f5f4fb3ff199999999999afbbff199999999999a6474657874');
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+  it('should round trip plain native JSON types w/ none table', async () => {
+    const CONTEXT = {
+      '@context': {
+        foo: 'ex:foo'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const noneTable = new Map();
+    noneTable.set('text', 1);
+    typeTable.set('none', noneTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    expect(cborldBytes).equalBytes(
+      'd90601a200a163666f6f6665783a666f6f186588200001' +
+      'f5f4fb3ff199999999999afbbff199999999999a4101');
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip typed int and string with no conflicts', async () => {
+    const jsonldDocument = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'ex:SomeType'
+        }
+      },
+      foo: [100, 'abcde']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const noneTable = new Map();
+    noneTable.set('abcde', 100);
+    typeTable.set('none', noneTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip typed native JSON types', async () => {
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'ex:SomeType'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    expect(cborldBytes).equalBytes(
+      'd90601a200a163666f6fa2634069646665783a666f6f65' +
+      '40747970656b65783a536f6d6554797065186588200001' +
+      'f5f4fb3ff199999999999afbbff199999999999a647465' +
+      '7874');
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it.skip('should round trip typed native JSON types w/ empty subtable',
+    async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'ex:SomeType'
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const subTable = new Map();
+      typeTable.set('ex:SomeType', subTable);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        typeTable
+      });
+
+      // FIXME: expect integers to be expressed as bytes instead
+      expect(cborldBytes).equalBytes(
+        'd90601a200a163666f6fa2634069646665783a666f6f65' +
+        '40747970656b65783a536f6d6554797065186588200001' +
+        'f5f4fb3ff199999999999afbbff199999999999a647465' +
+        '7874');
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+  it.skip('should round trip typed native JSON types w/ used subtable', async () => {
+    const CONTEXT = {
+      '@context': {
+        '@id': 'ex:foo',
+        '@type': 'ex:SomeType'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const subTable = new Map();
+    subTable.set('text', 1);
+    typeTable.set('ex:SomeType', subTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    // FIXME: integers to be expressed as bytes instead
+    expect(cborldBytes).equalBytes(
+      'd90601a200a163666f6fa2634069646665783a666f6f65' +
+      '40747970656b65783a536f6d6554797065186588200001' +
+      'f5f4fb3ff199999999999afbbff199999999999a647465' +
+      '7874');
+
     const decodedDocument = await decode({
       cborldBytes,
       typeTable
