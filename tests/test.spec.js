@@ -78,15 +78,17 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(cborldBytes).equalBytes('d90601a20019800018661a6070bb5f');
     });
@@ -120,18 +122,21 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     typeTable.set(
       'http://www.w3.org/2001/XMLSchema#dateTime',
       new Map([['2021-04-09T20:38:55Z', 0x8001]]));
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes('d90601a2001980001866428001');
   });
@@ -164,21 +169,22 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
   });
 
   it('should round trip untyped strings in the string table', async () => {
-
     const jsonldDocument = {
       '@context': {
         foo: 'example.com/bar#foo'
@@ -229,15 +235,17 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a200198000186583444d010203447a0102034475010203');
@@ -270,9 +278,12 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
-      stringTable.set(CONTEXT_URL, 0x8000);
       const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
       const multibaseTable = new Map();
       multibaseTable.set('MAQID', 0x8001);
       multibaseTable.set('zLdp', 0x8002);
@@ -285,8 +296,7 @@ describe('cborld', () => {
         jsonldDocument,
         varintValue: 1,
         documentLoader,
-        typeTable,
-        stringTable
+        typeTable
       });
       expect(cborldBytes).equalBytes(
         'd90601a200198000186583198001198002198003');
@@ -322,15 +332,17 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes('d90601a200198000186583010203');
   });
@@ -365,15 +377,17 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
@@ -410,15 +424,17 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
@@ -454,15 +470,18 @@ describe('cborld', () => {
       }
       throw new Error(`Refused to load URL "${url}".`);
     };
-    const stringTable = new Map(STRING_TABLE);
+
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
@@ -497,10 +516,12 @@ describe('cborld', () => {
       }
       throw new Error(`Refused to load URL "${url}".`);
     };
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
+
+    const stringTable = new Map(STRING_TABLE);
     stringTable.set(CONTEXT_URL, 0x8000);
     stringTable.set('https://test.example', 0x8001);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
@@ -549,15 +570,17 @@ describe('cborld', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const stringTable = new Map(STRING_TABLE);
     const typeTable = new Map(TYPE_TABLE);
-    stringTable.set(CONTEXT_URL, 0x8000);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
     const cborldBytes = await encode({
       jsonldDocument,
       varintValue: 1,
       documentLoader,
-      typeTable,
-      stringTable
+      typeTable
     });
     expect(cborldBytes).equalBytes(
       'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
@@ -612,9 +635,12 @@ describe('cborld', () => {
 
       const cborldBytes = _hexToUint8Array(
         'd90601a200198000186583444d010203447a0102034475010203');
-      const stringTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -653,17 +679,20 @@ describe('cborld', () => {
 
         const cborldBytes = _hexToUint8Array(
           'd90601a200198000186583198001198002198003');
-        const stringTable = new Map(STRING_TABLE);
-        const typeTable = new Map(TYPE_TABLE);
-        const multibaseTable = new Map();
 
+        const typeTable = new Map(TYPE_TABLE);
+
+        const stringTable = new Map(STRING_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
+
+        const multibaseTable = new Map();
         multibaseTable.set('MAQID', 0x8001);
         multibaseTable.set('zLdp', 0x8002);
         multibaseTable.set('uAQID', 0x8003);
         typeTable.set(
           'https://w3id.org/security#multibase',
           multibaseTable);
+
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
@@ -700,9 +729,11 @@ describe('cborld', () => {
           throw new Error(`Refused to load URL "${url}".`);
         };
 
+        const typeTable = new Map(TYPE_TABLE);
+
         const stringTable = new Map(STRING_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
-        const typeTable = new Map(TYPE_TABLE);
+
         const multibaseTable = new Map();
         multibaseTable.set('MAQID', 0x8001);
         typeTable.set(
@@ -756,11 +787,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const cborldBytes = _hexToUint8Array(
-        'd90601a200198000186583010203');
-      const stringTable = new Map(STRING_TABLE);
+      const cborldBytes = _hexToUint8Array('d90601a200198000186583010203');
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -798,11 +831,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const cborldBytes = _hexToUint8Array(
-        'd90601a20019800018661a606f9900');
-      const stringTable = new Map(STRING_TABLE);
+      const cborldBytes = _hexToUint8Array('d90601a20019800018661a606f9900');
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -840,11 +875,13 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const cborldBytes = _hexToUint8Array(
-        'd90601a20019800018661a6070bb5f');
-      const stringTable = new Map(STRING_TABLE);
+      const cborldBytes = _hexToUint8Array('d90601a20019800018661a6070bb5f');
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -883,14 +920,17 @@ describe('cborld', () => {
           throw new Error(`Refused to load URL "${url}".`);
         };
 
-        const cborldBytes = _hexToUint8Array(
-          'd90601a2001980001866428001');
-        const stringTable = new Map(STRING_TABLE);
+        const cborldBytes = _hexToUint8Array('d90601a2001980001866428001');
+
         const typeTable = new Map(TYPE_TABLE);
+
+        const stringTable = new Map(STRING_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
+
         typeTable.set(
           'http://www.w3.org/2001/XMLSchema#dateTime',
           new Map([['2021-04-09T20:38:55Z', 0x8001]]));
+
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
@@ -933,9 +973,12 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
         '10bf48838a41');
-      const stringTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -978,9 +1021,12 @@ describe('cborld', () => {
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
         '2d394145332d313145422d384533452d313042463438383338413431');
-      const stringTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -1022,9 +1068,12 @@ describe('cborld', () => {
 
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
-      const stringTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -1066,9 +1115,12 @@ describe('cborld', () => {
 
       const cborldBytes = _hexToUint8Array(
         'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
-      const stringTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -1341,8 +1393,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -1431,8 +1484,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -1537,8 +1591,9 @@ describe('cborld', () => {
           throw new Error(`Refused to load URL "${url}".`);
         };
 
-        const stringTable = new Map(STRING_TABLE);
         const typeTable = new Map(TYPE_TABLE);
+
+        const stringTable = new Map(STRING_TABLE);
         stringTable.set(CONTEXT_URL, 0x8000);
 
         const cborldBytes = await encode({
@@ -1641,8 +1696,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -1757,8 +1813,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -1831,8 +1888,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -1978,8 +2036,9 @@ describe('cborld', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const stringTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
+
+      const stringTable = new Map(STRING_TABLE);
       stringTable.set(AGE_CONTEXT_URL, 0x8000);
 
       const cborldBytes = await encode({
@@ -2283,9 +2342,11 @@ describe('cborld', () => {
           data: d.data
         };
 
-        const stringTable = new Map(STRING_TABLE);
         const typeTable = new Map(TYPE_TABLE);
+
+        const stringTable = new Map(STRING_TABLE);
         stringTable.set(DATA_CONTEXT_URL, 0x8000);
+
         const cborldBytes = await encode({
           jsonldDocument,
           varintValue: 1,
