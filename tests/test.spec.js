@@ -1195,6 +1195,136 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
+    it('should round trip with plural types', async () => {
+      const jsonldDocument = {
+        '@context': {
+          type: '@type',
+          Type1: 'ex:Type1',
+          Type2: 'ex:Type2',
+        },
+        type: ['Type1', 'Type2'],
+      };
+
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should round trip sets of objects', async () => {
+      const jsonldDocument = {
+        '@context': {
+          type: '@type',
+          Type1: 'ex:Type1',
+          Type2: 'ex:Type2',
+          set: 'ex:set'
+        },
+        type: ['Type1', 'Type2'],
+        set: [{
+          type: ['Type1', 'Type2'],
+          set: [{
+            type: 'Type1'
+          }]
+        }, {
+          type: ['Type1', 'Type2'],
+          set: [{
+            type: 'Type1'
+          }, {
+            type: 'Type2'
+          }]
+        }, {
+          type: 'Type1'
+        }, {
+          type: 'Type2'
+        }, {
+          type: ['Type1']
+        }, {
+          type: ['Type2']
+        }]
+      };
+
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should round trip array of arrays', async () => {
+      const jsonldDocument = {
+        '@context': {
+          type: '@type',
+          Type1: 'ex:Type1',
+          Type2: 'ex:Type2',
+          set: 'ex:set'
+        },
+        type: ['Type1', 'Type2'],
+        set: [
+          [{type: ['Type1', 'Type2']}],
+          [{type: 'Type1'}],
+          ['string1', 'string2', ['string3']]
+        ]
+      };
+
+      const keywordsTable = new Map(KEYWORDS_TABLE);
+      const urlSchemeTable = new Map(URL_SCHEME_TABLE);
+      const stringTable = new Map(STRING_TABLE);
+      const typedLiteralTable = new Map(TYPED_LITERAL_TABLE);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        keywordsTable,
+        urlSchemeTable,
+        typedLiteralTable,
+        stringTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
     it('should round trip with uncompressed string term', async () => {
       const jsonldDocument = {
         '@context': {
