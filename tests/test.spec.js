@@ -1141,7 +1141,6 @@ describe('cborld', () => {
         '@type': 'bar'
       };
 
-      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1167,7 +1166,6 @@ describe('cborld', () => {
         type: ['Type1', 'Type2'],
       };
 
-      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1215,7 +1213,6 @@ describe('cborld', () => {
         }]
       };
 
-      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1247,7 +1244,6 @@ describe('cborld', () => {
         ]
       };
 
-      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1272,7 +1268,6 @@ describe('cborld', () => {
         'ex:foo': 'bar'
       };
 
-      const contextTable = new Map(STRING_TABLE);
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1301,7 +1296,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1341,8 +1336,9 @@ describe('cborld', () => {
         }
         throw new Error(`Refused to load URL "${url}".`);
       };
+
       const typeTable = new Map(TYPE_TABLE);
-      const contextTable = new Map(STRING_TABLE);
+
       const cborldBytes = await encode({
         jsonldDocument,
         varintValue: 1,
@@ -1422,7 +1418,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1518,7 +1514,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1621,7 +1617,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1729,7 +1725,7 @@ describe('cborld', () => {
       const documentLoader = url => {
         throw new Error(`Refused to load URL "${url}".`);
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
 
       const cborldBytes = await encode({
@@ -1969,8 +1965,9 @@ describe('cborld', () => {
         // eslint-disable-next-line max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
-      const contextTable = new Map(STRING_TABLE);
+
       const typeTable = new Map(TYPE_TABLE);
+
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
