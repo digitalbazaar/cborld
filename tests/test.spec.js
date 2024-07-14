@@ -244,7 +244,7 @@ describe('cborld', () => {
     };
     const jsonldDocument = {
       '@context': CONTEXT['@context'],
-      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
     const typeTable = new Map(TYPE_TABLE);
@@ -256,8 +256,8 @@ describe('cborld', () => {
     });
 
     expect(cborldBytes).equalBytes(
-      'd90601a200a163666f6f6665783a666f6f186588200001' +
-      'f5f4fb3ff199999999999afbbff199999999999a6474657874');
+      'd90601a200a163666f6f6665783a666f6f186589200001' +
+      'f5f4fb3ff199999999999a01fbbff199999999999a6474657874');
 
     const decodedDocument = await decode({
       cborldBytes,
@@ -275,7 +275,7 @@ describe('cborld', () => {
       };
       const jsonldDocument = {
         '@context': CONTEXT['@context'],
-        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+        foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
       };
 
       const typeTable = new Map(TYPE_TABLE);
@@ -290,8 +290,8 @@ describe('cborld', () => {
       });
 
       expect(cborldBytes).equalBytes(
-        'd90601a200a163666f6f6665783a666f6f186588200001' +
-        'f5f4fb3ff199999999999afbbff199999999999a6474657874');
+        'd90601a200a163666f6f6665783a666f6f186589200001' +
+        'f5f4fb3ff199999999999a01fbbff199999999999a6474657874');
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -308,7 +308,7 @@ describe('cborld', () => {
     };
     const jsonldDocument = {
       '@context': CONTEXT['@context'],
-      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
     const typeTable = new Map(TYPE_TABLE);
@@ -324,9 +324,8 @@ describe('cborld', () => {
     });
 
     expect(cborldBytes).equalBytes(
-      'd90601a200a163666f6f6665783a666f6f186588200001' +
-      'f5f4fb3ff199999999999afbbff199999999999a4101');
-
+      'd90601a200a163666f6f6665783a666f6f186589200001' +
+      'f5f4fb3ff199999999999a01fbbff199999999999a4101');
     const decodedDocument = await decode({
       cborldBytes,
       typeTable
@@ -374,7 +373,7 @@ describe('cborld', () => {
     };
     const jsonldDocument = {
       '@context': CONTEXT['@context'],
-      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
     const typeTable = new Map(TYPE_TABLE);
@@ -387,9 +386,9 @@ describe('cborld', () => {
 
     expect(cborldBytes).equalBytes(
       'd90601a200a163666f6fa2634069646665783a666f6f65' +
-      '40747970656b65783a536f6d6554797065186588200001' +
-      'f5f4fb3ff199999999999afbbff199999999999a647465' +
-      '7874');
+      '40747970656b65783a536f6d6554797065186589200001' +
+      'f5f4fb3ff199999999999a01fbbff199999999999a6474' +
+      '657874');
 
     const decodedDocument = await decode({
       cborldBytes,
@@ -398,7 +397,74 @@ describe('cborld', () => {
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
-  it.skip('should round trip typed native JSON types w/ empty subtable',
+  it('should round trip typed native integer w/o subtable', async () => {
+    const CONTEXT = {
+      '@context': {
+        '@id': 'ex:foo',
+        '@type': 'ex:SomeType'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: 1
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    expect(cborldBytes).equalBytes(
+      'd90601a200a2634069646665783a666f6f654074797065' +
+      '6b65783a536f6d655479706563666f6f01');
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip typed native integer w/ empty subtable', async () => {
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'ex:SomeType'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      foo: 1
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const subTable = new Map();
+    typeTable.set('ex:SomeType', subTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      varintValue: 1,
+      typeTable
+    });
+
+    expect(cborldBytes).equalBytes(
+      'd90601a200a163666f6fa2634069646665783a666f6f65' +
+      '40747970656b65783a536f6d655479706518644101');
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip typed native JSON types w/ empty subtable',
     async () => {
       const CONTEXT = {
         '@context': {
@@ -410,7 +476,7 @@ describe('cborld', () => {
       };
       const jsonldDocument = {
         '@context': CONTEXT['@context'],
-        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+        foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
       };
 
       const typeTable = new Map(TYPE_TABLE);
@@ -424,12 +490,11 @@ describe('cborld', () => {
         typeTable
       });
 
-      // FIXME: expect integers to be expressed as bytes instead
       expect(cborldBytes).equalBytes(
         'd90601a200a163666f6fa2634069646665783a666f6f65' +
-        '40747970656b65783a536f6d6554797065186588200001' +
-        'f5f4fb3ff199999999999afbbff199999999999a647465' +
-        '7874');
+        '40747970656b65783a536f6d655479706518658941ff41' +
+        '004101f5f4fb3ff199999999999a4101fbbff199999999' +
+        '999a6474657874');
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -438,16 +503,18 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-  it.skip('should round trip typed native JSON types w/ used subtable', async () => {
+  it('should round trip typed native JSON types w/ used subtable', async () => {
     const CONTEXT = {
       '@context': {
-        '@id': 'ex:foo',
-        '@type': 'ex:SomeType'
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'ex:SomeType'
+        }
       }
     };
     const jsonldDocument = {
       '@context': CONTEXT['@context'],
-      foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
     const typeTable = new Map(TYPE_TABLE);
@@ -462,12 +529,11 @@ describe('cborld', () => {
       typeTable
     });
 
-    // FIXME: integers to be expressed as bytes instead
     expect(cborldBytes).equalBytes(
       'd90601a200a163666f6fa2634069646665783a666f6f65' +
-      '40747970656b65783a536f6d6554797065186588200001' +
-      'f5f4fb3ff199999999999afbbff199999999999a647465' +
-      '7874');
+      '40747970656b65783a536f6d655479706518658941ff41' +
+      '004101f5f4fb3ff199999999999a4101fbbff199999999' +
+      '999a01');
 
     const decodedDocument = await decode({
       cborldBytes,
