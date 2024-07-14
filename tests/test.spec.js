@@ -820,60 +820,61 @@ describe('cborld', () => {
       'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
   });
 
-  it('should prioritize url table for URLs', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
+  it('should prioritize url table for URLs and output table ID as bytes',
+    async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
         }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'https://test.example',
-      foo: date
-    };
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'https://test.example',
+        foo: date
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-    const typeTable = new Map(TYPE_TABLE);
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const typeTable = new Map(TYPE_TABLE);
 
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
-    const urlTable = new Map(STRING_TABLE);
-    urlTable.set('https://test.example', 0x8001);
-    typeTable.set('url', urlTable);
+      const urlTable = new Map(STRING_TABLE);
+      urlTable.set('https://test.example', 0x8001);
+      typeTable.set('url', urlTable);
 
-    const cborldBytes = await encode({
-      jsonldDocument,
-      varintValue: 1,
-      documentLoader,
-      typeTable
+      const cborldBytes = await encode({
+        jsonldDocument,
+        varintValue: 1,
+        documentLoader,
+        typeTable
+      });
+      expect(cborldBytes).equalBytes(
+        'd90601a30019800018661a6070bb5f1868428001');
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
-    expect(cborldBytes).equalBytes(
-      'd90601a30019800018661a6070bb5f1868198001');
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
 
   it('should encode http URL', async () => {
     const CONTEXT_URL = 'urn:foo';
