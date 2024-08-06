@@ -47,7 +47,7 @@ CBOR-LD data.
 To encode a JSON-LD document as CBOR-LD:
 
 ```js
-import {encode, documentLoader} from '@digitalbazaar/cborld';
+import {encode} from '@digitalbazaar/cborld';
 
 const jsonldDocument = {
   '@context': 'https://www.w3.org/ns/activitystreams',
@@ -57,18 +57,20 @@ const jsonldDocument = {
 };
 
 // encode a JSON-LD Javascript object into CBOR-LD bytes
+// Note: user must provide their own JSON-LD `documentLoader`
 const cborldBytes = await encode({jsonldDocument, documentLoader});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
 
 ```js
-import {decode, documentLoader} from '@digitalbazaar/cborld';
+import {decode} from '@digitalbazaar/cborld';
 
 // get the CBOR-LD bytes
 const cborldBytes = await fs.promises.readFile('out.cborld');
 
 // decode the CBOR-LD bytes into a Javascript object
+// Note: user must provide their own JSON-LD `documentLoader`
 const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 ```
 
