@@ -584,6 +584,253 @@ describe('cborld', () => {
       'd90601a200198000186583444d010203447a0102034475010203');
   });
 
+  it('should compress multibase values w/type-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        Foo: {
+          '@id': 'ex:Foo',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'Foo',
+      foo: ['MAQID', 'zLdp', 'uAQID']
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a300198000021864186783444d010203447a0102034475010203');
+  });
+
+  it('should not compress multibase values w/type-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        Foo: {
+          '@id': 'ex:Foo',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: ['MAQID', 'zLdp', 'uAQID']
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
+  });
+
+  it('should compress multibase values w/property-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        nest: {
+          '@id': 'ex:nest',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      nest: {
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a2001980001864a1186783444d010203447a0102034475010203');
+  });
+
+  it('should compress nested multibase values w/property-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        other: 'ex:other',
+        nest: {
+          '@id': 'ex:nest',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      nest: {
+        foo: ['MAQID', 'zLdp', 'uAQID'],
+        other: {
+          // `foo` values should still be defined as multibase-typed here
+          foo: ['MAQID', 'zLdp', 'uAQID']
+        }
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a2001980001864a21866a1' +
+      '186983444d010203447a0102034475010203' +
+      '186983444d010203447a0102034475010203');
+  });
+
+  it('should not compress multibase values w/property-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        nest: {
+          '@id': 'ex:nest',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: ['MAQID', 'zLdp', 'uAQID']
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
+  });
+
   it('should compress multibase values using type table if possible',
     async () => {
       const CONTEXT_URL = 'urn:foo';
