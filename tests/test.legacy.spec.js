@@ -10,7 +10,7 @@ chai.use(chaiBytes);
 
 import {decode, encode} from '../lib/index.js';
 
-describe('cborld', () => {
+describe('legacy cborld', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document', async () => {
       const jsonldDocument = {};
@@ -55,280 +55,280 @@ describe('cborld', () => {
       });
       expect(cborldBytes).equalBytes('d90501a20019800018661a6070bb5f');
     });
-  });
 
-  it('should encode xsd date when using a prefix', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:date'
+    it('should encode xsd date when using a prefix', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:date'
+          }
         }
-      }
-    };
-    const date = '2021-04-09';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: date
-    };
+      };
+      const date = '2021-04-09';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
-    });
-    expect(cborldBytes).equalBytes('d90501a20019800018661a606f9900');
-  });
-
-  it('should compress multibase-typed values', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'https://w3id.org/security#multibase'
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
         }
-      }
-    };
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: ['MAQID', 'zLdp', 'uAQID']
-    };
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes('d90501a20019800018661a606f9900');
     });
-    expect(cborldBytes).equalBytes(
-      'd90501a200198000186583444d010203447a0102034475010203');
-  });
 
-  it('should compress cryptosuite strings', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'https://w3id.org/security#cryptosuiteString'
+    it('should compress multibase-typed values', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#multibase'
+          }
         }
-      }
-    };
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: [
-        'ecdsa-rdfc-2019',
-        'ecdsa-sd-2023',
-        'eddsa-rdfc-2022'
-      ]
-    };
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
-    });
-    expect(cborldBytes).equalBytes('d90501a200198000186583010203');
-  });
-
-  it('should encode lowercase urn:uuid using a number', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
         }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'urn:uuid:75ef3fcc-9ae3-11eb-8e3e-10bf48838a41',
-      foo: date
-    };
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes(
+        'd90501a200198000186583444d010203447a0102034475010203');
     });
-    expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
-      '10bf48838a41');
-  });
 
-  it('should encode uppercase urn:uuid using a string', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
+    it('should compress cryptosuite strings', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#cryptosuiteString'
+          }
         }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'urn:uuid:75EF3FCC-9AE3-11EB-8E3E-10BF48838A41',
-      foo: date
-    };
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: [
+          'ecdsa-rdfc-2019',
+          'ecdsa-sd-2023',
+          'eddsa-rdfc-2022'
+        ]
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
-    });
-    expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f1868820378243735454633464343' +
-      '2d394145332d313145422d384533452d313042463438383338413431');
-  });
-
-  it('should encode https URL', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
         }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'https://test.example',
-      foo: date
-    };
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes('d90501a200198000186583010203');
     });
-    expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
-  });
 
-  it('should encode http URL', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
+    it('should encode lowercase urn:uuid using a number', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
         }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'http://test.example',
-      foo: date
-    };
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'urn:uuid:75ef3fcc-9ae3-11eb-8e3e-10bf48838a41',
+        foo: date
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-    const cborldBytes = await encode({
-      jsonldDocument,
-      documentLoader,
-      appContextMap
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes(
+        'd90501a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+        '10bf48838a41');
     });
-    expect(cborldBytes).equalBytes(
-      'd90501a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+
+    it('should encode uppercase urn:uuid using a string', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'urn:uuid:75EF3FCC-9AE3-11EB-8E3E-10BF48838A41',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes(
+        'd90501a30019800018661a6070bb5f1868820378243735454633464343' +
+        '2d394145332d313145422d384533452d313042463438383338413431');
+    });
+
+    it('should encode https URL', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'https://test.example',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes(
+        'd90501a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+    });
+
+    it('should encode http URL', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'http://test.example',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+      expect(cborldBytes).equalBytes(
+        'd90501a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+    });
   });
 
   describe('decode', () => {
@@ -660,542 +660,6 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it('should round trip native JSON types', async () => {
-      const CONTEXT = {
-        '@context': {
-          foo: 'ex:foo'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip with embedded context', async () => {
-      const CONTEXT = {
-        '@context': {
-          foo: 'ex:foo'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        foo: 1
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip with remote context', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT = {
-        '@context': {
-          foo: 'ex:foo'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT_URL,
-        foo: 1
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip with compressed remote context', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT = {
-        '@context': {
-          foo: 'ex:foo'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT_URL,
-        foo: 1
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        appContextMap
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        appContextMap
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip with embedded scoped context', async () => {
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: 'ex:foo'
-            }
-          }
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        '@type': 'Foo',
-        foo: 1
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip with compressed scoped context', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: 'ex:foo'
-            }
-          }
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        '@type': 'Foo',
-        foo: 1
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        appContextMap
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        appContextMap
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ embedded nested scoped context', async () => {
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: {
-                '@id': 'ex:foo',
-                '@context': {
-                  bar: 'ex:bar'
-                }
-              }
-            }
-          },
-          foo: 'ex:override_this'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        '@type': 'Foo',
-        foo: {
-          bar: 1
-        }
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ nested compressed scoped context',
-      async () => {
-        const CONTEXT_URL = 'urn:foo';
-        const CONTEXT = {
-          '@context': {
-            Foo: {
-              '@id': 'ex:Foo',
-              '@context': {
-                foo: {
-                  '@id': 'ex:foo',
-                  '@context': {
-                    bar: 'ex:bar'
-                  }
-                }
-              }
-            },
-            foo: 'ex:override_this'
-          }
-        };
-        const jsonldDocument = {
-          '@context': CONTEXT_URL,
-          '@type': 'Foo',
-          foo: {
-            bar: 1
-          }
-        };
-
-        const documentLoader = url => {
-          if(url === CONTEXT_URL) {
-            return {
-              contextUrl: null,
-              document: CONTEXT,
-              documentUrl: url
-            };
-          }
-          throw new Error(`Refused to load URL "${url}".`);
-        };
-
-        const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-        const cborldBytes = await encode({
-          jsonldDocument,
-          documentLoader,
-          appContextMap
-        });
-
-        const decodedDocument = await decode({
-          cborldBytes,
-          documentLoader,
-          appContextMap
-        });
-        expect(decodedDocument).to.eql(jsonldDocument);
-      });
-
-    it('should round trip w/ revert embedded type-scope', async () => {
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: 'ex:foo',
-              bar: null
-            }
-          },
-          foo: 'ex:override_this',
-          bar: 'ex:should_exist'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        '@type': 'Foo',
-        foo: {
-          foo: {
-            bar: 1
-          }
-        }
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ revert remote type-scope', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: 'ex:foo',
-              bar: null
-            }
-          },
-          foo: 'ex:override_this',
-          bar: 'ex:should_exist'
-        }
-      };
-      const jsonldDocument = {
-        '@context': CONTEXT_URL,
-        '@type': 'Foo',
-        foo: {
-          foo: {
-            bar: 1
-          }
-        }
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        appContextMap
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        appContextMap
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ embedded scoped override', async () => {
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: {
-                '@id': 'ex:foo',
-                '@context': {
-                  bar: {
-                    '@id': 'ex:bar',
-                    '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
-                  }
-                }
-              }
-            }
-          },
-          foo: 'ex:override_this',
-          bar: 'ex:not_a_date'
-        }
-      };
-      const date = '2021-04-09T20:38:55Z';
-      const jsonldDocument = {
-        '@context': CONTEXT['@context'],
-        '@type': 'Foo',
-        foo: {
-          bar: date
-        }
-      };
-
-      const documentLoader = url => {
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-      const cborldBytes = await encode({jsonldDocument, documentLoader});
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ remote scoped override', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: {
-                '@id': 'ex:foo',
-                '@context': {
-                  bar: {
-                    '@id': 'ex:bar',
-                    '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
-                  }
-                }
-              }
-            }
-          },
-          foo: 'ex:override_this',
-          bar: 'ex:not_a_date'
-        }
-      };
-      const date = '2021-04-09T20:38:55Z';
-      const jsonldDocument = {
-        '@context': CONTEXT_URL,
-        '@type': 'Foo',
-        foo: {
-          bar: date
-        }
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        appContextMap
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        appContextMap
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
-    it('should round trip w/ 2x remote scoped context', async () => {
-      const CONTEXT_URL = 'urn:foo';
-      const CONTEXT_2_URL = 'urn:foo-scope';
-      const CONTEXT_2 = {
-        '@context': {
-          bar: {
-            '@id': 'ex:bar',
-            '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
-          }
-        }
-      };
-      const CONTEXT = {
-        '@context': {
-          Foo: {
-            '@id': 'ex:Foo',
-            '@context': {
-              foo: {
-                '@id': 'ex:foo',
-                '@context': CONTEXT_2_URL
-              }
-            }
-          },
-          foo: 'ex:override_this',
-          bar: 'ex:not_a_date'
-        }
-      };
-      const date = '2021-04-09T20:38:55Z';
-      const jsonldDocument = {
-        '@context': CONTEXT_URL,
-        '@type': 'Foo',
-        foo: {
-          bar: date
-        }
-      };
-
-      const documentLoader = url => {
-        if(url === CONTEXT_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT,
-            documentUrl: url
-          };
-        }
-        if(url === CONTEXT_2_URL) {
-          return {
-            contextUrl: null,
-            document: CONTEXT_2,
-            documentUrl: url
-          };
-        }
-        throw new Error(`Refused to load URL "${url}".`);
-      };
-
-      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
-      const cborldBytes = await encode({
-        jsonldDocument,
-        documentLoader,
-        appContextMap
-      });
-
-      const decodedDocument = await decode({
-        cborldBytes,
-        documentLoader,
-        appContextMap
-      });
-      expect(decodedDocument).to.eql(jsonldDocument);
-    });
-
     it('should decode a CIT type token', async () => {
       const cborldBytes = _hexToUint8Array(
         'd90501a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
@@ -1290,8 +754,546 @@ describe('cborld', () => {
       //console.log(decodedDocument);
       expect(decodedDocument).to.eql(jsonldDocument);
     });
+  });
 
-    it('should round trip sample Age context', async () => {
+  describe('round trip', () => {
+    it('should handle native JSON types', async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: [-1, 0, 1, true, false, 1.1, -1.1, 'text']
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle embedded context', async () => {
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle remote context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle compressed remote context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: 'ex:foo'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle embedded scoped context', async () => {
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle compressed scoped context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: 1
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle embedded nested scoped context', async () => {
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: {
+                '@id': 'ex:foo',
+                '@context': {
+                  bar: 'ex:bar'
+                }
+              }
+            }
+          },
+          foo: 'ex:override_this'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: {
+          bar: 1
+        }
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle nested compressed scoped context',
+      async () => {
+        const CONTEXT_URL = 'urn:foo';
+        const CONTEXT = {
+          '@context': {
+            Foo: {
+              '@id': 'ex:Foo',
+              '@context': {
+                foo: {
+                  '@id': 'ex:foo',
+                  '@context': {
+                    bar: 'ex:bar'
+                  }
+                }
+              }
+            },
+            foo: 'ex:override_this'
+          }
+        };
+        const jsonldDocument = {
+          '@context': CONTEXT_URL,
+          '@type': 'Foo',
+          foo: {
+            bar: 1
+          }
+        };
+
+        const documentLoader = url => {
+          if(url === CONTEXT_URL) {
+            return {
+              contextUrl: null,
+              document: CONTEXT,
+              documentUrl: url
+            };
+          }
+          throw new Error(`Refused to load URL "${url}".`);
+        };
+
+        const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+        const cborldBytes = await encode({
+          jsonldDocument,
+          documentLoader,
+          appContextMap
+        });
+
+        const decodedDocument = await decode({
+          cborldBytes,
+          documentLoader,
+          appContextMap
+        });
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+
+    it('should revert embedded type-scope', async () => {
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo',
+              bar: null
+            }
+          },
+          foo: 'ex:override_this',
+          bar: 'ex:should_exist'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: {
+          foo: {
+            bar: 1
+          }
+        }
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should revert remote type-scope', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo',
+              bar: null
+            }
+          },
+          foo: 'ex:override_this',
+          bar: 'ex:should_exist'
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        '@type': 'Foo',
+        foo: {
+          foo: {
+            bar: 1
+          }
+        }
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle embedded scoped override', async () => {
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: {
+                '@id': 'ex:foo',
+                '@context': {
+                  bar: {
+                    '@id': 'ex:bar',
+                    '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+                  }
+                }
+              }
+            }
+          },
+          foo: 'ex:override_this',
+          bar: 'ex:not_a_date'
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT['@context'],
+        '@type': 'Foo',
+        foo: {
+          bar: date
+        }
+      };
+
+      const documentLoader = url => {
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+      const cborldBytes = await encode({jsonldDocument, documentLoader});
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle remote scoped override', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: {
+                '@id': 'ex:foo',
+                '@context': {
+                  bar: {
+                    '@id': 'ex:bar',
+                    '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+                  }
+                }
+              }
+            }
+          },
+          foo: 'ex:override_this',
+          bar: 'ex:not_a_date'
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        '@type': 'Foo',
+        foo: {
+          bar: date
+        }
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle 2x remote scoped context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT_2_URL = 'urn:foo-scope';
+      const CONTEXT_2 = {
+        '@context': {
+          bar: {
+            '@id': 'ex:bar',
+            '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+          }
+        }
+      };
+      const CONTEXT = {
+        '@context': {
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: {
+                '@id': 'ex:foo',
+                '@context': CONTEXT_2_URL
+              }
+            }
+          },
+          foo: 'ex:override_this',
+          bar: 'ex:not_a_date'
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        '@type': 'Foo',
+        foo: {
+          bar: date
+        }
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        if(url === CONTEXT_2_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT_2,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
+      const cborldBytes = await encode({
+        jsonldDocument,
+        documentLoader,
+        appContextMap
+      });
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        appContextMap
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should handle sample Age context', async () => {
       const AGE_CONTEXT_URL = 'https://w3id.org/age/v1';
       const AGE_CONTEXT = {
         '@context': {
@@ -1335,7 +1337,7 @@ describe('cborld', () => {
       });
     });
 
-    it('should round trip sample did:key DID document', async () => {
+    it('should handle sample did:key DID document', async () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
@@ -1395,7 +1397,7 @@ describe('cborld', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    it('should round trip sample did:v1:nym DID document', async () => {
+    it('should handle sample did:v1:nym DID document', async () => {
       const SAMPLE_CONTEXT_URL = 'https://w3id.org/did/v0.11';
       const SAMPLE_CONTEXT = {
         '@context': {
@@ -1601,7 +1603,7 @@ describe('cborld', () => {
       if(hasOnly && !d.only) {
         return;
       }
-      it(`should round trip ${d.name}`, async () => {
+      it(`should handle ${d.name}`, async () => {
         const jsonldDocument = {
           '@context': 'https://example.org/context/v1',
           data: d.data
