@@ -1529,8 +1529,3 @@ describe('cborld round trip', () => {
     });
   });
 });
-
-// eslint-disable-next-line no-unused-vars
-function _uint8ArrayToHex(bytes) {
-  return [...bytes].map(d => d.toString(16).padStart(2, '0')).join('');
-}

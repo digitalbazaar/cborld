@@ -809,8 +809,3 @@ describe('cborld encode', () => {
       'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
   });
 });
-
-// eslint-disable-next-line no-unused-vars
-function _uint8ArrayToHex(bytes) {
-  return [...bytes].map(d => d.toString(16).padStart(2, '0')).join('');
-}
