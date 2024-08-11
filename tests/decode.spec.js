@@ -658,8 +658,3 @@ describe('cborld decode', () => {
 function _hexToUint8Array(hex) {
   return new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 }
-
-// eslint-disable-next-line no-unused-vars
-function _uint8ArrayToHex(bytes) {
-  return [...bytes].map(d => d.toString(16).padStart(2, '0')).join('');
-}

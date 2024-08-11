@@ -1616,7 +1616,7 @@ describe('legacy cborld', () => {
           //diagnose: console.log
         });
 
-        //console.log(d.name, _uint8ArrayToHex(cborldBytes));
+        //console.log(d.name, Buffer.from(cborldBytes).toString('hex'));
 
         expect(cborldBytes).equalBytes(d.cborldHex);
 
@@ -1634,9 +1634,4 @@ describe('legacy cborld', () => {
 
 function _hexToUint8Array(hex) {
   return new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
-}
-
-// eslint-disable-next-line no-unused-vars
-function _uint8ArrayToHex(bytes) {
-  return [...bytes].map(d => d.toString(16).padStart(2, '0')).join('');
 }
