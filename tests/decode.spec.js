@@ -35,6 +35,51 @@ describe('cborld decode', () => {
       expect(jsonldDocument).deep.equal({});
     });
 
+  it('should throw on undefined compressed context', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const cborldBytes = _hexToUint8Array(
+      'd90601a200198000186583444d010203447a0102034475010203');
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    typeTable.set('context', contextTable);
+
+    let result;
+    let error;
+    try {
+      result = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.code).to.eql('ERR_UNDEFINED_COMPRESSED_CONTEXT');
+  });
+
   it('should decompress multibase-typed values', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
