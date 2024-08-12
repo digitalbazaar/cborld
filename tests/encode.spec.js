@@ -182,6 +182,157 @@ describe('cborld encode', () => {
     expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
   });
 
+  it('should compress type aliased URL values', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: '@type',
+        bar: {'@id': '@type'},
+        baz: '@type',
+        notType: 'ex:notType'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'https://example.com',
+      foo: 'https://example.com',
+      bar: 'https://example.com',
+      baz: 'https://example.com',
+      // should not compress a URL, treated as a string for non-@type term
+      notType: 'https://example.com'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a600198000' +
+      // `@type`
+      '0282026b6578616d706c652e636f6d' +
+      // `foo`
+      '186482026b6578616d706c652e636f6d' +
+      // `bar`
+      '186682026b6578616d706c652e636f6d' +
+      // `baz`
+      '186882026b6578616d706c652e636f6d' +
+      // `notType`, uncompressed as it is not an `@type` alias
+      '186a7368747470733a2f2f6578616d706c652e636f6d');
+  });
+
+  it('should compress nested type aliased URL values', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: '@type',
+        bar: {'@id': '@type'},
+        baz: '@type',
+        notType: 'ex:notType',
+        replace: 'ex:notTypeToBeReplaced',
+        nested: {
+          '@id': 'ex:nested',
+          '@context': {
+            '@propagate': false,
+            foo: 'ex:somethingUncompressed',
+            alias: '@type',
+            replace: {'@id': '@type'}
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'https://example.com',
+      foo: 'https://example.com',
+      bar: 'https://example.com',
+      baz: 'https://example.com',
+      // should not compress a URL, treated as a string for non-@type term
+      notType: 'https://example.com',
+      // should not compress a URL, treated as a string for non-@type term
+      replace: 'https://example.com',
+      nested: {
+        // this should no longer compress
+        foo: 'https://example.com',
+        // both of these should compress now
+        alias: 'https://example.com',
+        replace: 'https://example.com',
+        notType: {
+          // should compress again because `@propagate=false`
+          foo: 'https://example.com'
+        }
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a800198000' +
+      // `@type`
+      '0282026b6578616d706c652e636f6d' +
+      // `bar`
+      '186482026b6578616d706c652e636f6d' +
+      // `baz`
+      '186682026b6578616d706c652e636f6d' +
+      // `foo`
+      '186882026b6578616d706c652e636f6d' +
+      // `nested` map
+      '186aa4' +
+      // `nested.foo` uncompressed
+      '18687368747470733a2f2f6578616d706c652e636f6d' +
+      // `nested.notType`
+      '186ca1' +
+      // `nested.notType.foo`, compressed again since `@propagate=false`
+      '186882026b6578616d706c652e636f6d' +
+      // `nested.replace`, compressed now from property-scoped context
+      '186e82026b6578616d706c652e636f6d' +
+      // `nested.alias`, compressed
+      '187082026b6578616d706c652e636f6d' +
+      // top-level `notType`, uncompressed as it is not an `@type` alias
+      '186c7368747470733a2f2f6578616d706c652e636f6d' +
+      // top-level `replace`, uncompressed as it is not an `@type` alias
+      '186e7368747470733a2f2f6578616d706c652e636f6d');
+  });
+
   it('should compress multibase-typed values', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
