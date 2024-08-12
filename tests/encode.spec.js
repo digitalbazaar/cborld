@@ -319,6 +319,63 @@ describe('cborld encode', () => {
       'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
   });
 
+  it('should not compress deep nested values w/type-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        Foo: {
+          '@id': 'ex:Foo',
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        },
+        other: 'ex:other'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'Foo',
+      other: {
+        // should NOT compress because type-scope defaults to propagate=false
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      // type 'Foo', etc.
+      'd90601a300198000021864' +
+      // 'other'...
+      '1866a1' +
+      // 'foo', uncompressed since no longer defined by type-scope
+      '186983654d41514944647a4c6470657541514944');
+  });
+
   it('should compress multibase values w/property-scope', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
@@ -368,7 +425,7 @@ describe('cborld encode', () => {
       'd90601a2001980001864a1186783444d010203447a0102034475010203');
   });
 
-  it('should compress nested multibase values w/property-scope', async () => {
+  it('should compress deep nested values w/property-scope', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
       '@context': {
@@ -422,6 +479,131 @@ describe('cborld encode', () => {
       'd90601a2001980001864a21866a1' +
       '186983444d010203447a0102034475010203' +
       '186983444d010203447a0102034475010203');
+  });
+
+  it('should compress deep nested values w/propagate=true', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        Foo: {
+          '@id': 'ex:Foo',
+          '@context': {
+            '@propagate': true,
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        },
+        other: 'ex:other'
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'Foo',
+      other: {
+        // should compress because type-scope has propagate=true
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      // type 'Foo', etc.
+      'd90601a300198000021864' +
+      // 'other'...
+      '1866a1' +
+      // 'foo', compressed since type-scope propagate=true
+      '186983444d010203447a0102034475010203');
+  });
+
+  it('should not compress deep nested values w/propagate=false', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        // propagates
+        foo: 'ex:foo',
+        other: 'ex:other',
+        nest: {
+          '@id': 'ex:nest',
+          '@context': {
+            // does not propagate
+            '@propagate': false,
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      nest: {
+        // should compress
+        foo: ['MAQID', 'zLdp', 'uAQID'],
+        other: {
+          // should NOT compress
+          foo: ['MAQID', 'zLdp', 'uAQID']
+        }
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      'd90601a200198000' +
+      // 'nest'...
+      '1866a2' +
+      // 'foo' compressed, defined by property-scope
+      '186583444d010203447a0102034475010203' +
+      // 'other'...
+      '1868a1' +
+      // 'foo', uncompressed since no longer defined by property-scope
+      '186583654d41514944647a4c6470657541514944');
   });
 
   it('should not compress w/property-scope for other property', async () => {
