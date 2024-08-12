@@ -8,6 +8,7 @@
 - Ensure error is thrown if unexpected protected term redefinition is
   attempted.
 - Ensure `@propagate` context flag is considered.
+- Add missing `@propagate` to keywords table.
 
 ### Fixed
 
