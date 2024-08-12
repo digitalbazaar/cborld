@@ -545,6 +545,202 @@ describe('cborld encode', () => {
       '186983654d41514944647a4c6470657541514944');
   });
 
+  it('should not allow protected term redefinition', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        '@protected': true,
+        foo: 'ex:foo'
+      }
+    };
+    const jsonldDocument = {
+      '@context': [CONTEXT_URL, {
+        foo: 'ex:bar'
+      }],
+      foo: 'abc'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    let result;
+    let error;
+    try {
+      result = await await encode({
+        jsonldDocument,
+        registryEntryId: 1,
+        documentLoader,
+        typeTable
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.code).to.eql('ERR_PROTECTED_TERM_REDEFINITION');
+  });
+
+  it('should not allow protected term redefinition w/type-scope',
+    async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          '@protected': true,
+          foo: 'ex:foo',
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:bar'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        '@type': 'Foo'
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      let result;
+      let error;
+      try {
+        result = await await encode({
+          jsonldDocument,
+          registryEntryId: 1,
+          documentLoader,
+          typeTable
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.code).to.eql('ERR_PROTECTED_TERM_REDEFINITION');
+    });
+
+  it('should allow protected term redefinition w/same definition',
+    async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          '@protected': true,
+          foo: 'ex:foo',
+          Foo: {
+            '@id': 'ex:Foo',
+            '@context': {
+              foo: 'ex:foo'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        '@type': 'Foo'
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 1,
+        documentLoader,
+        typeTable
+      });
+      expect(cborldBytes).equalBytes('d90601a200198000021864');
+    });
+
+  it('should allow protected term redefinition w/property-scope',
+    async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          '@protected': true,
+          foo: 'ex:foo',
+          nest: {
+            '@id': 'ex:nest',
+            '@context': {
+              foo: 'ex:bar'
+            }
+          }
+        }
+      };
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        nest: {
+          foo: 'allowed'
+        }
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 1,
+        documentLoader,
+        typeTable
+      });
+      expect(cborldBytes).equalBytes(
+        'd90601a2001980001866a1186467616c6c6f776564');
+    });
+
   it('should compress multibase values using type table if possible',
     async () => {
       const CONTEXT_URL = 'urn:foo';
