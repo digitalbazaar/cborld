@@ -424,7 +424,7 @@ describe('cborld encode', () => {
       '186983444d010203447a0102034475010203');
   });
 
-  it('should not compress multibase values w/property-scope', async () => {
+  it('should not compress w/property-scope for other property', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
       '@context': {
@@ -469,6 +469,80 @@ describe('cborld encode', () => {
     });
     expect(cborldBytes).equalBytes(
       'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
+  });
+
+  it('should not compress type-scoped values w/property-scope', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        Foo: {
+          '@id': 'ex:Foo',
+          '@context': {
+            // do not compress bar here, but won't be in payload
+            bar: 'ex:bar',
+            // compress multibase here, but won't be in payload
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            },
+            nest: {
+              '@id': 'ex:nest',
+              '@context': {
+                // compress multibase here
+                bar: {
+                  '@id': 'ex:bar',
+                  '@type': 'https://w3id.org/security#multibase'
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      '@type': 'Foo',
+      foo: ['MAQID', 'zLdp', 'uAQID'],
+      nest: {
+        bar: ['MAQID', 'zLdp', 'uAQID'],
+        foo: ['MAQID', 'zLdp', 'uAQID']
+      }
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 1,
+      documentLoader,
+      typeTable
+    });
+    expect(cborldBytes).equalBytes(
+      // type Foo, etc.
+      'd90601a400198000021864' +
+      // first 'foo', type-scoped so multibase values are compressed
+      '186983444d010203447a0102034475010203' +
+      // 'nest'...
+      '186aa2' +
+      // 'bar' compressed, defined by property-scope
+      '186783444d010203447a0102034475010203' +
+      // 'foo', uncompressed since no longer defined by type-scope
+      '186983654d41514944647a4c6470657541514944');
   });
 
   it('should compress multibase values using type table if possible',
