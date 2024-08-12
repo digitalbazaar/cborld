@@ -7,6 +7,7 @@
   without removing any type-scope context first.
 - Ensure error is thrown if unexpected protected term redefinition is
   attempted.
+- Ensure `@propagate` context flag is considered.
 
 ### Fixed
 
