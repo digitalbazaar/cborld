@@ -5,6 +5,8 @@
 ### Fixed
 - Fix property-scope processing bug that applied property-scope context
   without removing any type-scope context first.
+- Ensure error is thrown if unexpected protected term redefinition is
+  attempted.
 
 ### Fixed
 
