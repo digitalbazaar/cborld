@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.1.1 - 2024-mm-dd
+## 7.1.1 - 2024-08-12
 
 ### Fixed
 - Fix property-scope processing bug that applied property-scope context
