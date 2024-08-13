@@ -1,6 +1,6 @@
 {
   "name": "@digitalbazaar/cborld",
-  "version": "7.1.2-0",
+  "version": "7.1.2",
   "description": "A CBOR-LD encoder/decoder for Javascript.",
   "license": "BSD-3-Clause",
   "author": {
