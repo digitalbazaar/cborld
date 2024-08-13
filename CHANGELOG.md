@@ -1,5 +1,12 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 7.1.2 - 2024-08-13
+
+### Fixed
+- Fix compression of values in arrays of arrays.
+- Internal refactor for simpler code, better maintenance, and better
+  better separation of concerns.
+
 ## 7.1.1 - 2024-08-12
 
 ### Fixed
