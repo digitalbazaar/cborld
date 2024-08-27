@@ -36,7 +36,7 @@
     - url: for any JSON-LD URL value, such as values associated with `@id`
       or `@type` (or their aliases) JSON keys.
     - none: for any untyped or plain literal values.
-    - <any JSON-LD type expressed as URL>: for any values associated with
+    - \<any JSON-LD type expressed as URL>: for any values associated with
       any custom JSON-LD types.
 - Restructure CBOR-LD tag system to use a range of tags where
   the tag value informs what values for the tables above should be used
