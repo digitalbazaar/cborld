@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.1.3 - 2024-10-dd
+## 7.1.3 - 2024-10-16
 
 ### Fixed
 - Fix varint processing when registry IDs require multiple bytes.
