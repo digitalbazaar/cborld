@@ -35,6 +35,14 @@ describe('cborld decode', () => {
       expect(jsonldDocument).deep.equal({});
     });
 
+  it('should decode an empty JSON-LD document with multiple byte varint',
+    async () => {
+      const cborldBytes = new Uint8Array(
+        [0xd9, 0x06, 0x80, 0x44, 0x94, 0xeb, 0xdc, 0x03, 0xa0]);
+      const jsonldDocument = await decode({cborldBytes});
+      expect(jsonldDocument).deep.equal({});
+    });
+
   it('should throw on undefined compressed context', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
