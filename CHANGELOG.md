@@ -4,13 +4,13 @@
 
 ### Fixed
 - Fix varint processing when registry IDs require multiple bytes.
-
-### Changed
-- **BREAKING**: When a registry entry is used that requires more
-  than one byte, the payload is now a two element tagged array
-  containing a bytestring and the encoded JSON-LD document
-  instead of a sequence containing a tagged bytestring and
-  the encoded document.
+- Fix bug with registry IDs that are expressed using varints larger than
+  1 byte in size. This would break any previous use of this, but that
+  previous use is invalid and non-interoperable. When a registry entry is
+  used that requires more than one byte, the payload is now appropriately
+  a two element tagged array containing a bytestring and the encoded
+  JSON-LD document instead of a sequence containing a tagged
+  bytestring and the encoded document.
 
 ## 7.1.2 - 2024-08-13
 
