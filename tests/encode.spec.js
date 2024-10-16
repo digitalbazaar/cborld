@@ -46,7 +46,7 @@ describe('cborld encode', () => {
         registryEntryId
       });
       expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d906804101a0');
+      expect(cborldBytes).equalBytes('d90680824101a0');
     });
 
   it('should encode an empty JSON-LD document with multiple byte varint',
@@ -58,7 +58,7 @@ describe('cborld encode', () => {
         registryEntryId
       });
       expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d906804494ebdc03a0');
+      expect(cborldBytes).equalBytes('d90680824494ebdc03a0');
     });
 
   it('should encode xsd dateTime when using a prefix', async () => {
