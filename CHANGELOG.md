@@ -1,9 +1,16 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.1.3 - 2024-10-dd
+## 7.2.0 - 2024-10-dd
 
 ### Fixed
 - Fix varint processing when registry IDs require multiple bytes.
+
+### Changed
+- **BREAKING**: When a registry entry is used that requires more
+  than one byte, the payload is now a two element tagged array
+  containing a bytestring and the encoded JSON-LD document
+  instead of a sequence containing a tagged bytestring and
+  the encoded document.
 
 ## 7.1.2 - 2024-08-13
 
