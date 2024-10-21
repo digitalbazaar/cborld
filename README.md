@@ -1,5 +1,8 @@
 # JavaScript CBOR-LD Processor
 
+[![Build Status](https://img.shields.io/github/actions/workflow/status/digitalbazaar/cborld/main.yml)](https://github.com/digitalbazaar/cborld/actions/workflows/main.yml)
+[![Coverage Status](https://img.shields.io/codecov/c/github/digitalbazaar/cborld)](https://codecov.io/gh/digitalbazaar/cborld)
+
 > A JavaScript CBOR-LD Process for Web browsers and Node.js apps.
 
 ## Table of Contents
