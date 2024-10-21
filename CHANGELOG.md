@@ -1,5 +1,15 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 7.2.0 - 2024-10-xx
+
+### Added
+- Add `async function typeTableLoader({registryEntryId})` option to look up the
+  `typeTable` to use by id for both `encode` and `decode`.
+
+### Changed
+- Refactor `registryEntryId` encoding and decoding logic. Trying to be more
+  readable and handle more error and edge cases. This is a work in progress.
+
 ## 7.1.3 - 2024-10-16
 
 ### Fixed

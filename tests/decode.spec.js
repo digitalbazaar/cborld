@@ -14,16 +14,82 @@ import {
   TYPE_TABLE,
 } from '../lib/tables.js';
 
+function _makeTypeTableLoader(entries) {
+  const typeTables = new Map(entries);
+  return async function({registryEntryId}) {
+    return typeTables.get(registryEntryId);
+  };
+}
+
 describe('cborld decode', () => {
+  it('should decode CBOR-LD bytes (direct type table)',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTable: new Map()
+      });
+      expect(jsonldDocument).deep.equal({});
+    });
+
+  it('should decode CBOR-LD bytes (type table loader)',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTableLoader: _makeTypeTableLoader([[0x01, new Map()]])
+      });
+      expect(jsonldDocument).deep.equal({});
+    });
+
+  it('should fail to decode with no typeTable or typeTableLoader',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      let result;
+      let error;
+      try {
+        result = await decode({
+          cborldBytes
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+    });
+
+  it('should fail to decode with no typeTableLoader id',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      let result;
+      let error;
+      try {
+        result = await decode({
+          cborldBytes,
+          typeTableLoader: _makeTypeTableLoader([])
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+    });
+
   it('should decode empty document CBOR-LD bytes', async () => {
     const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
-    const jsonldDocument = await decode({cborldBytes});
+    const jsonldDocument = await decode({
+      cborldBytes,
+      typeTableLoader: _makeTypeTableLoader([[0x01, new Map()]])
+    });
     expect(jsonldDocument).deep.equal({});
   });
 
   it('should decode empty JSON-LD document bytes with varint', async () => {
     const cborldBytes = new Uint8Array([0xd9, 0x06, 0x10, 0xa0]);
-    const jsonldDocument = await decode({cborldBytes});
+    const jsonldDocument = await decode({
+      cborldBytes,
+      typeTableLoader: _makeTypeTableLoader([[0x10, new Map()]])
+    });
     expect(jsonldDocument).deep.equal({});
   });
 
@@ -31,7 +97,10 @@ describe('cborld decode', () => {
     async () => {
       const cborldBytes = new Uint8Array(
         [0xd9, 0x06, 0x80, 0x82, 0x41, 0x01, 0xa0]);
-      const jsonldDocument = await decode({cborldBytes});
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTableLoader: _makeTypeTableLoader([[0x80, new Map()]])
+      });
       expect(jsonldDocument).deep.equal({});
     });
 
@@ -39,7 +108,10 @@ describe('cborld decode', () => {
     async () => {
       const cborldBytes = new Uint8Array(
         [0xd9, 0x06, 0x80, 0x82, 0x44, 0x94, 0xeb, 0xdc, 0x03, 0xa0]);
-      const jsonldDocument = await decode({cborldBytes});
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
+      });
       expect(jsonldDocument).deep.equal({});
     });
 
