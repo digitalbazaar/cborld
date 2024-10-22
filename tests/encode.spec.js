@@ -14,12 +14,81 @@ import {
   TYPE_TABLE,
 } from '../lib/tables.js';
 
+function _makeTypeTableLoader(entries) {
+  const typeTables = new Map(entries);
+  return async function({registryEntryId}) {
+    return typeTables.get(registryEntryId);
+  };
+}
+
 describe('cborld encode', () => {
+  it('should encode an empty JSON-LD Document (direct type table)',
+    async () => {
+      const jsonldDocument = {};
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 1,
+        typeTable: new Map()
+      });
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d90601a0');
+    });
+
+  it('should encode an empty JSON-LD Document (type table loader)',
+    async () => {
+      const jsonldDocument = {};
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 1,
+        typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
+      });
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d90601a0');
+    });
+
+  it('should fail to encode with no typeTableLoader id found',
+    async () => {
+      const jsonldDocument = {};
+      let result;
+      let error;
+      try {
+        result = await encode({
+          jsonldDocument,
+          registryEntryId: 1,
+          typeTableLoader: _makeTypeTableLoader([])
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+    });
+
+  it('should fail with typeTable and typeTableLoader',
+    async () => {
+      const jsonldDocument = {};
+      let result;
+      let error;
+      try {
+        result = await encode({
+          jsonldDocument,
+          registryEntryId: 1,
+          typeTable: new Map(),
+          typeTableLoader: _makeTypeTableLoader([])
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.name).to.eql('TypeError');
+    });
+
   it('should encode an empty JSON-LD Document', async () => {
     const jsonldDocument = {};
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1
+      registryEntryId: 1,
+      typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
     });
     expect(cborldBytes).instanceof(Uint8Array);
     expect(cborldBytes).equalBytes('d90601a0');
@@ -31,7 +100,8 @@ describe('cborld encode', () => {
       const registryEntryId = 16;
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId
+        registryEntryId,
+        typeTableLoader: _makeTypeTableLoader([[16, new Map()]])
       });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90610a0');
@@ -43,7 +113,8 @@ describe('cborld encode', () => {
       const registryEntryId = 128;
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId
+        registryEntryId,
+        typeTableLoader: _makeTypeTableLoader([[128, new Map()]])
       });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90680824101a0');
@@ -55,7 +126,8 @@ describe('cborld encode', () => {
       const registryEntryId = 1000000000;
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId
+        registryEntryId,
+        typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
       });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90680824494ebdc03a0');
