@@ -79,6 +79,8 @@ const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 
 ## API
 
+**NOTE**: Please check `encode.js` and `decode.js` for the latest API options.
+
 ### Functions
 
 <dl>
