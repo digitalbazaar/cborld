@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.2.0 - 2024-10-xx
+## 7.2.0 - 2024-10-21
 
 ### Added
 - Add `async function typeTableLoader({registryEntryId})` option to look up the
