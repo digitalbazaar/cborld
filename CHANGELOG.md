@@ -7,6 +7,9 @@
   `typeTable` to use by id for both `encode` and `decode`.
 
 ### Changed
+- **NOTE**: The handling of `typeTable` and `typeTableLoader` is more strict
+  than before and requies one option be used when appropriate. This could cause
+  issues with code that was depending on undefined behavior.
 - Refactor `registryEntryId` encoding and decoding logic. Trying to be more
   readable and handle more error and edge cases. This is a work in progress.
 
