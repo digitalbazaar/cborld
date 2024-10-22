@@ -58,7 +58,7 @@ describe('cborld decode', () => {
       expect(error?.code).to.eql('ERR_NO_TYPETABLE');
     });
 
-  it('should fail to decode with no typeTableLoader id',
+  it('should fail to decode with no typeTableLoader id found',
     async () => {
       const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
       let result;
@@ -73,6 +73,24 @@ describe('cborld decode', () => {
       }
       expect(result).to.eql(undefined);
       expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+    });
+
+  it('should fail with typeTable and typeTableLoader',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      let result;
+      let error;
+      try {
+        result = await decode({
+          cborldBytes,
+          typeTable: new Map(),
+          typeTableLoader: _makeTypeTableLoader([])
+        });
+      } catch(e) {
+        error = e;
+      }
+      expect(result).to.eql(undefined);
+      expect(error?.name).to.eql('TypeError');
     });
 
   it('should decode empty document CBOR-LD bytes', async () => {
