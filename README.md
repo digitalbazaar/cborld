@@ -26,7 +26,7 @@ applications.
 
 ### NPM
 
-```
+```sh
 npm install @digitalbazaar/cborld
 ```
 
@@ -34,7 +34,7 @@ npm install @digitalbazaar/cborld
 
 To install locally (for development):
 
-```
+```sh
 git clone https://github.com/digitalbazaar/cborld.git
 cd cborld
 npm install
@@ -113,6 +113,7 @@ const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 <a name="encode"></a>
 
 ### encode(options) ⇒ <code>Promise&lt;Uint8Array></code>
+
 Encodes a given JSON-LD document into a CBOR-LD byte array.
 
 **Kind**: global function
@@ -178,6 +179,7 @@ Encodes a given JSON-LD document into a CBOR-LD byte array.
 <a name="decode"></a>
 
 ### decode(options) ⇒ <code>Promise&lt;object></code>
+
 Decodes a CBOR-LD byte array into a JSON-LD document.
 
 **Kind**: global function
@@ -244,6 +246,7 @@ Decodes a CBOR-LD byte array into a JSON-LD document.
 <a name="diagnosticFunction"></a>
 
 ### diagnosticFunction : <code>function</code>
+
 A diagnostic function that is called with diagnostic information. Typically
 set to `console.log` when debugging.
 
@@ -264,6 +267,7 @@ set to `console.log` when debugging.
 <a name="documentLoaderFunction"></a>
 
 ### documentLoaderFunction ⇒ <code>string</code>
+
 Fetches a resource given a URL and returns it as a string.
 
 **Kind**: global typedef
@@ -305,7 +309,7 @@ If editing the README, please conform to the
 ## Commercial Support
 
 Commercial support for this library is available upon request from
-Digital Bazaar: support@digitalbazaar.com
+Digital Bazaar: <mailto:support@digitalbazaar.com>
 
 ## License
 
