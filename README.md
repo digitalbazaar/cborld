@@ -50,31 +50,52 @@ CBOR-LD data.
 To encode a JSON-LD document as CBOR-LD:
 
 ```js
-import {encode} from '@digitalbazaar/cborld';
+import { encode } from '@digitalbazaar/cborld';
+import { JsonLdDocumentLoader } from 'jsonld-document-loader';
 
-const jsonldDocument = {
-  '@context': 'https://www.w3.org/ns/activitystreams',
+// Establish JSON-LD context
+const CONTEXT_URL = 'https://example.com/my-context/v1'; 
+const CONTEXT = {
+  '@context': {
+    ex: 'https://example.com/my-context/v1#', 
+    type: '@type', 
+    Example: 'ex:Example', 
+    label: 'ex:label', 
+    content: 'ex:content'
+  }
+};
+const loader = new JsonLdDocumentLoader();
+loader.addStatic(CONTEXT_URL, CONTEXT)
+const myLoader = loader.build();
+
+const myDocument = {
+  '@context': CONTEXT_URL,
   type: 'Note',
-  summary: 'CBOR-LD',
+  label: 'CBOR-LD',
   content: 'CBOR-LD is awesome!'
 };
 
 // encode a JSON-LD Javascript object into CBOR-LD bytes
-// Note: user must provide their own JSON-LD `documentLoader`
-const cborldBytes = await encode({jsonldDocument, documentLoader});
+const outputCborldBytes = await encode({ 
+  jsonldDocument: myDocument, 
+  documentLoader: myLoader 
+});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
 
 ```js
-import {decode} from '@digitalbazaar/cborld';
+import { decode } from '@digitalbazaar/cborld';
 
 // get the CBOR-LD bytes
-const cborldBytes = await fs.promises.readFile('out.cborld');
+const inputCcborldBytes = await fs.promises.readFile('out.cborld');
 
 // decode the CBOR-LD bytes into a Javascript object
-// Note: user must provide their own JSON-LD `documentLoader`
-const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
+// Note: reuses JSON-LD `myLoader` from encode example above
+const outputJsonldDocument = await cborld.decode({
+  cborldBytes: inputCcborldBytes,
+  documentLoader: myLoader
+});
 ```
 
 ## API
