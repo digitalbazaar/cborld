@@ -1,5 +1,17 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 7.2.1 - 2025-mm-dd
+
+### Fixed
+- Fix registry entries `0` and `1`. Previously, entry `0` could not be passed
+  without an error; it can now be used to produce output with no compression.
+  Entry `1` could not previously be used when specifying a type table loader
+  even though the loader should not need to return the default (empty) type
+  table for entry `1`, which should not be overridden. The tests have also
+  been updated to use entry `2` for custom `typeTable` entries to encourage
+  that mechanism NOT to be used to override entry `1`, which should be
+  prevented from being overridden entirely in a future major release.
+
 ## 7.2.0 - 2024-10-21
 
 ### Added

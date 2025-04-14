@@ -60,7 +60,7 @@ describe('cborld decode', () => {
 
   it('should fail to decode with no typeTableLoader id found',
     async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x02, 0xa0]);
       let result;
       let error;
       try {
@@ -156,7 +156,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a200198000186583444d010203447a0102034475010203');
+      'd90602a200198000186583444d010203447a0102034475010203');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -205,7 +205,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a200198000186583444d010203447a0102034475010203');
+      'd90602a200198000186583444d010203447a0102034475010203');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -249,7 +249,7 @@ describe('cborld decode', () => {
       };
 
       const cborldBytes = _hexToUint8Array(
-        'd90601a200198000186583198001198002198003');
+        'd90602a200198000186583198001198002198003');
 
       const typeTable = new Map(TYPE_TABLE);
 
@@ -357,7 +357,7 @@ describe('cborld decode', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const cborldBytes = _hexToUint8Array('d90601a200198000186583010203');
+    const cborldBytes = _hexToUint8Array('d90602a200198000186583010203');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -401,7 +401,7 @@ describe('cborld decode', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const cborldBytes = _hexToUint8Array('d90601a20019800018661a606f9900');
+    const cborldBytes = _hexToUint8Array('d90602a20019800018661a606f9900');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -445,7 +445,7 @@ describe('cborld decode', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    const cborldBytes = _hexToUint8Array('d90601a20019800018661a6070bb5f');
+    const cborldBytes = _hexToUint8Array('d90602a20019800018661a6070bb5f');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -490,7 +490,7 @@ describe('cborld decode', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const cborldBytes = _hexToUint8Array('d90601a2001980001866428001');
+      const cborldBytes = _hexToUint8Array('d90602a2001980001866428001');
 
       const typeTable = new Map(TYPE_TABLE);
 
@@ -541,7 +541,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+      'd90602a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
       '10bf48838a41');
 
     const typeTable = new Map(TYPE_TABLE);
@@ -589,7 +589,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
+      'd90602a30019800018661a6070bb5f1868820378243735454633464343' +
       '2d394145332d313145422d384533452d313042463438383338413431');
 
     const typeTable = new Map(TYPE_TABLE);
@@ -637,7 +637,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+      'd90602a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -684,7 +684,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+      'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
 
     const typeTable = new Map(TYPE_TABLE);
 
