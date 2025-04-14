@@ -29,7 +29,6 @@ describe('cborld encode', () => {
         jsonldDocument,
         registryEntryId: 0
       });
-      console.log(Buffer.from(cborldBytes).toString('hex'));
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90600a0');
     });
