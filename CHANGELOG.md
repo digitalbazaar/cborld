@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.2.1 - 2025-mm-dd
+## 7.2.1 - 2025-04-14
 
 ### Fixed
 - Fix registry entries `0` and `1`. Previously, entry `0` could not be passed
