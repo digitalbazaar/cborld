@@ -22,16 +22,39 @@ function _makeTypeTableLoader(entries) {
 }
 
 describe('cborld encode', () => {
+  it('should encode an empty JSON-LD Document with no compression',
+    async () => {
+      const jsonldDocument = {};
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 0
+      });
+      console.log(Buffer.from(cborldBytes).toString('hex'));
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d90600a0');
+    });
+
+  it('should encode an empty JSON-LD Document (default type table)',
+    async () => {
+      const jsonldDocument = {};
+      const cborldBytes = await encode({
+        jsonldDocument,
+        registryEntryId: 1
+      });
+      expect(cborldBytes).instanceof(Uint8Array);
+      expect(cborldBytes).equalBytes('d90601a0');
+    });
+
   it('should encode an empty JSON-LD Document (direct type table)',
     async () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         typeTable: new Map()
       });
       expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d90601a0');
+      expect(cborldBytes).equalBytes('d90602a0');
     });
 
   it('should encode an empty JSON-LD Document (type table loader)',
@@ -54,7 +77,7 @@ describe('cborld encode', () => {
       try {
         result = await encode({
           jsonldDocument,
-          registryEntryId: 1,
+          registryEntryId: 2,
           typeTableLoader: _makeTypeTableLoader([])
         });
       } catch(e) {
@@ -169,11 +192,11 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
-    expect(cborldBytes).equalBytes('d90601a20019800018661a6070bb5f');
+    expect(cborldBytes).equalBytes('d90602a20019800018661a6070bb5f');
   });
 
   it('should encode xsd dateTime with type table when possible', async () => {
@@ -216,11 +239,11 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
-    expect(cborldBytes).equalBytes('d90601a2001980001866428001');
+    expect(cborldBytes).equalBytes('d90602a2001980001866428001');
   });
 
   it('should encode xsd date when using a prefix', async () => {
@@ -259,11 +282,11 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
-    expect(cborldBytes).equalBytes('d90601a20019800018661a606f9900');
+    expect(cborldBytes).equalBytes('d90602a20019800018661a606f9900');
   });
 
   it('should compress type aliased URL values', async () => {
@@ -305,12 +328,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a600198000' +
+      'd90602a600198000' +
       // `@type`
       '0282026b6578616d706c652e636f6d' +
       // `foo`
@@ -385,12 +408,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a800198000' +
+      'd90602a800198000' +
       // `@type`
       '0282026b6578616d706c652e636f6d' +
       // `bar`
@@ -451,12 +474,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a200198000186583444d010203447a0102034475010203');
+      'd90602a200198000186583444d010203447a0102034475010203');
   });
 
   it('should compress multibase values w/type-scope', async () => {
@@ -499,12 +522,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a300198000021864186783444d010203447a0102034475010203');
+      'd90602a300198000021864186783444d010203447a0102034475010203');
   });
 
   it('should not compress multibase values w/type-scope', async () => {
@@ -546,12 +569,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
+      'd90602a20019800063666f6f83654d41514944647a4c6470657541514944');
   });
 
   it('should not compress deep nested values w/type-scope', async () => {
@@ -598,13 +621,13 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
       // type 'Foo', etc.
-      'd90601a300198000021864' +
+      'd90602a300198000021864' +
       // 'other'...
       '1866a1' +
       // 'foo', uncompressed since no longer defined by type-scope
@@ -652,12 +675,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a2001980001864a1186783444d010203447a0102034475010203');
+      'd90602a2001980001864a1186783444d010203447a0102034475010203');
   });
 
   it('should compress deep nested values w/property-scope', async () => {
@@ -706,12 +729,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a2001980001864a21866a1' +
+      'd90602a2001980001864a21866a1' +
       '186983444d010203447a0102034475010203' +
       '186983444d010203447a0102034475010203');
   });
@@ -761,13 +784,13 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
       // type 'Foo', etc.
-      'd90601a300198000021864' +
+      'd90602a300198000021864' +
       // 'other'...
       '1866a1' +
       // 'foo', compressed since type-scope propagate=true
@@ -825,12 +848,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a200198000' +
+      'd90602a200198000' +
       // 'nest'...
       '1866a2' +
       // 'foo' compressed, defined by property-scope
@@ -880,12 +903,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a20019800063666f6f83654d41514944647a4c6470657541514944');
+      'd90602a20019800063666f6f83654d41514944647a4c6470657541514944');
   });
 
   it('should not compress type-scoped values w/property-scope', async () => {
@@ -945,13 +968,13 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
       // type Foo, etc.
-      'd90601a400198000021864' +
+      'd90602a400198000021864' +
       // first 'foo', type-scoped so multibase values are compressed
       '186983444d010203447a0102034475010203' +
       // 'nest'...
@@ -997,9 +1020,9 @@ describe('cborld encode', () => {
     let result;
     let error;
     try {
-      result = await await encode({
+      result = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         documentLoader,
         typeTable
       });
@@ -1052,7 +1075,7 @@ describe('cborld encode', () => {
       try {
         result = await await encode({
           jsonldDocument,
-          registryEntryId: 1,
+          registryEntryId: 2,
           documentLoader,
           typeTable
         });
@@ -1102,11 +1125,11 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         documentLoader,
         typeTable
       });
-      expect(cborldBytes).equalBytes('d90601a200198000021864');
+      expect(cborldBytes).equalBytes('d90602a200198000021864');
     });
 
   it('should allow protected term redefinition w/property-scope',
@@ -1150,12 +1173,12 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         documentLoader,
         typeTable
       });
       expect(cborldBytes).equalBytes(
-        'd90601a2001980001866a1186467616c6c6f776564');
+        'd90602a2001980001866a1186467616c6c6f776564');
     });
 
   it('should compress multibase values using type table if possible',
@@ -1201,12 +1224,12 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         documentLoader,
         typeTable
       });
       expect(cborldBytes).equalBytes(
-        'd90601a200198000186583198001198002198003');
+        'd90602a200198000186583198001198002198003');
     });
 
   it('should compress cryptosuite strings', async () => {
@@ -1247,11 +1270,11 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
-    expect(cborldBytes).equalBytes('d90601a200198000186583010203');
+    expect(cborldBytes).equalBytes('d90602a200198000186583010203');
   });
 
   it('should encode lowercase urn:uuid using a number', async () => {
@@ -1292,12 +1315,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+      'd90602a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
       '10bf48838a41');
   });
 
@@ -1339,12 +1362,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a30019800018661a6070bb5f1868820378243735454633464343' +
+      'd90602a30019800018661a6070bb5f1868820378243735454633464343' +
       '2d394145332d313145422d384533452d313042463438383338413431');
   });
 
@@ -1386,12 +1409,12 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+      'd90602a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
   });
 
   it('should prioritize url table for URLs and output table ID as bytes',
@@ -1436,12 +1459,12 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        registryEntryId: 1,
+        registryEntryId: 2,
         documentLoader,
         typeTable
       });
       expect(cborldBytes).equalBytes(
-        'd90601a30019800018661a6070bb5f1868428001');
+        'd90602a30019800018661a6070bb5f1868428001');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
@@ -1488,11 +1511,11 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
       typeTable
     });
     expect(cborldBytes).equalBytes(
-      'd90601a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+      'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
   });
 });
