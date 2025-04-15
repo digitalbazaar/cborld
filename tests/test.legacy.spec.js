@@ -1697,6 +1697,7 @@ describe('legacy cborld (range)', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        legacyFormat: 'range',
         registryEntryId: 0
       });
       console.log(Buffer.from(cborldBytes).toString('hex'));
@@ -1709,6 +1710,7 @@ describe('legacy cborld (range)', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        legacyFormat: 'range',
         registryEntryId: 1
       });
       expect(cborldBytes).instanceof(Uint8Array);
