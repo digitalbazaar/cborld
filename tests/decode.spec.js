@@ -111,7 +111,7 @@ describe('cborld decode', () => {
     expect(jsonldDocument).deep.equal({});
   });
 
-  it('should decode empty JSON-LD document bytes with registry entry id >1 byte',
+  it('should decode empty JSON-LD document bytes with registry entry >1 byte',
     async () => {
       const cborldBytes = new Uint8Array(
         [0xd9, 0xcb, 0x1d, 0x82, 0x18, 0x64, 0xa0]);
@@ -122,7 +122,7 @@ describe('cborld decode', () => {
       expect(jsonldDocument).deep.equal({});
     });
 
-  it('should decode an empty JSON-LD document with multiple byte registry entry ID',
+  it('should decode empty JSON-LD document with multiple byte registry entry',
     async () => {
       const cborldBytes = new Uint8Array(
         [0xd9, 0xcb, 0x1d, 0x82, 0x1a, 0x3b, 0x9a, 0xca, 0x00, 0xa0]);

@@ -73,8 +73,8 @@ const files = [
 ];
 
 describe('cborld examples', () => {
-  // FIXME: outdated examples. Update examples to 
-  // use new tag processing 
+  // FIXME: outdated examples. Update examples to
+  // use new tag processing
   for(const f of files) {
     if(f.endsWith('.jsonld')) {
       it(`check encode of JSON-LD: ${f}`, async () => {
