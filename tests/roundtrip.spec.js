@@ -68,6 +68,271 @@ describe('cborld round trip', () => {
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
+  it('should round trip with 1 byte registryEntryId', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'MAQID'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const multibaseTable = new Map();
+    multibaseTable.set('MAQID', 0x8001);
+    typeTable.set(
+      'https://w3id.org/security#multibase',
+      multibaseTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 20,
+      documentLoader,
+      typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip with 2 byte registryEntryId', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'MAQID'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const multibaseTable = new Map();
+    multibaseTable.set('MAQID', 0x8001);
+    typeTable.set(
+      'https://w3id.org/security#multibase',
+      multibaseTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 200,
+      documentLoader,
+      typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip with 3 byte registryEntryId', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'MAQID'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const multibaseTable = new Map();
+    multibaseTable.set('MAQID', 0x8001);
+    typeTable.set(
+      'https://w3id.org/security#multibase',
+      multibaseTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 2000,
+      documentLoader,
+      typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip with 5 byte registryEntryId', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'MAQID'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const multibaseTable = new Map();
+    multibaseTable.set('MAQID', 0x8001);
+    typeTable.set(
+      'https://w3id.org/security#multibase',
+      multibaseTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 200000,
+      documentLoader,
+      typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should round trip with 9 byte registryEntryId', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: {
+          '@id': 'ex:foo',
+          '@type': 'https://w3id.org/security#multibase'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'MAQID'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const multibaseTable = new Map();
+    multibaseTable.set('MAQID', 0x8001);
+    typeTable.set(
+      'https://w3id.org/security#multibase',
+      multibaseTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      registryEntryId: 20000000000,
+      documentLoader,
+      typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
   it('should handle @vocab', async () => {
     const jsonldDocument = {
       '@context': {
