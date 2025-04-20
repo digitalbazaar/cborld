@@ -774,7 +774,6 @@ describe('legacy cborld (singleton)', () => {
         documentLoader
       });
 
-      //console.log(decodedDocument);
       expect(decodedDocument).to.eql(jsonldDocument);
     });
   });
@@ -1671,10 +1670,7 @@ describe('legacy cborld (singleton)', () => {
           appContextMap,
           legacyFormat: 'singleton',
           documentLoader,
-          //diagnose: console.log
         });
-
-        //console.log(d.name, Buffer.from(cborldBytes).toString('hex'));
 
         expect(cborldBytes).equalBytes(d.cborldHex);
 
@@ -1700,7 +1696,6 @@ describe('legacy cborld (range)', () => {
           legacyFormat: 'range',
           registryEntryId: 0
         });
-        console.log(Buffer.from(cborldBytes).toString('hex'));
         expect(cborldBytes).instanceof(Uint8Array);
         expect(cborldBytes).equalBytes('d90600a0');
       });
