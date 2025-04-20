@@ -82,6 +82,7 @@ describe('cborld examples', () => {
         const expectedCborldBytes = await fsp.readFile(cfn, null);
         const cborldBytes = await encode({
           jsonldDocument,
+          registryEntryId: 1,
           documentLoader
         });
         expect(cborldBytes).equalBytes(expectedCborldBytes);
