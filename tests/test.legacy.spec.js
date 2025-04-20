@@ -69,7 +69,6 @@ describe('legacy cborld (singleton)', () => {
         legacyFormat: 'singleton',
         appContextMap
       });
-      const hex = Buffer.from(cborldBytes).toString('hex');
       expect(cborldBytes).equalBytes('d90501a20019800018661a6070bb5f');
     });
 

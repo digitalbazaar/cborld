@@ -73,6 +73,8 @@ const files = [
 ];
 
 describe('cborld examples', () => {
+  // FIXME: outdated examples. Update examples to 
+  // use new tag processing 
   for(const f of files) {
     if(f.endsWith('.jsonld')) {
       it(`check encode of JSON-LD: ${f}`, async () => {
@@ -82,7 +84,7 @@ describe('cborld examples', () => {
         const expectedCborldBytes = await fsp.readFile(cfn, null);
         const cborldBytes = await encode({
           jsonldDocument,
-          registryEntryId: 1,
+          legacyFormat: 'singleton',
           documentLoader
         });
         expect(cborldBytes).equalBytes(expectedCborldBytes);
