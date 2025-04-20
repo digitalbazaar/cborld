@@ -103,7 +103,7 @@ describe('cborld decode', () => {
   });
 
   it('should decode empty JSON-LD document bytes with varint', async () => {
-    const cborldBytes = new Uint8Array([0xd9, 0x06, 0x10, 0xa0]);
+    const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x10, 0xa0]);
     const jsonldDocument = await decode({
       cborldBytes,
       typeTableLoader: _makeTypeTableLoader([[0x10, new Map()]])
@@ -111,21 +111,21 @@ describe('cborld decode', () => {
     expect(jsonldDocument).deep.equal({});
   });
 
-  it('should decode empty JSON-LD document bytes with varint >1 byte',
+  it('should decode empty JSON-LD document bytes with registry entry id >1 byte',
     async () => {
       const cborldBytes = new Uint8Array(
-        [0xd9, 0x06, 0x80, 0x82, 0x41, 0x01, 0xa0]);
+        [0xd9, 0xcb, 0x1d, 0x82, 0x18, 0x64, 0xa0]);
       const jsonldDocument = await decode({
         cborldBytes,
-        typeTableLoader: _makeTypeTableLoader([[0x80, new Map()]])
+        typeTableLoader: _makeTypeTableLoader([[100, new Map()]])
       });
       expect(jsonldDocument).deep.equal({});
     });
 
-  it('should decode an empty JSON-LD document with multiple byte varint',
+  it('should decode an empty JSON-LD document with multiple byte registry entry ID',
     async () => {
       const cborldBytes = new Uint8Array(
-        [0xd9, 0x06, 0x80, 0x82, 0x44, 0x94, 0xeb, 0xdc, 0x03, 0xa0]);
+        [0xd9, 0xcb, 0x1d, 0x82, 0x1a, 0x3b, 0x9a, 0xca, 0x00, 0xa0]);
       const jsonldDocument = await decode({
         cborldBytes,
         typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
@@ -589,7 +589,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f1868820378243735454633464343' +
+      'd9cb1d8202a30019800018661a6070bb5f1868820378243735454633464343' +
       '2d394145332d313145422d384533452d313042463438383338413431');
 
     const typeTable = new Map(TYPE_TABLE);
@@ -637,7 +637,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+      'd9cb1d8202a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -684,7 +684,7 @@ describe('cborld decode', () => {
     };
 
     const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+      'd9cb1d8202a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
 
     const typeTable = new Map(TYPE_TABLE);
 
@@ -702,7 +702,7 @@ describe('cborld decode', () => {
 
   it('should decode a CIT type token', async () => {
     const cborldBytes = _hexToUint8Array(
-      'd90601a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
+      'd9cb1d8201a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
       '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
       'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
