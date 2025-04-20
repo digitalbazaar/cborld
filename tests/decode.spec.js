@@ -60,7 +60,7 @@ describe('cborld decode', () => {
 
   it('should fail to decode with no typeTableLoader id found',
     async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x02, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x02, 0xa0]);
       let result;
       let error;
       try {
@@ -77,7 +77,7 @@ describe('cborld decode', () => {
 
   it('should fail with typeTable and typeTableLoader',
     async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
       let result;
       let error;
       try {
@@ -94,7 +94,7 @@ describe('cborld decode', () => {
     });
 
   it('should decode empty document CBOR-LD bytes', async () => {
-    const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+    const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
     const jsonldDocument = await decode({
       cborldBytes,
       typeTableLoader: _makeTypeTableLoader([[0x01, new Map()]])
