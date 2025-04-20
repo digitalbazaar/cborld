@@ -1693,17 +1693,17 @@ describe('legacy cborld (singleton)', () => {
 describe('legacy cborld (range)', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document with no compression',
-    async () => {
-      const jsonldDocument = {};
-      const cborldBytes = await encode({
-        jsonldDocument,
-        legacyFormat: 'range',
-        registryEntryId: 0
+      async () => {
+        const jsonldDocument = {};
+        const cborldBytes = await encode({
+          jsonldDocument,
+          legacyFormat: 'range',
+          registryEntryId: 0
+        });
+        console.log(Buffer.from(cborldBytes).toString('hex'));
+        expect(cborldBytes).instanceof(Uint8Array);
+        expect(cborldBytes).equalBytes('d90600a0');
       });
-      console.log(Buffer.from(cborldBytes).toString('hex'));
-      expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d90600a0');
-    });
 
     it('should encode an empty JSON-LD Document (default type table)',
       async () => {
@@ -1718,17 +1718,17 @@ describe('legacy cborld (range)', () => {
       });
 
     it('should encode an empty JSON-LD Document (direct type table)',
-    async () => {
-      const jsonldDocument = {};
-      const cborldBytes = await encode({
-        jsonldDocument,
-        legacyFormat: 'range',
-        registryEntryId: 2,
-        typeTable: new Map()
+      async () => {
+        const jsonldDocument = {};
+        const cborldBytes = await encode({
+          jsonldDocument,
+          legacyFormat: 'range',
+          registryEntryId: 2,
+          typeTable: new Map()
+        });
+        expect(cborldBytes).instanceof(Uint8Array);
+        expect(cborldBytes).equalBytes('d90602a0');
       });
-      expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d90602a0');
-    });
 
     it('should encode an empty JSON-LD Document (type table loader)',
       async () => {
@@ -3223,21 +3223,81 @@ describe('legacy cborld (range)', () => {
       });
       expect(cborldBytes).equalBytes(
         'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
-      });
+    });
   });
   describe('decode', () => {
     it('should decode CBOR-LD bytes (direct type table)',
-    async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
-      const jsonldDocument = await decode({
-        cborldBytes,
-        typeTable: new Map()
+      async () => {
+        const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+        const jsonldDocument = await decode({
+          cborldBytes,
+          typeTable: new Map()
+        });
+        expect(jsonldDocument).deep.equal({});
       });
-      expect(jsonldDocument).deep.equal({});
-    });
 
-  it('should decode CBOR-LD bytes (type table loader)',
-    async () => {
+    it('should decode CBOR-LD bytes (type table loader)',
+      async () => {
+        const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+        const jsonldDocument = await decode({
+          cborldBytes,
+          typeTableLoader: _makeTypeTableLoader([[0x01, new Map()]])
+        });
+        expect(jsonldDocument).deep.equal({});
+      });
+
+    it('should fail to decode with no typeTable or typeTableLoader',
+      async () => {
+        const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+        let result;
+        let error;
+        try {
+          result = await decode({
+            cborldBytes
+          });
+        } catch(e) {
+          error = e;
+        }
+        expect(result).to.eql(undefined);
+        expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+      });
+
+    it('should fail to decode with no typeTableLoader id found',
+      async () => {
+        const cborldBytes = new Uint8Array([0xd9, 0x06, 0x02, 0xa0]);
+        let result;
+        let error;
+        try {
+          result = await decode({
+            cborldBytes,
+            typeTableLoader: _makeTypeTableLoader([])
+          });
+        } catch(e) {
+          error = e;
+        }
+        expect(result).to.eql(undefined);
+        expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+      });
+
+    it('should fail with typeTable and typeTableLoader',
+      async () => {
+        const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+        let result;
+        let error;
+        try {
+          result = await decode({
+            cborldBytes,
+            typeTable: new Map(),
+            typeTableLoader: _makeTypeTableLoader([])
+          });
+        } catch(e) {
+          error = e;
+        }
+        expect(result).to.eql(undefined);
+        expect(error?.name).to.eql('TypeError');
+      });
+
+    it('should decode empty document CBOR-LD bytes', async () => {
       const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
       const jsonldDocument = await decode({
         cborldBytes,
@@ -3246,187 +3306,83 @@ describe('legacy cborld (range)', () => {
       expect(jsonldDocument).deep.equal({});
     });
 
-  it('should fail to decode with no typeTable or typeTableLoader',
-    async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
-      let result;
-      let error;
-      try {
-        result = await decode({
-          cborldBytes
-        });
-      } catch(e) {
-        error = e;
-      }
-      expect(result).to.eql(undefined);
-      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+    it('should decode empty JSON-LD document bytes with varint', async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x10, 0xa0]);
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTableLoader: _makeTypeTableLoader([[0x10, new Map()]])
+      });
+      expect(jsonldDocument).deep.equal({});
     });
 
-  it('should fail to decode with no typeTableLoader id found',
-    async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x02, 0xa0]);
+    it('should decode empty JSON-LD document bytes with varint >1 byte',
+      async () => {
+        const cborldBytes = new Uint8Array(
+          [0xd9, 0x06, 0x80, 0x82, 0x41, 0x01, 0xa0]);
+        const jsonldDocument = await decode({
+          cborldBytes,
+          typeTableLoader: _makeTypeTableLoader([[0x80, new Map()]])
+        });
+        expect(jsonldDocument).deep.equal({});
+      });
+
+    it('should decode an empty JSON-LD document with multiple byte varint',
+      async () => {
+        const cborldBytes = new Uint8Array(
+          [0xd9, 0x06, 0x80, 0x82, 0x44, 0x94, 0xeb, 0xdc, 0x03, 0xa0]);
+        const jsonldDocument = await decode({
+          cborldBytes,
+          typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
+        });
+        expect(jsonldDocument).deep.equal({});
+      });
+
+    it('should throw on undefined compressed context', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'https://w3id.org/security#multibase'
+          }
+        }
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90602a200198000186583444d010203447a0102034475010203');
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      typeTable.set('context', contextTable);
+
       let result;
       let error;
       try {
         result = await decode({
           cborldBytes,
-          typeTableLoader: _makeTypeTableLoader([])
+          documentLoader,
+          typeTable
         });
       } catch(e) {
         error = e;
       }
       expect(result).to.eql(undefined);
-      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+      expect(error?.code).to.eql('ERR_UNDEFINED_COMPRESSED_CONTEXT');
     });
 
-  it('should fail with typeTable and typeTableLoader',
-    async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
-      let result;
-      let error;
-      try {
-        result = await decode({
-          cborldBytes,
-          typeTable: new Map(),
-          typeTableLoader: _makeTypeTableLoader([])
-        });
-      } catch(e) {
-        error = e;
-      }
-      expect(result).to.eql(undefined);
-      expect(error?.name).to.eql('TypeError');
-    });
-
-  it('should decode empty document CBOR-LD bytes', async () => {
-    const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
-    const jsonldDocument = await decode({
-      cborldBytes,
-      typeTableLoader: _makeTypeTableLoader([[0x01, new Map()]])
-    });
-    expect(jsonldDocument).deep.equal({});
-  });
-
-  it('should decode empty JSON-LD document bytes with varint', async () => {
-    const cborldBytes = new Uint8Array([0xd9, 0x06, 0x10, 0xa0]);
-    const jsonldDocument = await decode({
-      cborldBytes,
-      typeTableLoader: _makeTypeTableLoader([[0x10, new Map()]])
-    });
-    expect(jsonldDocument).deep.equal({});
-  });
-
-  it('should decode empty JSON-LD document bytes with varint >1 byte',
-    async () => {
-      const cborldBytes = new Uint8Array(
-        [0xd9, 0x06, 0x80, 0x82, 0x41, 0x01, 0xa0]);
-      const jsonldDocument = await decode({
-        cborldBytes,
-        typeTableLoader: _makeTypeTableLoader([[0x80, new Map()]])
-      });
-      expect(jsonldDocument).deep.equal({});
-    });
-
-  it('should decode an empty JSON-LD document with multiple byte varint',
-    async () => {
-      const cborldBytes = new Uint8Array(
-        [0xd9, 0x06, 0x80, 0x82, 0x44, 0x94, 0xeb, 0xdc, 0x03, 0xa0]);
-      const jsonldDocument = await decode({
-        cborldBytes,
-        typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
-      });
-      expect(jsonldDocument).deep.equal({});
-    });
-
-  it('should throw on undefined compressed context', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'https://w3id.org/security#multibase'
-        }
-      }
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a200198000186583444d010203447a0102034475010203');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    typeTable.set('context', contextTable);
-
-    let result;
-    let error;
-    try {
-      result = await decode({
-        cborldBytes,
-        documentLoader,
-        typeTable
-      });
-    } catch(e) {
-      error = e;
-    }
-    expect(result).to.eql(undefined);
-    expect(error?.code).to.eql('ERR_UNDEFINED_COMPRESSED_CONTEXT');
-  });
-
-  it('should decompress multibase-typed values', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'https://w3id.org/security#multibase'
-        }
-      }
-    };
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: ['MAQID', 'zLdp', 'uAQID']
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a200198000186583444d010203447a0102034475010203');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decompress multibase-typed values using type table',
-    async () => {
+    it('should decompress multibase-typed values', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -3453,21 +3409,13 @@ describe('legacy cborld (range)', () => {
       };
 
       const cborldBytes = _hexToUint8Array(
-        'd90602a200198000186583198001198002198003');
+        'd90602a200198000186583444d010203447a0102034475010203');
 
       const typeTable = new Map(TYPE_TABLE);
 
       const contextTable = new Map(STRING_TABLE);
       contextTable.set(CONTEXT_URL, 0x8000);
       typeTable.set('context', contextTable);
-
-      const multibaseTable = new Map();
-      multibaseTable.set('MAQID', 0x8001);
-      multibaseTable.set('zLdp', 0x8002);
-      multibaseTable.set('uAQID', 0x8003);
-      typeTable.set(
-        'https://w3id.org/security#multibase',
-        multibaseTable);
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -3476,21 +3424,130 @@ describe('legacy cborld (range)', () => {
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
-  it(
-    'should round trip multibase-typed values using type table if possible',
-    async () => {
+
+    it('should decompress multibase-typed values using type table',
+      async () => {
+        const CONTEXT_URL = 'urn:foo';
+        const CONTEXT = {
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        };
+        const jsonldDocument = {
+          '@context': CONTEXT_URL,
+          foo: ['MAQID', 'zLdp', 'uAQID']
+        };
+
+        const documentLoader = url => {
+          if(url === CONTEXT_URL) {
+            return {
+              contextUrl: null,
+              document: CONTEXT,
+              documentUrl: url
+            };
+          }
+          throw new Error(`Refused to load URL "${url}".`);
+        };
+
+        const cborldBytes = _hexToUint8Array(
+          'd90602a200198000186583198001198002198003');
+
+        const typeTable = new Map(TYPE_TABLE);
+
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
+
+        const multibaseTable = new Map();
+        multibaseTable.set('MAQID', 0x8001);
+        multibaseTable.set('zLdp', 0x8002);
+        multibaseTable.set('uAQID', 0x8003);
+        typeTable.set(
+          'https://w3id.org/security#multibase',
+          multibaseTable);
+
+        const decodedDocument = await decode({
+          cborldBytes,
+          documentLoader,
+          typeTable
+        });
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+    it(
+      'should round trip multibase-typed values using type table if possible',
+      async () => {
+        const CONTEXT_URL = 'urn:foo';
+        const CONTEXT = {
+          '@context': {
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'https://w3id.org/security#multibase'
+            }
+          }
+        };
+        const jsonldDocument = {
+          '@context': CONTEXT_URL,
+          foo: 'MAQID'
+        };
+
+        const documentLoader = url => {
+          if(url === CONTEXT_URL) {
+            return {
+              contextUrl: null,
+              document: CONTEXT,
+              documentUrl: url
+            };
+          }
+          throw new Error(`Refused to load URL "${url}".`);
+        };
+
+        const typeTable = new Map(TYPE_TABLE);
+
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
+
+        const multibaseTable = new Map();
+        multibaseTable.set('MAQID', 0x8001);
+        typeTable.set(
+          'https://w3id.org/security#multibase',
+          multibaseTable);
+
+        const cborldBytes = await encode({
+          jsonldDocument,
+          registryEntryId: 2,
+          documentLoader,
+          typeTable
+        });
+
+        const decodedDocument = await decode({
+          cborldBytes,
+          documentLoader,
+          typeTable
+        });
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+
+    it('should decompress cryptosuite strings', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
           foo: {
             '@id': 'ex:foo',
-            '@type': 'https://w3id.org/security#multibase'
+            '@type': 'https://w3id.org/security#cryptosuiteString'
           }
         }
       };
       const jsonldDocument = {
         '@context': CONTEXT_URL,
-        foo: 'MAQID'
+        foo: [
+          'ecdsa-rdfc-2019',
+          'ecdsa-sd-2023',
+          'eddsa-rdfc-2022'
+        ]
       };
 
       const documentLoader = url => {
@@ -3504,24 +3561,13 @@ describe('legacy cborld (range)', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
+      const cborldBytes = _hexToUint8Array('d90602a200198000186583010203');
+
       const typeTable = new Map(TYPE_TABLE);
 
       const contextTable = new Map(STRING_TABLE);
       contextTable.set(CONTEXT_URL, 0x8000);
       typeTable.set('context', contextTable);
-
-      const multibaseTable = new Map();
-      multibaseTable.set('MAQID', 0x8001);
-      typeTable.set(
-        'https://w3id.org/security#multibase',
-        multibaseTable);
-
-      const cborldBytes = await encode({
-        jsonldDocument,
-        registryEntryId: 2,
-        documentLoader,
-        typeTable
-      });
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -3531,142 +3577,51 @@ describe('legacy cborld (range)', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-  it('should decompress cryptosuite strings', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'https://w3id.org/security#cryptosuiteString'
+    it('should decompress xsd date', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:date'
+          }
         }
-      }
-    };
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: [
-        'ecdsa-rdfc-2019',
-        'ecdsa-sd-2023',
-        'eddsa-rdfc-2022'
-      ]
-    };
+      };
+      const date = '2021-04-09';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        foo: date
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array('d90602a200198000186583010203');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decompress xsd date', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:date'
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
         }
-      }
-    };
-    const date = '2021-04-09';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: date
-    };
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
+      const cborldBytes = _hexToUint8Array('d90602a20019800018661a606f9900');
 
-    const cborldBytes = _hexToUint8Array('d90602a20019800018661a606f9900');
+      const typeTable = new Map(TYPE_TABLE);
 
-    const typeTable = new Map(TYPE_TABLE);
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
 
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
 
-  it('should decompress xsd dateTime', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
-        }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      foo: date
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array('d90602a20019800018661a6070bb5f');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decompress xsd dateTime with type table when possible',
-    async () => {
+    it('should decompress xsd dateTime', async () => {
       const CONTEXT_URL = 'urn:foo';
       const CONTEXT = {
         '@context': {
@@ -3694,17 +3649,13 @@ describe('legacy cborld (range)', () => {
         throw new Error(`Refused to load URL "${url}".`);
       };
 
-      const cborldBytes = _hexToUint8Array('d90602a2001980001866428001');
+      const cborldBytes = _hexToUint8Array('d90602a20019800018661a6070bb5f');
 
       const typeTable = new Map(TYPE_TABLE);
 
       const contextTable = new Map(STRING_TABLE);
       contextTable.set(CONTEXT_URL, 0x8000);
       typeTable.set('context', contextTable);
-
-      typeTable.set(
-        'http://www.w3.org/2001/XMLSchema#dateTime',
-        new Map([['2021-04-09T20:38:55Z', 0x8001]]));
 
       const decodedDocument = await decode({
         cborldBytes,
@@ -3714,292 +3665,341 @@ describe('legacy cborld (range)', () => {
       expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-  it('should decode lowercase urn:uuid', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
-        }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'urn:uuid:75ef3fcc-9ae3-11eb-8e3e-10bf48838a41',
-      foo: date
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
-      '10bf48838a41');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decode uppercase urn:uuid', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
-        }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'urn:uuid:75EF3FCC-9AE3-11EB-8E3E-10BF48838A41',
-      foo: date
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f1868820378243735454633464343' +
-      '2d394145332d313145422d384533452d313042463438383338413431');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decode https URL', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
-        }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'https://test.example',
-      foo: date
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decode http URL', async () => {
-    const CONTEXT_URL = 'urn:foo';
-    const CONTEXT = {
-      '@context': {
-        id: '@id',
-        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
-        foo: {
-          '@id': 'ex:foo',
-          '@type': 'arbitraryPrefix:dateTime'
-        }
-      }
-    };
-    const date = '2021-04-09T20:38:55Z';
-    const jsonldDocument = {
-      '@context': CONTEXT_URL,
-      id: 'http://test.example',
-      foo: date
-    };
-
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
-
-    const cborldBytes = _hexToUint8Array(
-      'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
-
-    const typeTable = new Map(TYPE_TABLE);
-
-    const contextTable = new Map(STRING_TABLE);
-    contextTable.set(CONTEXT_URL, 0x8000);
-    typeTable.set('context', contextTable);
-
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
-    });
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
-
-  it('should decode a CIT type token', async () => {
-    const cborldBytes = _hexToUint8Array(
-      'd90601a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
-      '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
-      'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
-
-    const CONTEXT_URL = 'https://w3id.org/cit/v1';
-    /* eslint-disable max-len */
-    const CONTEXT = {
-      '@context': {
-        '@protected': true,
-        type: '@type',
-        ConcealedIdTokenCredential: 'https://w3id.org/cit#ConcealedIdTokenCredential',
-        concealedIdToken: {
-          '@id': 'https://w3id.org/cit#concealedIdToken',
-          '@type': '@id'
-        },
-        ConcealedIdToken: {
-          '@id': 'https://w3id.org/cit#ConcealedIdToken',
+    it('should decompress xsd dateTime with type table when possible',
+      async () => {
+        const CONTEXT_URL = 'urn:foo';
+        const CONTEXT = {
           '@context': {
-            '@protected': true,
-            meta: {'@id': 'https://w3id.org/cit#meta', '@type': 'https://w3id.org/security#multibase'},
-            payload: {'@id': 'https://w3id.org/cit#payload', '@type': 'https://w3id.org/security#multibase'}
+            arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+            foo: {
+              '@id': 'ex:foo',
+              '@type': 'arbitraryPrefix:dateTime'
+            }
           }
-        },
-        Ed25519Signature2020: {
-          '@id': 'https://w3id.org/security#Ed25519Signature2020',
-          '@context': {
-            '@protected': true,
+        };
+        const date = '2021-04-09T20:38:55Z';
+        const jsonldDocument = {
+          '@context': CONTEXT_URL,
+          foo: date
+        };
 
-            id: '@id',
-            type: '@type',
+        const documentLoader = url => {
+          if(url === CONTEXT_URL) {
+            return {
+              contextUrl: null,
+              document: CONTEXT,
+              documentUrl: url
+            };
+          }
+          throw new Error(`Refused to load URL "${url}".`);
+        };
 
-            sec: 'https://w3id.org/security#',
-            xsd: 'http://www.w3.org/2001/XMLSchema#',
+        const cborldBytes = _hexToUint8Array('d90602a2001980001866428001');
 
-            challenge: 'sec:challenge',
-            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
-            domain: 'sec:domain',
-            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
-            nonce: 'sec:nonce',
-            proofPurpose: {
-              '@id': 'sec:proofPurpose',
-              '@type': '@vocab',
-              '@context': {
-                '@protected': true,
+        const typeTable = new Map(TYPE_TABLE);
 
-                id: '@id',
-                type: '@type',
+        const contextTable = new Map(STRING_TABLE);
+        contextTable.set(CONTEXT_URL, 0x8000);
+        typeTable.set('context', contextTable);
 
-                sec: 'https://w3id.org/security#',
+        typeTable.set(
+          'http://www.w3.org/2001/XMLSchema#dateTime',
+          new Map([['2021-04-09T20:38:55Z', 0x8001]]));
 
-                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
-                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'}
-              }
-            },
-            proofValue: {
-              '@id': 'https://w3id.org/security#proofValue',
-              '@type': 'https://w3id.org/security#multibase'
-            },
-            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'}
+        const decodedDocument = await decode({
+          cborldBytes,
+          documentLoader,
+          typeTable
+        });
+        expect(decodedDocument).to.eql(jsonldDocument);
+      });
+
+    it('should decode lowercase urn:uuid', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
           }
         }
-      }
-    };
-    /* eslint-enable max-len */
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'urn:uuid:75ef3fcc-9ae3-11eb-8e3e-10bf48838a41',
+        foo: date
+      };
 
-    const documentLoader = url => {
-      if(url === CONTEXT_URL) {
-        return {
-          contextUrl: null,
-          document: CONTEXT,
-          documentUrl: url
-        };
-      }
-      throw new Error(`Refused to load URL "${url}".`);
-    };
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
 
-    const jsonldDocument = {
-      '@context': 'https://w3id.org/cit/v1',
-      type: 'ConcealedIdToken',
-      meta: 'zvpJ2L5sbowrJPdA',
-      // eslint-disable-next-line max-len
-      payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
-    };
+      const cborldBytes = _hexToUint8Array(
+        'd90602a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
+        '10bf48838a41');
 
-    const typeTable = new Map(TYPE_TABLE);
+      const typeTable = new Map(TYPE_TABLE);
 
-    const decodedDocument = await decode({
-      cborldBytes,
-      documentLoader,
-      typeTable
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
     });
 
-    expect(decodedDocument).to.eql(jsonldDocument);
-  });
+    it('should decode uppercase urn:uuid', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'urn:uuid:75EF3FCC-9AE3-11EB-8E3E-10BF48838A41',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90602a30019800018661a6070bb5f1868820378243735454633464343' +
+        '2d394145332d313145422d384533452d313042463438383338413431');
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decode https URL', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'https://test.example',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90602a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decode http URL', async () => {
+      const CONTEXT_URL = 'urn:foo';
+      const CONTEXT = {
+        '@context': {
+          id: '@id',
+          arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+          foo: {
+            '@id': 'ex:foo',
+            '@type': 'arbitraryPrefix:dateTime'
+          }
+        }
+      };
+      const date = '2021-04-09T20:38:55Z';
+      const jsonldDocument = {
+        '@context': CONTEXT_URL,
+        id: 'http://test.example',
+        foo: date
+      };
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const cborldBytes = _hexToUint8Array(
+        'd90602a30019800018661a6070bb5f186882016c746573742e6578616d706c65');
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const contextTable = new Map(STRING_TABLE);
+      contextTable.set(CONTEXT_URL, 0x8000);
+      typeTable.set('context', contextTable);
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
+
+    it('should decode a CIT type token', async () => {
+      const cborldBytes = _hexToUint8Array(
+        'd90601a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
+        '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
+        'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
+
+      const CONTEXT_URL = 'https://w3id.org/cit/v1';
+      /* eslint-disable max-len */
+      const CONTEXT = {
+        '@context': {
+          '@protected': true,
+          type: '@type',
+          ConcealedIdTokenCredential: 'https://w3id.org/cit#ConcealedIdTokenCredential',
+          concealedIdToken: {
+            '@id': 'https://w3id.org/cit#concealedIdToken',
+            '@type': '@id'
+          },
+          ConcealedIdToken: {
+            '@id': 'https://w3id.org/cit#ConcealedIdToken',
+            '@context': {
+              '@protected': true,
+              meta: {'@id': 'https://w3id.org/cit#meta', '@type': 'https://w3id.org/security#multibase'},
+              payload: {'@id': 'https://w3id.org/cit#payload', '@type': 'https://w3id.org/security#multibase'}
+            }
+          },
+          Ed25519Signature2020: {
+            '@id': 'https://w3id.org/security#Ed25519Signature2020',
+            '@context': {
+              '@protected': true,
+
+              id: '@id',
+              type: '@type',
+
+              sec: 'https://w3id.org/security#',
+              xsd: 'http://www.w3.org/2001/XMLSchema#',
+
+              challenge: 'sec:challenge',
+              created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
+              domain: 'sec:domain',
+              expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
+              nonce: 'sec:nonce',
+              proofPurpose: {
+                '@id': 'sec:proofPurpose',
+                '@type': '@vocab',
+                '@context': {
+                  '@protected': true,
+
+                  id: '@id',
+                  type: '@type',
+
+                  sec: 'https://w3id.org/security#',
+
+                  assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                  authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'}
+                }
+              },
+              proofValue: {
+                '@id': 'https://w3id.org/security#proofValue',
+                '@type': 'https://w3id.org/security#multibase'
+              },
+              verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'}
+            }
+          }
+        }
+      };
+      /* eslint-enable max-len */
+
+      const documentLoader = url => {
+        if(url === CONTEXT_URL) {
+          return {
+            contextUrl: null,
+            document: CONTEXT,
+            documentUrl: url
+          };
+        }
+        throw new Error(`Refused to load URL "${url}".`);
+      };
+
+      const jsonldDocument = {
+        '@context': 'https://w3id.org/cit/v1',
+        type: 'ConcealedIdToken',
+        meta: 'zvpJ2L5sbowrJPdA',
+        // eslint-disable-next-line max-len
+        payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
+      };
+
+      const typeTable = new Map(TYPE_TABLE);
+
+      const decodedDocument = await decode({
+        cborldBytes,
+        documentLoader,
+        typeTable
+      });
+
+      expect(decodedDocument).to.eql(jsonldDocument);
+    });
   });
 });
 
