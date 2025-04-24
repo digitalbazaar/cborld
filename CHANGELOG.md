@@ -1,13 +1,16 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.0.0 - 2025-MM-DD
+## 7.3.0 - 2025-MM-DD
 
-### Changed
-- Restructured tag system to use a single CBOR tag (0xcb1d), where the tagged
+### Added
+- Added new tag system for use with a single CBOR tag (0xcb1d). The tagged
   item is always an array of two elements. The first element is a CBOR integer
   representation of the registry entry ID for the payload, and the second
-  element is the encoded JSON-LD. Both the legacy tag 0x0500/01 and the legacy
-  tag range 0x0600-0x06FF are still supported for both encoding and decoding.
+  element is the encoded JSON-LD. To use the new mode when encoding, pass
+  `format: 'cbor-ld-1.0'` as an option to `encode()`. When decoding, the new
+  mode will be automatically supported. Both the legacy tag 0x0500/01 and the
+  legacy tag range 0x0600-0x06FF are still supported for both encoding and
+  decoding.
 
 ## 7.2.1 - 2025-04-14
 
