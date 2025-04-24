@@ -11,8 +11,8 @@
   tags 1280/1281 (0x0500/0x0501) pass "legacy-singleton" for `format`.
 
 ### Removed
-- **BREAKING**: Remove `typeTable` `encode()` parameter; use `typeTableLoader`
-  instead.
+- **BREAKING**: Remove `typeTable` parameter from `encode()` and `decode()`;
+  use `typeTableLoader` instead.
 
 ## 7.3.0 - 2025-04-24
 
