@@ -22,23 +22,17 @@ function _makeTypeTableLoader(entries) {
 }
 
 describe('cborld decode', () => {
-  it('should decode CBOR-LD bytes (direct type table)',
+  it('should decode CBOR-LD bytes (no type table loader)',
     async () => {
       const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
-      const jsonldDocument = await decode({
-        cborldBytes,
-        typeTable: new Map()
-      });
+      const jsonldDocument = await decode({cborldBytes});
       expect(jsonldDocument).deep.equal({});
     });
 
   it('should decode CBOR-LD bytes (no compression)',
     async () => {
       const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x00, 0xa0]);
-      const jsonldDocument = await decode({
-        cborldBytes,
-        typeTable: new Map()
-      });
+      const jsonldDocument = await decode({cborldBytes});
       expect(jsonldDocument).deep.equal({});
     });
 
@@ -54,7 +48,7 @@ describe('cborld decode', () => {
 
   it('should fail to decode with no typeTable or typeTableLoader',
     async () => {
-      const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
+      const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x02, 0xa0]);
       let result;
       let error;
       try {
@@ -85,7 +79,7 @@ describe('cborld decode', () => {
       expect(error?.code).to.eql('ERR_NO_TYPETABLE');
     });
 
-  it('should fail with typeTable and typeTableLoader',
+  it('should fail with typeTable',
     async () => {
       const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
       let result;
@@ -93,8 +87,7 @@ describe('cborld decode', () => {
       try {
         result = await decode({
           cborldBytes,
-          typeTable: new Map(),
-          typeTableLoader: _makeTypeTableLoader([])
+          typeTable: new Map()
         });
       } catch(e) {
         error = e;
@@ -179,7 +172,7 @@ describe('cborld decode', () => {
       result = await decode({
         cborldBytes,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
     } catch(e) {
       error = e;
@@ -226,7 +219,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -278,7 +271,7 @@ describe('cborld decode', () => {
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -326,13 +319,13 @@ describe('cborld decode', () => {
         jsonldDocument,
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
 
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -378,7 +371,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -422,7 +415,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -466,7 +459,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -515,7 +508,7 @@ describe('cborld decode', () => {
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -563,7 +556,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -611,7 +604,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -658,7 +651,7 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -705,14 +698,15 @@ describe('cborld decode', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
   it('should decode a CIT type token', async () => {
+    // note: CIT type tokens are presently only encoded using tag 0x0501
     const cborldBytes = _hexToUint8Array(
-      'd9cb1d8201a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
+      'd90501a40015186c1864186e4c7ad90501a2011987430518411870583b7a' +
       '0000e190818fdd92908425370e0b5dad9ad92dc956b5ec2ab41ce76b8c70' +
       'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
@@ -796,12 +790,9 @@ describe('cborld decode', () => {
       payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
     };
 
-    const typeTable = new Map(TYPE_TABLE);
-
     const decodedDocument = await decode({
       cborldBytes,
-      documentLoader,
-      typeTable
+      documentLoader
     });
 
     expect(decodedDocument).to.eql(jsonldDocument);

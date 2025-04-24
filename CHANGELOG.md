@@ -1,9 +1,23 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 8.0.0 - 2025-04-dd
+
+### Changed
+- **BREAKING**: The default `format` for `encode()` is now "cbor-ld-1.0". To
+  generate output using pre-1.0 CBOR-LD tags (legacy tags), pass a different
+  format (e.g, "legacy-range" or "legacy-singleton").
+- **BREAKING**: The `registryEntryId` parameter for `encode()` can not longer
+  be the string "legacy"; it can only be a number. To output pre-1.0 CBOR-LD
+  tags 1280/1281 (0x0500/0x0501) pass "legacy-singleton" for `format`.
+
+### Removed
+- **BREAKING**: Remove `typeTable` `encode()` parameter; use `typeTableLoader`
+  instead.
+
 ## 7.3.0 - 2025-04-24
 
 ### Added
-- Added new tag system for use with a single CBOR tag (0xcb1d). The tagged
+- Add a new tag system for use with a single CBOR tag (0xcb1d). The tagged
   item is always an array of two elements. The first element is a CBOR integer
   representation of the registry entry ID for the payload, and the second
   element is the encoded JSON-LD. To use the new mode when encoding, pass
