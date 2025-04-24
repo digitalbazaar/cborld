@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.0.0 - 2025-04-dd
+## 8.0.0 - 2025-04-24
 
 ### Changed
 - **BREAKING**: The default `format` for `encode()` is now "cbor-ld-1.0". To
