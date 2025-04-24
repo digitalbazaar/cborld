@@ -22,7 +22,7 @@ function _makeTypeTableLoader(entries) {
   };
 }
 
-describe.skip('legacy cborld (range)', () => {
+describe('legacy cborld (range)', () => {
   describe('encode', () => {
     it('should encode an empty JSON-LD Document with no compression',
       async () => {
@@ -1560,6 +1560,18 @@ describe.skip('legacy cborld (range)', () => {
     it('should decode CBOR-LD bytes (direct type table)',
       async () => {
         const cborldBytes = new Uint8Array([0xd9, 0x06, 0x01, 0xa0]);
+        const jsonldDocument = await decode({
+          cborldBytes,
+          typeTable: new Map()
+        });
+        expect(jsonldDocument).deep.equal({});
+      });
+
+    it('should decode CBOR-LD bytes (no compression)',
+      async () => {
+        const cborldBytes = new Uint8Array([
+          0xd9, 0x06, 0x00, 0x82, 0x00, 0xa0
+        ]);
         const jsonldDocument = await decode({
           cborldBytes,
           typeTable: new Map()
