@@ -6,7 +6,7 @@
 - **BREAKING**: The default `format` for `encode()` is now "cbor-ld-1.0". To
   generate output using pre-1.0 CBOR-LD tags (legacy tags), pass a different
   format (e.g, "legacy-range" or "legacy-singleton").
-- **BREAKING**: The `registryEntryId` parameter for `encode()` can not longer
+- **BREAKING**: The `registryEntryId` parameter for `encode()` can no longer
   be the string "legacy"; it can only be a number. To output pre-1.0 CBOR-LD
   tags 1280/1281 (0x0500/0x0501) pass "legacy-singleton" for `format`.
 
