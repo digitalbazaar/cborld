@@ -46,30 +46,17 @@ describe('cborld encode', () => {
       expect(cborldBytes).equalBytes('d9cb1d8201a0');
     });
 
-  it('should encode an empty JSON-LD Document (direct type table)',
-    async () => {
-      const jsonldDocument = {};
-      const cborldBytes = await encode({
-        jsonldDocument,
-        format: 'cbor-ld-1.0',
-        registryEntryId: 2,
-        typeTable: new Map()
-      });
-      expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d9cb1d8202a0');
-    });
-
   it('should encode an empty JSON-LD Document (type table loader)',
     async () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
         format: 'cbor-ld-1.0',
-        registryEntryId: 1,
-        typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
+        registryEntryId: 2,
+        typeTableLoader: _makeTypeTableLoader([[2, new Map()]])
       });
       expect(cborldBytes).instanceof(Uint8Array);
-      expect(cborldBytes).equalBytes('d9cb1d8201a0');
+      expect(cborldBytes).equalBytes('d9cb1d8202a0');
     });
 
   it('should fail to encode with no typeTableLoader id found',
@@ -91,7 +78,7 @@ describe('cborld encode', () => {
       expect(error?.code).to.eql('ERR_NO_TYPETABLE');
     });
 
-  it('should fail with typeTable and typeTableLoader',
+  it('should fail with typeTable',
     async () => {
       const jsonldDocument = {};
       let result;
@@ -101,8 +88,7 @@ describe('cborld encode', () => {
           jsonldDocument,
           format: 'cbor-ld-1.0',
           registryEntryId: 1,
-          typeTable: new Map(),
-          typeTableLoader: _makeTypeTableLoader([])
+          typeTable: new Map()
         });
       } catch(e) {
         error = e;
@@ -204,7 +190,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes('d9cb1d8202a20019800018661a6070bb5f');
   });
@@ -252,7 +238,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes('d9cb1d8202a2001980001866428001');
   });
@@ -296,7 +282,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes('d9cb1d8202a20019800018661a606f9900');
   });
@@ -343,7 +329,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a600198000' +
@@ -424,7 +410,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a800198000' +
@@ -491,7 +477,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a200198000186583444d010203447a0102034475010203');
@@ -540,7 +526,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a300198000021864186783444d010203447a0102034475010203');
@@ -588,7 +574,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a20019800063666f6f83654d41514944647a4c6470657541514944');
@@ -641,7 +627,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       // type 'Foo', etc.
@@ -696,7 +682,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a2001980001864a1186783444d010203447a0102034475010203');
@@ -751,7 +737,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a2001980001864a21866a1' +
@@ -807,7 +793,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       // type 'Foo', etc.
@@ -872,7 +858,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a200198000' +
@@ -928,7 +914,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a20019800063666f6f83654d41514944647a4c6470657541514944');
@@ -994,7 +980,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       // type Foo, etc.
@@ -1049,7 +1035,7 @@ describe('cborld encode', () => {
         format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
     } catch(e) {
       error = e;
@@ -1103,7 +1089,7 @@ describe('cborld encode', () => {
           format: 'cbor-ld-1.0',
           registryEntryId: 2,
           documentLoader,
-          typeTable
+          typeTableLoader: () => typeTable
         });
       } catch(e) {
         error = e;
@@ -1154,7 +1140,7 @@ describe('cborld encode', () => {
         format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(cborldBytes).equalBytes('d9cb1d8202a200198000021864');
     });
@@ -1203,7 +1189,7 @@ describe('cborld encode', () => {
         format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(cborldBytes).equalBytes(
         'd9cb1d8202a2001980001866a1186467616c6c6f776564');
@@ -1255,7 +1241,7 @@ describe('cborld encode', () => {
         format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(cborldBytes).equalBytes(
         'd9cb1d8202a200198000186583198001198002198003');
@@ -1302,7 +1288,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes('d9cb1d8202a200198000186583010203');
   });
@@ -1348,7 +1334,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a30019800018661a6070bb5f186882035075ef3fcc9ae311eb8e3e' +
@@ -1396,7 +1382,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a30019800018661a6070bb5f1868820378243735454633464343' +
@@ -1444,7 +1430,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a30019800018661a6070bb5f186882026c746573742e6578616d706c65');
@@ -1495,14 +1481,14 @@ describe('cborld encode', () => {
         format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(cborldBytes).equalBytes(
         'd9cb1d8202a30019800018661a6070bb5f1868428001');
       const decodedDocument = await decode({
         cborldBytes,
         documentLoader,
-        typeTable
+        typeTableLoader: () => typeTable
       });
       expect(decodedDocument).to.eql(jsonldDocument);
     });
@@ -1548,7 +1534,7 @@ describe('cborld encode', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes(
       'd9cb1d8202a30019800018661a6070bb5f186882016c746573742e6578616d706c65');

@@ -58,13 +58,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -112,13 +112,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 20,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -166,13 +166,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 200,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -220,13 +220,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 2000,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -274,13 +274,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 200000,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -328,13 +328,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 20000000000,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -354,12 +354,12 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -380,12 +380,12 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -428,12 +428,12 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -460,12 +460,12 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -485,11 +485,11 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -516,13 +516,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -556,14 +556,14 @@ describe('cborld round trip', () => {
       jsonldDocument,
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
-      typeTable,
+      typeTableLoader: () => typeTable,
       documentLoader
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -602,13 +602,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -641,13 +641,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -692,13 +692,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -739,12 +739,12 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -797,13 +797,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -843,13 +843,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -901,13 +901,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -953,13 +953,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1017,13 +1017,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1092,13 +1092,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1143,13 +1143,13 @@ describe('cborld round trip', () => {
       format: 'cbor-ld-1.0',
       documentLoader,
       registryEntryId: 1,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     expect(decodedDocument).to.eql({
@@ -1201,13 +1201,13 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a300198744186581831904015822ed0194966b7c08e4' +
+      'd9cb1d8202a300198744186581831904015822ed0194966b7c08e4' +
       '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
       'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
       'e1025b2c8ad2d7477398c5b21866821904015822ed0194966b' +
@@ -1217,7 +1217,7 @@ describe('cborld round trip', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     expect(decodedDocument).to.eql(jsonldDocument);
@@ -1267,13 +1267,13 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
+      registryEntryId: 2,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a300198744186581831904005822ed0194966b7c08e4' +
+      'd9cb1d8202a300198744186581831904005822ed0194966b7c08e4' +
       '05775f8de6cc1c4508f6eb227403e1025b2c8ad2d7477398c5' +
       'b25822ed0194966b7c08e405775f8de6cc1c4508f6eb227403' +
       'e1025b2c8ad2d7477398c5b21866821904005822ed0194966b' +
@@ -1283,7 +1283,7 @@ describe('cborld round trip', () => {
     const decodedDocument = await decode({
       cborldBytes,
       documentLoader,
-      typeTable
+      typeTableLoader: () => typeTable
     });
 
     expect(decodedDocument).to.eql(jsonldDocument);
@@ -1306,12 +1306,12 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1333,12 +1333,12 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1354,13 +1354,10 @@ describe('cborld round trip', () => {
       foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
-    const typeTable = new Map(TYPE_TABLE);
-
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 1
     });
 
     expect(cborldBytes).equalBytes(
@@ -1368,8 +1365,7 @@ describe('cborld round trip', () => {
       'f5f4fb3ff199999999999a01fbbff199999999999a6474657874');
 
     const decodedDocument = await decode({
-      cborldBytes,
-      typeTable
+      cborldBytes
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1393,17 +1389,17 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a200a163666f6f6665783a666f6f186589200001' +
+      'd9cb1d8202a200a163666f6f6665783a666f6f186589200001' +
       'f5f4fb3ff199999999999a01fbbff199999999999a6474657874');
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1428,16 +1424,16 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a200a163666f6f6665783a666f6f186589200001' +
+      'd9cb1d8202a200a163666f6f6665783a666f6f186589200001' +
       'f5f4fb3ff199999999999a01fbbff199999999999a4101');
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1462,12 +1458,12 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1486,13 +1482,10 @@ describe('cborld round trip', () => {
       foo: [-1, 0, 1, true, false, 1.1, 1.0, -1.1, 'text']
     };
 
-    const typeTable = new Map(TYPE_TABLE);
-
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 1
     });
 
     expect(cborldBytes).equalBytes(
@@ -1501,10 +1494,7 @@ describe('cborld round trip', () => {
       'f5f4fb3ff199999999999a01fbbff199999999999a6474' +
       '657874');
 
-    const decodedDocument = await decode({
-      cborldBytes,
-      typeTable
-    });
+    const decodedDocument = await decode({cborldBytes});
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
@@ -1520,23 +1510,17 @@ describe('cborld round trip', () => {
       foo: 1
     };
 
-    const typeTable = new Map(TYPE_TABLE);
-
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 1
     });
 
     expect(cborldBytes).equalBytes(
       'd9cb1d8201a200a2634069646665783a666f6f654074797065' +
       '6b65783a536f6d655479706563666f6f01');
 
-    const decodedDocument = await decode({
-      cborldBytes,
-      typeTable
-    });
+    const decodedDocument = await decode({cborldBytes});
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
@@ -1562,17 +1546,17 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a200a163666f6fa2634069646665783a666f6f65' +
+      'd9cb1d8202a200a163666f6fa2634069646665783a666f6f65' +
       '40747970656b65783a536f6d655479706518644101');
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1599,19 +1583,19 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a200a163666f6fa2634069646665783a666f6f65' +
+      'd9cb1d8202a200a163666f6fa2634069646665783a666f6f65' +
       '40747970656b65783a536f6d655479706518658941ff41' +
       '004101f5f4fb3ff199999999999a4101fbbff199999999' +
       '999a6474657874');
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1639,19 +1623,19 @@ describe('cborld round trip', () => {
     const cborldBytes = await encode({
       jsonldDocument,
       format: 'cbor-ld-1.0',
-      registryEntryId: 1,
-      typeTable
+      registryEntryId: 2,
+      typeTableLoader: () => typeTable
     });
 
     expect(cborldBytes).equalBytes(
-      'd9cb1d8201a200a163666f6fa2634069646665783a666f6f65' +
+      'd9cb1d8202a200a163666f6fa2634069646665783a666f6f65' +
       '40747970656b65783a536f6d655479706518658941ff41' +
       '004101f5f4fb3ff199999999999a4101fbbff199999999' +
       '999a01');
 
     const decodedDocument = await decode({
       cborldBytes,
-      typeTable
+      typeTableLoader: () => typeTable
     });
     expect(decodedDocument).to.eql(jsonldDocument);
   });
@@ -1683,32 +1667,32 @@ describe('cborld round trip', () => {
       {
         name: 'empty plain data: (1)',
         data: 'data:',
-        cborldHex: 'd9cb1d8201a2001980001864820460'
+        cborldHex: 'd9cb1d8202a2001980001864820460'
       },
       {
         name: 'empty plain data: (2)',
         data: 'data:,',
-        cborldHex: 'd9cb1d8201a20019800018648204612c'
+        cborldHex: 'd9cb1d8202a20019800018648204612c'
       },
       {
         name: 'empty plain data: set (1)',
         data: ['data:', 'data:'],
-        cborldHex: 'd9cb1d8201a200198000186582820460820460'
+        cborldHex: 'd9cb1d8202a200198000186582820460820460'
       },
       {
         name: 'empty plain data: set (2)',
         data: ['other:url', 'data:'],
-        cborldHex: 'd9cb1d8201a200198000186582696f746865723a75726c820460'
+        cborldHex: 'd9cb1d8202a200198000186582696f746865723a75726c820460'
       },
       {
         name: 'empty base64 data:',
         data: 'data:;base64,',
-        cborldHex: 'd9cb1d8201a200198000186483046040'
+        cborldHex: 'd9cb1d8202a200198000186483046040'
       },
       {
         name: 'empty typed base64 data:',
         data: 'data:image/gif;base64,',
-        cborldHex: 'd9cb1d8201a2001980001864830469696d6167652f67696640'
+        cborldHex: 'd9cb1d8202a2001980001864830469696d6167652f67696640'
       },
       {
         name: 'base64 data:',
@@ -1716,7 +1700,7 @@ describe('cborld round trip', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
         cborldHex:
-          'd9cb1d8201a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+          'd9cb1d8202a2001980001864830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
       },
       {
         name: 'base64 data: set',
@@ -1727,7 +1711,7 @@ describe('cborld round trip', () => {
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
         ],
         cborldHex:
-          'd9cb1d8201a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
+          'd9cb1d8202a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
       },
       {
         name: 'non-base64 data:',
@@ -1735,7 +1719,7 @@ describe('cborld round trip', () => {
           'data:text/plain,' +
           'test',
         cborldHex:
-          'd9cb1d8201a200198000186482046f746578742f706c61696e2c74657374'
+          'd9cb1d8202a200198000186482046f746578742f706c61696e2c74657374'
       },
       {
         name: 'bad base64 data:',
@@ -1744,21 +1728,21 @@ describe('cborld round trip', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs',
         cborldHex:
-          'd9cb1d8201a200198000186482047840696d6167652f6769663b6261736536342c52306c474f4464684151414241494142414141414141414141437741414141414151414241414143416b7742414473'
+          'd9cb1d8202a200198000186482047840696d6167652f6769663b6261736536342c52306c474f4464684151414241494142414141414141414141437741414141414151414241414143416b7742414473'
       },
       {
         // RFC2397 example
         name: 'plain text',
         data: 'data:,A%20brief%20note',
         cborldHex:
-          'd9cb1d8201a20019800018648204712c4125323062726965662532306e6f7465'
+          'd9cb1d8202a20019800018648204712c4125323062726965662532306e6f7465'
       },
       {
         // RFC2397 example
         name: 'plain text with charset:',
         data: 'data:text/plain;charset=iso-8859-7,%be%fg%be',
         cborldHex:
-          'd9cb1d8201a200198000186482047827746578742f706c61696e3b636861727365743d69736f2d383835392d372c256265256667256265'
+          'd9cb1d8202a200198000186482047827746578742f706c61696e3b636861727365743d69736f2d383835392d372c256265256667256265'
       },
       {
         // RFC2397 example
@@ -1767,21 +1751,21 @@ describe('cborld round trip', () => {
           'data:application/vnd-xxx-query,' +
           'select_vcount,fcol_from_fieldtable/local',
         cborldHex:
-          'd9cb1d8201a2001980001864820478426170706c69636174696f6e2f766e642d7878782d71756572792c73656c6563745f76636f756e742c66636f6c5f66726f6d5f6669656c647461626c652f6c6f63616c'
+          'd9cb1d8202a2001980001864820478426170706c69636174696f6e2f766e642d7878782d71756572792c73656c6563745f76636f756e742c66636f6c5f66726f6d5f6669656c647461626c652f6c6f63616c'
       },
       {
         // MDN example
         name: 'plain text',
         data: 'data:,Hello%2C%20World%21',
         cborldHex:
-          'd9cb1d8201a20019800018648204742c48656c6c6f253243253230576f726c64253231'
+          'd9cb1d8202a20019800018648204742c48656c6c6f253243253230576f726c64253231'
       },
       {
         // MDN example
         name: 'base64 plain text',
         data: 'data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==',
         cborldHex:
-          'd9cb1d8201a200198000186483046a746578742f706c61696e4d48656c6c6f2c20576f726c6421'
+          'd9cb1d8202a200198000186483046a746578742f706c61696e4d48656c6c6f2c20576f726c6421'
       },
       {
         // MDN example
@@ -1789,7 +1773,7 @@ describe('cborld round trip', () => {
         data:
           'data:text/html,%3Cscript%3Ealert%28%27hi%27%29%3B%3C%2Fscript%3E',
         cborldHex:
-          'd9cb1d8201a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
+          'd9cb1d8202a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
       }
     ];
     /* eslint-enable max-len */
@@ -1814,9 +1798,9 @@ describe('cborld round trip', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           format: 'cbor-ld-1.0',
-          registryEntryId: 1,
+          registryEntryId: 2,
           documentLoader,
-          typeTable
+          typeTableLoader: () => typeTable
         });
 
         expect(cborldBytes).equalBytes(d.cborldHex);
@@ -1824,7 +1808,7 @@ describe('cborld round trip', () => {
         const decodedDocument = await decode({
           cborldBytes,
           documentLoader,
-          typeTable
+          typeTableLoader: () => typeTable
         });
 
         expect(decodedDocument).to.eql(jsonldDocument);

@@ -15,7 +15,8 @@ describe('legacy cborld (singleton)', () => {
     it('should encode an empty JSON-LD Document', async () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
-        jsonldDocument
+        jsonldDocument,
+        format: 'legacy-singleton'
       });
       expect(cborldBytes).instanceof(Uint8Array);
       expect(cborldBytes).equalBytes('d90501a0');
@@ -52,6 +53,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -89,6 +91,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -124,6 +127,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -164,6 +168,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -203,6 +208,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -244,6 +250,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -285,6 +292,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -325,6 +333,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -789,6 +798,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -815,6 +825,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -850,6 +861,7 @@ describe('legacy cborld (singleton)', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -886,6 +898,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -920,6 +933,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -962,6 +976,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -1004,6 +1019,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -1055,6 +1071,7 @@ describe('legacy cborld (singleton)', () => {
         const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
         const cborldBytes = await encode({
           jsonldDocument,
+          format: 'legacy-singleton',
           documentLoader,
           appContextMap
         });
@@ -1096,6 +1113,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -1145,6 +1163,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -1192,6 +1211,7 @@ describe('legacy cborld (singleton)', () => {
       };
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -1247,6 +1267,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -1315,6 +1336,7 @@ describe('legacy cborld (singleton)', () => {
       const appContextMap = new Map([[CONTEXT_URL, 0x8000]]);
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader,
         appContextMap
       });
@@ -1358,6 +1380,7 @@ describe('legacy cborld (singleton)', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         documentLoader
       });
 
@@ -1410,6 +1433,7 @@ describe('legacy cborld (singleton)', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         appContextMap,
         documentLoader
       });
@@ -1470,6 +1494,7 @@ describe('legacy cborld (singleton)', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'legacy-singleton',
         appContextMap,
         documentLoader
       });
@@ -1645,6 +1670,7 @@ describe('legacy cborld (singleton)', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
+          format: 'legacy-singleton',
           appContextMap,
           documentLoader,
         });
