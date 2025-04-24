@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 7.3.0 - 2025-MM-DD
+## 7.3.0 - 2025-04-24
 
 ### Added
 - Added new tag system for use with a single CBOR tag (0xcb1d). The tagged
