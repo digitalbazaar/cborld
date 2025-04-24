@@ -27,6 +27,7 @@ describe('cborld encode', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 0
       });
       expect(cborldBytes).instanceof(Uint8Array);
@@ -38,6 +39,7 @@ describe('cborld encode', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 1
       });
       expect(cborldBytes).instanceof(Uint8Array);
@@ -49,6 +51,7 @@ describe('cborld encode', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         typeTable: new Map()
       });
@@ -61,6 +64,7 @@ describe('cborld encode', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 1,
         typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
       });
@@ -76,6 +80,7 @@ describe('cborld encode', () => {
       try {
         result = await encode({
           jsonldDocument,
+          format: 'cbor-ld-1.0',
           registryEntryId: 2,
           typeTableLoader: _makeTypeTableLoader([])
         });
@@ -94,6 +99,7 @@ describe('cborld encode', () => {
       try {
         result = await encode({
           jsonldDocument,
+          format: 'cbor-ld-1.0',
           registryEntryId: 1,
           typeTable: new Map(),
           typeTableLoader: _makeTypeTableLoader([])
@@ -109,6 +115,7 @@ describe('cborld encode', () => {
     const jsonldDocument = {};
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
     });
@@ -122,6 +129,7 @@ describe('cborld encode', () => {
       const registryEntryId = 16;
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId,
         typeTableLoader: _makeTypeTableLoader([[16, new Map()]])
       });
@@ -135,6 +143,7 @@ describe('cborld encode', () => {
       const registryEntryId = 128;
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId,
         typeTableLoader: _makeTypeTableLoader([[128, new Map()]])
       });
@@ -148,6 +157,7 @@ describe('cborld encode', () => {
       const registryEntryId = 1000000000;
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId,
         typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
       });
@@ -191,6 +201,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -238,6 +249,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -281,6 +293,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -327,6 +340,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -407,6 +421,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -473,6 +488,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -521,6 +537,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -568,6 +585,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -620,6 +638,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -674,6 +693,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -728,6 +748,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -783,6 +804,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -847,6 +869,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -902,6 +925,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -967,6 +991,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -1021,6 +1046,7 @@ describe('cborld encode', () => {
     try {
       result = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -1074,6 +1100,7 @@ describe('cborld encode', () => {
       try {
         result = await await encode({
           jsonldDocument,
+          format: 'cbor-ld-1.0',
           registryEntryId: 2,
           documentLoader,
           typeTable
@@ -1124,6 +1151,7 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -1172,6 +1200,7 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -1223,6 +1252,7 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -1269,6 +1299,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -1314,6 +1345,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -1361,6 +1393,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -1408,6 +1441,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
@@ -1458,6 +1492,7 @@ describe('cborld encode', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
+        format: 'cbor-ld-1.0',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -1510,6 +1545,7 @@ describe('cborld encode', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2,
       documentLoader,
       typeTable
