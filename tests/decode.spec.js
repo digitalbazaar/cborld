@@ -1,6 +1,6 @@
 /*!
-* Copyright (c) 2020-2024 Digital Bazaar, Inc. All rights reserved.
-*/
+ * Copyright (c) 2020-2025 Digital Bazaar, Inc. All rights reserved.
+ */
 import {
   default as chai,
   expect
@@ -25,6 +25,16 @@ describe('cborld decode', () => {
   it('should decode CBOR-LD bytes (direct type table)',
     async () => {
       const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x01, 0xa0]);
+      const jsonldDocument = await decode({
+        cborldBytes,
+        typeTable: new Map()
+      });
+      expect(jsonldDocument).deep.equal({});
+    });
+
+  it('should decode CBOR-LD bytes (no compression)',
+    async () => {
+      const cborldBytes = new Uint8Array([0xd9, 0xcb, 0x1d, 0x82, 0x00, 0xa0]);
       const jsonldDocument = await decode({
         cborldBytes,
         typeTable: new Map()
