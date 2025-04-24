@@ -1,6 +1,6 @@
 /*!
-* Copyright (c) 2020-2024 Digital Bazaar, Inc. All rights reserved.
-*/
+ * Copyright (c) 2020-2025 Digital Bazaar, Inc. All rights reserved.
+ */
 import {
   default as chai,
   expect
@@ -55,6 +55,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -108,6 +109,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 20,
       documentLoader,
       typeTable
@@ -161,6 +163,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 200,
       documentLoader,
       typeTable
@@ -214,6 +217,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 2000,
       documentLoader,
       typeTable
@@ -267,6 +271,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 200000,
       documentLoader,
       typeTable
@@ -320,6 +325,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 20000000000,
       documentLoader,
       typeTable
@@ -346,6 +352,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -371,6 +378,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -418,6 +426,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -449,6 +458,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -473,6 +483,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -502,6 +513,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -542,6 +554,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable,
       documentLoader
@@ -586,6 +599,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -624,6 +638,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -674,6 +689,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -720,6 +736,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -777,6 +794,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -822,6 +840,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -879,6 +898,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -930,6 +950,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -993,6 +1014,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -1067,6 +1089,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -1117,6 +1140,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       documentLoader,
       registryEntryId: 1,
       typeTable
@@ -1176,6 +1200,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -1241,6 +1266,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       documentLoader,
       typeTable
@@ -1279,6 +1305,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1305,6 +1332,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1330,6 +1358,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1363,6 +1392,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1397,6 +1427,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1430,6 +1461,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1458,6 +1490,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1491,6 +1524,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1527,6 +1561,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1563,6 +1598,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1602,6 +1638,7 @@ describe('cborld round trip', () => {
 
     const cborldBytes = await encode({
       jsonldDocument,
+      format: 'cbor-ld-1.0',
       registryEntryId: 1,
       typeTable
     });
@@ -1776,6 +1813,7 @@ describe('cborld round trip', () => {
 
         const cborldBytes = await encode({
           jsonldDocument,
+          format: 'cbor-ld-1.0',
           registryEntryId: 1,
           documentLoader,
           typeTable

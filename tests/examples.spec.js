@@ -1,6 +1,6 @@
 /*!
-* Copyright (c) 2024 Digital Bazaar, Inc. All rights reserved.
-*/
+ * Copyright (c) 2024-2025 Digital Bazaar, Inc. All rights reserved.
+ */
 import {
   default as chai,
   expect
@@ -84,7 +84,6 @@ describe('cborld examples', () => {
         const expectedCborldBytes = await fsp.readFile(cfn, null);
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'singleton',
           documentLoader
         });
         expect(cborldBytes).equalBytes(expectedCborldBytes);

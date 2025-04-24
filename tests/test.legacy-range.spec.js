@@ -29,7 +29,6 @@ describe('legacy cborld (range)', () => {
         const jsonldDocument = {};
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'range',
           registryEntryId: 0
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -41,7 +40,6 @@ describe('legacy cborld (range)', () => {
         const jsonldDocument = {};
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'range',
           registryEntryId: 1
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -53,7 +51,6 @@ describe('legacy cborld (range)', () => {
         const jsonldDocument = {};
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'range',
           registryEntryId: 2,
           typeTable: new Map()
         });
@@ -66,7 +63,6 @@ describe('legacy cborld (range)', () => {
         const jsonldDocument = {};
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'range',
           registryEntryId: 1,
           typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
         });
@@ -82,7 +78,6 @@ describe('legacy cborld (range)', () => {
         try {
           result = await encode({
             jsonldDocument,
-            legacyFormat: 'range',
             registryEntryId: 2,
             typeTableLoader: _makeTypeTableLoader([])
           });
@@ -101,7 +96,6 @@ describe('legacy cborld (range)', () => {
         try {
           result = await encode({
             jsonldDocument,
-            legacyFormat: 'range',
             registryEntryId: 1,
             typeTable: new Map(),
             typeTableLoader: _makeTypeTableLoader([])
@@ -117,7 +111,6 @@ describe('legacy cborld (range)', () => {
       const jsonldDocument = {};
       const cborldBytes = await encode({
         jsonldDocument,
-        legacyFormat: 'range',
         registryEntryId: 1,
         typeTableLoader: _makeTypeTableLoader([[1, new Map()]])
       });
@@ -131,7 +124,6 @@ describe('legacy cborld (range)', () => {
         const registryEntryId = 16;
         const cborldBytes = await encode({
           jsonldDocument,
-          legacyFormat: 'range',
           registryEntryId,
           typeTableLoader: _makeTypeTableLoader([[16, new Map()]])
         });
@@ -146,7 +138,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId,
-          legacyFormat: 'range',
           typeTableLoader: _makeTypeTableLoader([[128, new Map()]])
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -160,7 +151,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId,
-          legacyFormat: 'range',
           typeTableLoader: _makeTypeTableLoader([[1000000000, new Map()]])
         });
         expect(cborldBytes).instanceof(Uint8Array);
@@ -203,7 +193,6 @@ describe('legacy cborld (range)', () => {
 
       const cborldBytes = await encode({
         jsonldDocument,
-        legacyFormat: 'range',
         registryEntryId: 2,
         documentLoader,
         typeTable
@@ -252,7 +241,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -296,7 +284,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -343,7 +330,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -424,7 +410,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -491,7 +476,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -540,7 +524,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -588,7 +571,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -641,7 +623,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -696,7 +677,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -751,7 +731,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -807,7 +786,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -872,7 +850,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -928,7 +905,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -994,7 +970,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -1049,7 +1024,6 @@ describe('legacy cborld (range)', () => {
         result = await encode({
           jsonldDocument,
           registryEntryId: 2,
-          legacyFormat: 'range',
           documentLoader,
           typeTable
         });
@@ -1103,7 +1077,6 @@ describe('legacy cborld (range)', () => {
           result = await encode({
             jsonldDocument,
             registryEntryId: 2,
-            legacyFormat: 'range',
             documentLoader,
             typeTable
           });
@@ -1154,7 +1127,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId: 2,
-          legacyFormat: 'range',
           documentLoader,
           typeTable
         });
@@ -1203,7 +1175,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId: 2,
-          legacyFormat: 'range',
           documentLoader,
           typeTable
         });
@@ -1255,7 +1226,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId: 2,
-          legacyFormat: 'range',
           documentLoader,
           typeTable
         });
@@ -1302,7 +1272,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -1348,7 +1317,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -1396,7 +1364,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -1444,7 +1411,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
@@ -1495,7 +1461,6 @@ describe('legacy cborld (range)', () => {
         const cborldBytes = await encode({
           jsonldDocument,
           registryEntryId: 2,
-          legacyFormat: 'range',
           documentLoader,
           typeTable
         });
@@ -1548,7 +1513,6 @@ describe('legacy cborld (range)', () => {
       const cborldBytes = await encode({
         jsonldDocument,
         registryEntryId: 2,
-        legacyFormat: 'range',
         documentLoader,
         typeTable
       });
