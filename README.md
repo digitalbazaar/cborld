@@ -26,7 +26,7 @@ applications.
 
 ### NPM
 
-```
+```sh
 npm install @digitalbazaar/cborld
 ```
 
@@ -34,7 +34,7 @@ npm install @digitalbazaar/cborld
 
 To install locally (for development):
 
-```
+```sh
 git clone https://github.com/digitalbazaar/cborld.git
 cd cborld
 npm install
@@ -50,31 +50,52 @@ CBOR-LD data.
 To encode a JSON-LD document as CBOR-LD:
 
 ```js
-import {encode} from '@digitalbazaar/cborld';
+import { encode } from '@digitalbazaar/cborld';
+import { JsonLdDocumentLoader } from 'jsonld-document-loader';
 
-const jsonldDocument = {
-  '@context': 'https://www.w3.org/ns/activitystreams',
+// Establish JSON-LD context
+const CONTEXT_URL = 'https://example.com/my-context/v1'; 
+const CONTEXT = {
+  '@context': {
+    ex: 'https://example.com/my-context/v1#', 
+    type: '@type', 
+    Example: 'ex:Example', 
+    label: 'ex:label', 
+    content: 'ex:content'
+  }
+};
+const loader = new JsonLdDocumentLoader();
+loader.addStatic(CONTEXT_URL, CONTEXT)
+const myLoader = loader.build();
+
+const myDocument = {
+  '@context': CONTEXT_URL,
   type: 'Note',
-  summary: 'CBOR-LD',
+  label: 'CBOR-LD',
   content: 'CBOR-LD is awesome!'
 };
 
 // encode a JSON-LD Javascript object into CBOR-LD bytes
-// Note: user must provide their own JSON-LD `documentLoader`
-const cborldBytes = await encode({jsonldDocument, documentLoader});
+const outputCborldBytes = await encode({ 
+  jsonldDocument: myDocument, 
+  documentLoader: myLoader 
+});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
 
 ```js
-import {decode} from '@digitalbazaar/cborld';
+import { decode } from '@digitalbazaar/cborld';
 
 // get the CBOR-LD bytes
-const cborldBytes = await fs.promises.readFile('out.cborld');
+const inputCcborldBytes = await fs.promises.readFile('out.cborld');
 
 // decode the CBOR-LD bytes into a Javascript object
-// Note: user must provide their own JSON-LD `documentLoader`
-const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
+// Note: reuses JSON-LD `myLoader` from encode example above
+const outputJsonldDocument = await cborld.decode({
+  cborldBytes: inputCcborldBytes,
+  documentLoader: myLoader
+});
 ```
 
 ## API
@@ -113,6 +134,7 @@ const jsonldDocument = await cborld.decode({cborldBytes, documentLoader});
 <a name="encode"></a>
 
 ### encode(options) ⇒ <code>Promise&lt;Uint8Array></code>
+
 Encodes a given JSON-LD document into a CBOR-LD byte array.
 
 **Kind**: global function
@@ -178,6 +200,7 @@ Encodes a given JSON-LD document into a CBOR-LD byte array.
 <a name="decode"></a>
 
 ### decode(options) ⇒ <code>Promise&lt;object></code>
+
 Decodes a CBOR-LD byte array into a JSON-LD document.
 
 **Kind**: global function
@@ -244,6 +267,7 @@ Decodes a CBOR-LD byte array into a JSON-LD document.
 <a name="diagnosticFunction"></a>
 
 ### diagnosticFunction : <code>function</code>
+
 A diagnostic function that is called with diagnostic information. Typically
 set to `console.log` when debugging.
 
@@ -264,6 +288,7 @@ set to `console.log` when debugging.
 <a name="documentLoaderFunction"></a>
 
 ### documentLoaderFunction ⇒ <code>string</code>
+
 Fetches a resource given a URL and returns it as a string.
 
 **Kind**: global typedef
@@ -305,7 +330,7 @@ If editing the README, please conform to the
 ## Commercial Support
 
 Commercial support for this library is available upon request from
-Digital Bazaar: support@digitalbazaar.com
+Digital Bazaar: <mailto:support@digitalbazaar.com>
 
 ## License
 
