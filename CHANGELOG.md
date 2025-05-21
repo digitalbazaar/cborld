@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.0.1 - 2025-05-dd
+## 8.0.1 - 2025-05-21
 
 ### Fixed
 - Ensure omitted `"@id"` values in term definitions are resolved using the
