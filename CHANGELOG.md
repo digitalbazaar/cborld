@@ -1,5 +1,11 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 8.0.1 - 2025-05-dd
+
+### Fixed
+- Ensure omitted `"@id"` values in term definitions are resolved using the
+  term key if possible (for keys that are CURIEs or absolute URLs).
+
 ## 8.0.0 - 2025-04-24
 
 ### Changed

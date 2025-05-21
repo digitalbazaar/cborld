@@ -59,43 +59,41 @@ describe('cborld encode', () => {
       expect(cborldBytes).equalBytes('d9cb1d8202a0');
     });
 
-  it('should fail to encode with no typeTableLoader id found',
-    async () => {
-      const jsonldDocument = {};
-      let result;
-      let error;
-      try {
-        result = await encode({
-          jsonldDocument,
-          format: 'cbor-ld-1.0',
-          registryEntryId: 2,
-          typeTableLoader: _makeTypeTableLoader([])
-        });
-      } catch(e) {
-        error = e;
-      }
-      expect(result).to.eql(undefined);
-      expect(error?.code).to.eql('ERR_NO_TYPETABLE');
-    });
+  it('should fail to encode with no typeTableLoader id found', async () => {
+    const jsonldDocument = {};
+    let result;
+    let error;
+    try {
+      result = await encode({
+        jsonldDocument,
+        format: 'cbor-ld-1.0',
+        registryEntryId: 2,
+        typeTableLoader: _makeTypeTableLoader([])
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.code).to.eql('ERR_NO_TYPETABLE');
+  });
 
-  it('should fail with typeTable',
-    async () => {
-      const jsonldDocument = {};
-      let result;
-      let error;
-      try {
-        result = await encode({
-          jsonldDocument,
-          format: 'cbor-ld-1.0',
-          registryEntryId: 1,
-          typeTable: new Map()
-        });
-      } catch(e) {
-        error = e;
-      }
-      expect(result).to.eql(undefined);
-      expect(error?.name).to.eql('TypeError');
-    });
+  it('should fail with typeTable', async () => {
+    const jsonldDocument = {};
+    let result;
+    let error;
+    try {
+      result = await encode({
+        jsonldDocument,
+        format: 'cbor-ld-1.0',
+        registryEntryId: 1,
+        typeTable: new Map()
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.name).to.eql('TypeError');
+  });
 
   it('should encode an empty JSON-LD Document', async () => {
     const jsonldDocument = {};
@@ -151,6 +149,100 @@ describe('cborld encode', () => {
       expect(cborldBytes).equalBytes('d9cb1d821a3b9aca00a0');
     });
 
+  it('should fail with non-object term definition', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        foo: []
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      foo: 'anything'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    let result;
+    let error;
+    try {
+      result = await encode({
+        jsonldDocument,
+        format: 'cbor-ld-1.0',
+        registryEntryId: 2,
+        documentLoader,
+        typeTableLoader: () => typeTable
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.name).to.eql('CborldError');
+  });
+
+  it('should fail with non-CURIE term with no "@id"', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        nonCurie: {
+          '@type': 'urn:anything'
+        }
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      nonCurie: 'anything'
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    let result;
+    let error;
+    try {
+      result = await encode({
+        jsonldDocument,
+        format: 'cbor-ld-1.0',
+        registryEntryId: 2,
+        documentLoader,
+        typeTableLoader: () => typeTable
+      });
+    } catch(e) {
+      error = e;
+    }
+    expect(result).to.eql(undefined);
+    expect(error?.name).to.eql('CborldError');
+  });
+
   it('should encode xsd dateTime when using a prefix', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
@@ -193,6 +285,50 @@ describe('cborld encode', () => {
       typeTableLoader: () => typeTable
     });
     expect(cborldBytes).equalBytes('d9cb1d8202a20019800018661a6070bb5f');
+  });
+
+  it('should pass with CURIE term with no "@id"', async () => {
+    const CONTEXT_URL = 'urn:foo';
+    const CONTEXT = {
+      '@context': {
+        arbitraryPrefix: 'http://www.w3.org/2001/XMLSchema#',
+        ex: 'https://test.example#',
+        'ex:foo': {
+          '@type': 'arbitraryPrefix:dateTime'
+        }
+      }
+    };
+    const date = '2021-04-09T20:38:55Z';
+    const jsonldDocument = {
+      '@context': CONTEXT_URL,
+      'ex:foo': date
+    };
+
+    const documentLoader = url => {
+      if(url === CONTEXT_URL) {
+        return {
+          contextUrl: null,
+          document: CONTEXT,
+          documentUrl: url
+        };
+      }
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const contextTable = new Map(STRING_TABLE);
+    contextTable.set(CONTEXT_URL, 0x8000);
+    typeTable.set('context', contextTable);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      format: 'cbor-ld-1.0',
+      registryEntryId: 2,
+      documentLoader,
+      typeTableLoader: () => typeTable
+    });
+    expect(cborldBytes).equalBytes('d9cb1d8202a20019800018681a6070bb5f');
   });
 
   it('should encode xsd dateTime with type table when possible', async () => {
