@@ -61,7 +61,12 @@ const jsonldDocument = {
 
 // encode a JSON-LD Javascript object into CBOR-LD bytes
 // Note: user must provide their own JSON-LD `documentLoader`
-const cborldBytes = await encode({jsonldDocument, documentLoader});
+const cborldBytes = await encode({
+  jsonldDocument,
+  documentLoader,
+  // use standard compression (set to `0` to use no compression)
+  registryEntryId: 1
+});
 ```
 
 To decode a CBOR-LD document to JSON-LD:
