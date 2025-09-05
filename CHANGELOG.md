@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.0.2 - 2025-mm-dd
+## 8.0.2 - 2025-09-05
 
 ### Fixed
 - Properly encode/decode dates from before the epoch.
