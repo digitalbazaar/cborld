@@ -866,6 +866,8 @@ describe('cborld round trip', () => {
     const jsonldDocument = {
       '@context': CONTEXT['@context'],
       date: [
+        '-1000-01-01T00:00:00Z',
+        '0-01-01T00:00:00Z',
         '1000-01-01T00:00:00Z',
         '1960-01-01T00:00:00Z',
         '1960-01-01T23:59:59Z',
@@ -874,8 +876,59 @@ describe('cborld round trip', () => {
         '1970-01-01T00:00:01Z',
         '1970-12-31T23:59:59Z',
         '2000-01-01T00:00:00Z',
-        '3000-01-01T00:00:00Z'
+        '3000-01-01T00:00:00Z',
+        '10000-01-01T00:00:00Z'
         // TODO: increase possible xsd:dateTime value coverage
+      ]
+    };
+
+    const documentLoader = url => {
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      format: 'cbor-ld-1.0',
+      registryEntryId: 1,
+      documentLoader,
+      typeTableLoader: () => typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTableLoader: () => typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
+  it('should handle wide date range', async () => {
+    const CONTEXT = {
+      '@context': {
+        date: {
+          '@id': 'ex:date',
+          '@type': 'http://www.w3.org/2001/XMLSchema#date'
+        },
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      date: [
+        '-1000-01-01',
+        '0-01-01',
+        '1000-01-01',
+        '1960-01-01',
+        '1960-01-01',
+        '1969-12-31',
+        '1970-01-01',
+        '1970-01-01',
+        '1970-12-31',
+        '2000-01-01',
+        '3000-01-01',
+        '10000-01-01'
+        // TODO: increase possible xsd:date value coverage
       ]
     };
 
