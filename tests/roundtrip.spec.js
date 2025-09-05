@@ -854,6 +854,53 @@ describe('cborld round trip', () => {
     expect(decodedDocument).to.eql(jsonldDocument);
   });
 
+  it('should handle wide dateTime range', async () => {
+    const CONTEXT = {
+      '@context': {
+        date: {
+          '@id': 'ex:date',
+          '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+        },
+      }
+    };
+    const jsonldDocument = {
+      '@context': CONTEXT['@context'],
+      date: [
+        '1000-01-01T00:00:00Z',
+        '1960-01-01T00:00:00Z',
+        '1960-01-01T23:59:59Z',
+        '1969-12-31T23:59:59Z',
+        '1970-01-01T00:00:00Z',
+        '1970-01-01T00:00:01Z',
+        '1970-12-31T23:59:59Z',
+        '2000-01-01T00:00:00Z',
+        '3000-01-01T00:00:00Z'
+        // TODO: increase possible xsd:dateTime value coverage
+      ]
+    };
+
+    const documentLoader = url => {
+      throw new Error(`Refused to load URL "${url}".`);
+    };
+
+    const typeTable = new Map(TYPE_TABLE);
+
+    const cborldBytes = await encode({
+      jsonldDocument,
+      format: 'cbor-ld-1.0',
+      registryEntryId: 1,
+      documentLoader,
+      typeTableLoader: () => typeTable
+    });
+
+    const decodedDocument = await decode({
+      cborldBytes,
+      documentLoader,
+      typeTableLoader: () => typeTable
+    });
+    expect(decodedDocument).to.eql(jsonldDocument);
+  });
+
   it('should revert remote type-scope', async () => {
     const CONTEXT_URL = 'urn:foo';
     const CONTEXT = {
