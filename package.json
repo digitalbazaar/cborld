@@ -41,7 +41,7 @@
     "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
     "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
     "coverage-report": "c8 report",
-    "lint": "eslint --ext .cjs,.js ."
+    "lint": "eslint"
   },
   "dependencies": {
     "base58-universal": "^2.0.0",
@@ -54,6 +54,7 @@
   "devDependencies": {
     "@digitalbazaar/did-method-key": "^5.2.0",
     "@digitalbazaar/ed25519-multikey": "^1.1.0",
+    "@digitalbazaar/eslint-config": "^8.0.1",
     "@digitalbazaar/multikey-context": "^2.0.1",
     "c8": "^10.1.2",
     "chai": "^4.4.1",
@@ -64,10 +65,7 @@
     "cross-env": "^7.0.3",
     "did-context": "^3.1.1",
     "ed25519-signature-2020-context": "^1.1.0",
-    "eslint": "^8.57.0",
-    "eslint-config-digitalbazaar": "^5.2.0",
-    "eslint-plugin-jsdoc": "^48.5.0",
-    "eslint-plugin-unicorn": "^54.0.0",
+    "eslint": "^9.39.4",
     "karma": "^6.4.3",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.2.0",
