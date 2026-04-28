@@ -1,5 +1,13 @@
 # @digitalbazaar/cborld ChangeLog
 
+## 8.1.0 - 2026-xx-xx
+
+### Changed
+- **NOTE**: Update supported platforms.
+  - Test on Node.js >=20.
+  - Update `engines.node` to `>=20`.
+  - Update README requirements section.
+
 ## 8.0.2 - 2025-09-05
 
 ### Fixed
