@@ -11,7 +11,7 @@ chai.use(chaiBytes);
 import {decode, encode} from '../lib/index.js';
 import {
   STRING_TABLE,
-  TYPE_TABLE,
+  TYPE_TABLE
 } from '../lib/tables.js';
 
 function _makeTypeTableLoader(entries) {

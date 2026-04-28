@@ -39,7 +39,7 @@ const _contextUrls = [
   ['https://w3id.org/security/suites/ed25519-2020/v1', ed25519_2020_context.contexts],
   ['https://www.w3.org/2018/credentials/v1', credentials_context.contexts],
   ['https://www.w3.org/ns/activitystreams', activitystreams_context.contexts],
-  ['https://www.w3.org/ns/did/v1', did_context.contexts],
+  ['https://www.w3.org/ns/did/v1', did_context.contexts]
 ];
 const contextMap = new Map(_contextUrls.map(c => [c[0], c[1].get(c[0])]));
 
@@ -69,7 +69,7 @@ const files = [
   'prc.jsonld',
   'prc.cborld',
   'uncompressible.jsonld',
-  'uncompressible.cborld',
+  'uncompressible.cborld'
 ];
 
 describe('cborld examples', () => {

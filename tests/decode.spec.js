@@ -11,7 +11,7 @@ chai.use(chaiBytes);
 import {decode, encode} from '../lib/index.js';
 import {
   STRING_TABLE,
-  TYPE_TABLE,
+  TYPE_TABLE
 } from '../lib/tables.js';
 
 function _makeTypeTableLoader(entries) {
@@ -711,7 +711,7 @@ describe('cborld decode', () => {
       'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
     const CONTEXT_URL = 'https://w3id.org/cit/v1';
-    /* eslint-disable max-len */
+    /* eslint-disable @stylistic/max-len */
     const CONTEXT = {
       '@context': {
         '@protected': true,
@@ -769,7 +769,7 @@ describe('cborld decode', () => {
         }
       }
     };
-    /* eslint-enable max-len */
+    /* eslint-enable @stylistic/max-len */
 
     const documentLoader = url => {
       if(url === CONTEXT_URL) {
@@ -786,7 +786,7 @@ describe('cborld decode', () => {
       '@context': 'https://w3id.org/cit/v1',
       type: 'ConcealedIdToken',
       meta: 'zvpJ2L5sbowrJPdA',
-      // eslint-disable-next-line max-len
+      // eslint-disable-next-line @stylistic/max-len
       payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
     };
 

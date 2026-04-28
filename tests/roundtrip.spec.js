@@ -11,7 +11,7 @@ chai.use(chaiBytes);
 import {decode, encode} from '../lib/index.js';
 import {
   STRING_TABLE,
-  TYPE_TABLE,
+  TYPE_TABLE
 } from '../lib/tables.js';
 
 describe('cborld round trip', () => {
@@ -369,9 +369,9 @@ describe('cborld round trip', () => {
       '@context': {
         type: '@type',
         Type1: 'ex:Type1',
-        Type2: 'ex:Type2',
+        Type2: 'ex:Type2'
       },
-      type: ['Type1', 'Type2'],
+      type: ['Type1', 'Type2']
     };
 
     const typeTable = new Map(TYPE_TABLE);
@@ -860,7 +860,7 @@ describe('cborld round trip', () => {
         date: {
           '@id': 'ex:date',
           '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
-        },
+        }
       }
     };
     const jsonldDocument = {
@@ -912,7 +912,7 @@ describe('cborld round trip', () => {
         date: {
           '@id': 'ex:date',
           '@type': 'http://www.w3.org/2001/XMLSchema#date'
-        },
+        }
       }
     };
     const jsonldDocument = {
@@ -1764,7 +1764,7 @@ describe('cborld round trip', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    /* eslint-disable max-len */
+    /* eslint-disable @stylistic/max-len */
     const vectors = [
       {
         name: 'empty plain data: (1)',
@@ -1810,7 +1810,7 @@ describe('cborld round trip', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
           'data:image/gif;base64,' +
-          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs='
         ],
         cborldHex:
           'd9cb1d8202a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
@@ -1878,7 +1878,7 @@ describe('cborld round trip', () => {
           'd9cb1d8202a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
       }
     ];
-    /* eslint-enable max-len */
+    /* eslint-enable @stylistic/max-len */
 
     const hasOnly = vectors.some(d => d.only);
     vectors.forEach(d => {

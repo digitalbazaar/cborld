@@ -693,7 +693,7 @@ describe('legacy cborld (singleton)', () => {
         'cb859a7c88ca6ba68b1ff238a70ed674999b6ff5179b0ebb10140b23');
 
       const CONTEXT_URL = 'https://w3id.org/cit/v1';
-      /* eslint-disable max-len */
+      /* eslint-disable @stylistic/max-len */
       const CONTEXT = {
         '@context': {
           '@protected': true,
@@ -751,7 +751,7 @@ describe('legacy cborld (singleton)', () => {
           }
         }
       };
-      /* eslint-enable max-len */
+      /* eslint-enable @stylistic/max-len */
 
       const documentLoader = url => {
         if(url === CONTEXT_URL) {
@@ -768,7 +768,7 @@ describe('legacy cborld (singleton)', () => {
         '@context': 'https://w3id.org/cit/v1',
         type: 'ConcealedIdToken',
         meta: 'zvpJ2L5sbowrJPdA',
-        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @stylistic/max-len
         payload: 'z1177JK4h25dHEAXAVMUMpn2zWcxLCeMLP3oVFQFQ11xHFtE9BhyoU2g47D6Xod1Mu99JR9YJdY184HY'
       };
 
@@ -1541,7 +1541,7 @@ describe('legacy cborld (singleton)', () => {
       throw new Error(`Refused to load URL "${url}".`);
     };
 
-    /* eslint-disable max-len */
+    /* eslint-disable @stylistic/max-len */
     const vectors = [
       {
         name: 'empty plain data: (1)',
@@ -1587,7 +1587,7 @@ describe('legacy cborld (singleton)', () => {
           'data:image/gif;base64,' +
           'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
           'data:image/gif;base64,' +
-          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs=',
+          'R0lGODdhAQABAIABAAAAAAAAACwAAAAAAQABAAACAkwBADs='
         ],
         cborldHex:
           'd90501a200198000186582830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b830469696d6167652f6769665823474946383761010001008001000000000000002c00000000010001000002024c01003b'
@@ -1655,7 +1655,7 @@ describe('legacy cborld (singleton)', () => {
           'd90501a20019800018648204783b746578742f68746d6c2c253343736372697074253345616c6572742532382532376869253237253239253342253343253246736372697074253345'
       }
     ];
-    /* eslint-enable max-len */
+    /* eslint-enable @stylistic/max-len */
 
     const hasOnly = vectors.some(d => d.only);
     vectors.forEach(d => {
@@ -1672,7 +1672,7 @@ describe('legacy cborld (singleton)', () => {
           jsonldDocument,
           format: 'legacy-singleton',
           appContextMap,
-          documentLoader,
+          documentLoader
         });
 
         expect(cborldBytes).equalBytes(d.cborldHex);
