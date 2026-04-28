@@ -1,5 +1,5 @@
 /*!
-* Copyright (c) 2021 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2021-2026 Digital Bazaar, Inc.
 */
 import {expect} from 'chai';
 import {UuidUrnEncoder} from '../lib/codecs/UuidUrnEncoder.js';

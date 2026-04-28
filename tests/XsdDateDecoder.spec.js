@@ -1,5 +1,5 @@
 /*!
-* Copyright (c) 2020-2021 Digital Bazaar, Inc. All rights reserved.
+* Copyright (c) 2020-2026 Digital Bazaar, Inc.
 */
 // import {
 //   expect
