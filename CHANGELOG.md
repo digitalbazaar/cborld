@@ -3,6 +3,10 @@
 ## 8.1.0 - 2026-xx-xx
 
 ### Changed
+- Update dependencies. Notable:
+  - `cborg@5`.
+  - `uuid@14`.
+- Update dev dependencies.
 - **NOTE**: Update supported platforms.
   - Test on Node.js >=20.
   - Update `engines.node` to `>=20`.
