@@ -1,6 +1,6 @@
 # @digitalbazaar/cborld ChangeLog
 
-## 8.1.0 - 2026-xx-xx
+## 8.1.0 - 2026-04-28
 
 ### Changed
 - Update dependencies. Notable:
